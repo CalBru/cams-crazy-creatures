@@ -130,7 +130,12 @@ him powers. Anything we build should feed one of those three.
       📢 Whistle (everything nearby pops open one after another), ⏱️ Time Freeze (holds a
       roaming giant still), 🧲 Super Magnet (yanks three traps to him), 🥸 X-Ray Goggles
       (see the rarity inside everything — and the pick honours what it showed him).
-- [ ] More variety per session, so no two trips feel the same
+- [x] **More variety.** 44 new animals added at build time, each with hand-written facts:
+      **153 → 198 creatures.** Ladybugs and fireflies in the backyard, a vinegaroon that
+      squirts vinegar, a pistol shrimp whose claw bangs like a gunshot, a wombat with cube
+      poop, a hagfish that turns a bucket of water to slime, coconut crabs on the islands,
+      and an axolotl in the Crystal Caverns. Every new photo was vision-checked; 8 of 45
+      were rejected and replaced. Repeatable with `tools/add-batch.js` — see README.
 - [ ] **The Wild Trap** — catches a real animal that isn't in the game, with no facts
       written, and Cam writes the facts himself. Full spec in `WILD-TRAP.md`, including
       why the live-Wikipedia version was tested and rejected (12 seconds a pull, and it

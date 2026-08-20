@@ -1,0 +1,133 @@
+[
+{ "id":"ladybug", "name":"Ladybug", "wiki":"Coccinellidae", "emoji":"🐞", "where":"land", "zones":[1], "tier":"common", "tiny":true,
+  "facts":["My spots are a warning that says don't eat me, I taste terrible.","I eat 5,000 aphids in my life, so gardeners love me.","When I'm scared I squirt smelly yellow stuff out of my knees."] },
+
+{ "id":"earwig", "name":"Earwig", "wiki":"Earwig", "emoji":"🪳", "where":"land", "zones":[1], "tier":"common", "tiny":true,
+  "facts":["I have pincers on my BOTTOM, not my head.","People used to think I crawled into ears. I never do.","I have wings folded up under my back like origami, but I hardly ever fly.","I'm one of the only bugs that takes care of her babies."] },
+
+{ "id":"dragonfly", "name":"Dragonfly", "wiki":"Dragonfly", "emoji":"🦟", "where":"land", "zones":[1], "tier":"uncommon", "tiny":true,
+  "facts":["I can fly straight up, backwards, and hover like a helicopter.","My eyes are so big they wrap around my whole head — I see almost everything at once.","I catch my dinner in mid-air and I almost never miss.","I lived underwater as a baby for years before I ever flew."] },
+
+{ "id":"monarch", "name":"Monarch Butterfly", "wiki":"Monarch butterfly", "emoji":"🦋", "where":"land", "zones":[1], "tier":"uncommon", "tiny":true,
+  "facts":["I fly 3,000 miles to the same forest my great-grandparents used.","Nobody taught me the way. I just know it.","I eat poison milkweed as a caterpillar so birds won't touch me.","I taste with my FEET to check if a leaf is the right one."] },
+
+{ "id":"orbweaver", "name":"Orb Weaver Spider", "wiki":"Orb-weaver spider", "emoji":"🕷️", "where":"land", "zones":[1], "tier":"uncommon", "tiny":true,
+  "facts":["I build a brand new wheel-shaped web almost every single night.","I eat my old web to make the silk for the next one.","My silk is stronger than steel of the same thickness.","I feel dinner arrive by the wobble of the threads."] },
+
+{ "id":"firefly", "name":"Firefly", "wiki":"Firefly", "emoji":"✨", "where":"land", "zones":[1], "tier":"rare", "tiny":true,
+  "facts":["I make light in my own belly, and it gives off almost NO heat.","Every kind of firefly blinks a different pattern, like a secret code.","Even my eggs glow.","I'm not a fly at all. I'm a beetle."] },
+
+{ "id":"wolfspider", "name":"Wolf Spider", "wiki":"Wolf spider", "emoji":"🕷️", "where":"land", "zones":[1,2], "tier":"rare",
+  "facts":["I don't build a web. I chase my dinner down and pounce like a wolf.","My babies ride on my BACK — hundreds of them at once.","My eyes shine back at you in a flashlight, like a cat's.","I carry my egg sac around with me everywhere I go."] },
+
+{ "id":"lunamoth", "name":"Luna Moth", "wiki":"Luna moth", "emoji":"🦋", "where":"land", "zones":[2], "tier":"rare",
+  "facts":["I'm pale green with long twisty tails, and I'm as wide as your hand.","My tails spin in the air to confuse bats hunting me by sound.","I have NO mouth. I never eat once in my whole grown-up life.","I only live about a week as a moth."] },
+
+{ "id":"leafinsect", "name":"Leaf Insect", "wiki":"Phylliidae", "emoji":"🍃", "where":"land", "zones":[2], "tier":"rare",
+  "facts":["I don't just look like a leaf. I have fake nibbled holes and brown spots too.","I rock gently side to side so I look like a leaf in the breeze.","My eggs even look like little seeds.","Predators walk right past me all day long."] },
+
+{ "id":"velvetant", "name":"Velvet Ant", "wiki":"Mutillidae", "emoji":"🐜", "where":"land", "zones":[2,3], "tier":"rare", "tiny":true,
+  "facts":["I'm covered in bright fuzzy red hair, and I'm not an ant at all — I'm a wasp.","People call me the cow killer because my sting hurts so much.","I'm so tough that most things can't even bite through me.","I squeak when something picks me up."] },
+
+{ "id":"goliathbeetle", "name":"Goliath Beetle", "wiki":"Goliathus", "emoji":"🪲", "where":"land", "zones":[2], "tier":"epic",
+  "facts":["I'm one of the heaviest insects alive — as heavy as a small apple.","As a grub I'm bigger than a grown-up's thumb.","I can carry things hundreds of times heavier than me.","My wing cases snap open and I fly with a loud buzz like a toy plane."] },
+
+{ "id":"whipscorpion", "name":"Vinegaroon", "wiki":"Thelyphonida", "emoji":"🦂", "where":"land", "zones":[2,3], "tier":"epic",
+  "facts":["I SQUIRT VINEGAR out of my tail when something bothers me.","It smells so sour it makes animals back away fast.","I have a long whip on my back end that I use to feel around.","I have no venom at all. The vinegar is my whole defence."] },
+
+{ "id":"rattlesnake", "name":"Rattlesnake", "wiki":"Rattlesnake", "emoji":"🐍", "where":"land", "zones":[3], "tier":"rare",
+  "facts":["My tail rattle is made of dry hollow rings that I shake 50 times a second.","I add a new ring every time I shed my skin.","I can see the heat of a warm animal in the dark.","The rattle is me asking you politely to go away."] },
+
+{ "id":"roadrunner", "name":"Roadrunner", "wiki":"Greater roadrunner", "emoji":"🐦", "where":"land", "zones":[3], "tier":"rare",
+  "facts":["I can run 20 miles an hour — faster than you can pedal a bike.","I'd rather run than fly, and I mostly do.","I eat rattlesnakes, lizards and scorpions.","I sunbathe with my back feathers open to soak up heat in the cold morning."] },
+
+{ "id":"kangaroorat", "name":"Kangaroo Rat", "wiki":"Kangaroo rat", "emoji":"🐭", "where":"land", "zones":[3], "tier":"uncommon",
+  "facts":["I never drink water. Not ever. I get all I need from dry seeds.","I hop on two big back feet like a tiny kangaroo.","I can leap nine feet to escape a snake.","I stuff seeds in cheek pouches and bury them all over the desert."] },
+
+{ "id":"desertcentipede", "name":"Giant Desert Centipede", "wiki":"Scolopendra heros", "emoji":"🐛", "where":"land", "zones":[3], "tier":"epic",
+  "facts":["I'm as long as a grown-up's forearm, with a black head and red legs.","I have a pair of legs on every body ring, and they ripple like a wave.","My front legs are venom claws, not really legs at all.","I hunt at night and I can catch a lizard."] },
+
+{ "id":"stingray", "name":"Stingray", "wiki":"Stingray", "emoji":"🐟", "where":"ocean", "zones":[1], "tier":"uncommon",
+  "facts":["I bury myself in the sand with just my eyes poking out.","My mouth is underneath me, so I never see what I eat.","My tail has a barb on it, but I only use it if I'm stepped on.","I flap like a bird flying, but through water."] },
+
+{ "id":"flyingfish", "name":"Flying Fish", "wiki":"Flying fish", "emoji":"🐟", "where":"ocean", "zones":[1], "tier":"uncommon",
+  "facts":["I burst out of the water and GLIDE over it on wing-shaped fins.","I can stay in the air for 200 metres — longer than two football fields.","I do it to escape fish chasing me from below.","I beat my tail 70 times a second to get up to takeoff speed."] },
+
+{ "id":"giantclam", "name":"Giant Clam", "wiki":"Giant clam", "emoji":"🐚", "where":"ocean", "zones":[1], "tier":"rare",
+  "facts":["I'm as long as a bathtub and I weigh more than two grown-ups.","I pick one spot as a baby and never move again my whole life.","Tiny algae live inside my frilly lips and make food for me from sunshine.","I can live over 100 years in the same place."] },
+
+{ "id":"seaotter", "name":"Sea Otter", "wiki":"Sea otter", "emoji":"🦦", "where":"ocean", "zones":[1], "tier":"rare",
+  "facts":["I hold hands with other otters so we don't drift apart while we sleep.","I keep a favourite ROCK in a pocket of skin under my arm and use it to smash shells.","I have the thickest fur of any animal — a million hairs in one patch the size of a stamp.","I eat a quarter of my own weight every day to stay warm."] },
+
+{ "id":"cuttlefish", "name":"Cuttlefish", "wiki":"Cuttlefish", "emoji":"🦑", "where":"ocean", "zones":[1,2], "tier":"epic",
+  "facts":["I can change colour AND pattern in a blink, like a screen made of skin.","I hypnotise crabs by rippling black and white stripes down my body.","I'm colourblind — and nobody is sure how I match colours so well.","I have green-blue blood and three hearts."] },
+
+{ "id":"moray", "name":"Moray Eel", "wiki":"Moray eel", "emoji":"🐍", "where":"ocean", "zones":[2], "tier":"rare",
+  "facts":["I have a SECOND set of jaws deep in my throat that shoot forward to grab food.","I hold my mouth open all the time, but that's just how I breathe.","My skin makes slime instead of scales.","I hunt with groupers sometimes — they flush dinner out and we share."] },
+
+{ "id":"lionfish", "name":"Lionfish", "wiki":"Lionfish", "emoji":"🐡", "where":"ocean", "zones":[2], "tier":"rare",
+  "facts":["I'm covered in stripy venomous spines that stick out like a lion's mane.","I have no natural enemies where I live now, so there are far too many of me.","I blow jets of water at little fish to turn them around, then swallow them head first.","I can eat 30 fish in half an hour."] },
+
+{ "id":"pistolshrimp", "name":"Pistol Shrimp", "wiki":"Alpheidae", "emoji":"🦐", "where":"ocean", "zones":[2], "tier":"epic", "tiny":true,
+  "facts":["My claw snaps so fast it makes a BANG as loud as a gunshot.","The snap makes a bubble hotter than the surface of the sun, for a split second.","Whole beds of us are so noisy we used to jam submarine sonar.","I'm smaller than your finger."] },
+
+{ "id":"horseshoecrab", "name":"Horseshoe Crab", "wiki":"Horseshoe crab", "emoji":"🦀", "where":"ocean", "zones":[2], "tier":"epic",
+  "facts":["My blood is BRIGHT BLUE, and it's used to keep medicine safe for people.","I have ten eyes scattered all over my body.","My family has looked like this for 450 million years — long before dinosaurs.","I'm not a crab at all. I'm closer to a spider."] },
+
+{ "id":"manowar", "name":"Portuguese Man o' War", "wiki":"Portuguese man o' war", "emoji":"🪼", "where":"ocean", "zones":[1,2], "tier":"rare",
+  "facts":["I look like one animal, but I'm actually thousands of tiny ones living as one body.","Some of me are stingers, some are stomachs, some are for making babies. None can survive alone.","I float with a gas balloon on top and 30-foot stingers below.","I can't swim. The wind decides where I go."] },
+
+{ "id":"thresher", "name":"Thresher Shark", "wiki":"Thresher shark", "emoji":"🦈", "where":"ocean", "zones":[2,3], "tier":"rare",
+  "facts":["My tail is as long as the rest of me, and I use it like a WHIP.","I crack it through a school of fish to stun them, then eat the stunned ones.","The tip of my tail can move faster than a car on a motorway.","I sometimes leap right out of the water."] },
+
+{ "id":"hagfish", "name":"Hagfish", "wiki":"Hagfish", "emoji":"🐍", "where":"ocean", "zones":[3,4], "tier":"epic",
+  "facts":["When something grabs me I turn a bucket of water into SLIME in a second.","The slime clogs up a shark's gills and it lets go fast.","I have no jaws and no bones, and I've barely changed in 300 million years.","I can tie myself in a knot to scrape the slime back off."] },
+
+{ "id":"cookiecutter", "name":"Cookiecutter Shark", "wiki":"Cookiecutter shark", "emoji":"🦈", "where":"ocean", "zones":[3,4], "tier":"epic",
+  "facts":["I bite a perfectly round plug out of animals far bigger than me, like a cookie cutter.","I'm only as long as your arm, but I bite whales and sharks.","My belly glows, and I keep one dark patch that looks like a tiny fish to lure hunters in.","I have the biggest teeth for my body size of any shark."] },
+
+{ "id":"sawfish", "name":"Sawfish", "wiki":"Sawfish", "emoji":"🐟", "where":"ocean", "zones":[2,3], "tier":"epic",
+  "facts":["I have a giant SAW on my face, with teeth down both sides.","I slash it side to side through a school of fish to knock them out.","My saw can feel the tiny heartbeats of fish hidden in the mud.","I can grow as long as a car, and I'm very rare now."] },
+
+{ "id":"beluga", "name":"Beluga Whale", "wiki":"Beluga whale", "emoji":"🐋", "where":"ocean", "zones":[1,2], "tier":"rare",
+  "facts":["I'm bright white, and I can squish and wobble the melon on my forehead to make sounds.","People call me the sea canary because I chirp and whistle so much.","I can turn my head all the way around, which most whales cannot.","I have no back fin, so I can swim right under the ice."] },
+
+{ "id":"coconutcrab", "name":"Coconut Crab", "wiki":"Coconut crab", "emoji":"🦀", "where":"island", "zones":[3], "tier":"epic",
+  "facts":["I'm the biggest land crab in the world — my legs stretch a metre across.","My claws can crack open a COCONUT, and they pinch harder than a lion bites.","I climb trees, and I drown if I stay in the sea too long.","I can live 60 years on my island."] },
+
+{ "id":"leaftailedgecko", "name":"Leaf-Tailed Gecko", "wiki":"Uroplatus", "emoji":"🦎", "where":"island", "zones":[2], "tier":"epic", "endemicTo":"Madagascar",
+  "facts":["I look so much like dead leaves and bark that you can stare right at me and miss me.","My tail is flat and ragged, exactly like a chewed-up leaf.","I have flaps of skin that spread out to erase my own shadow.","I live on one island and nowhere else on Earth."] },
+
+{ "id":"indri", "name":"Indri", "wiki":"Indri", "emoji":"🐒", "where":"island", "zones":[2], "tier":"epic", "endemicTo":"Madagascar",
+  "facts":["I'm the biggest lemur, and I SING — long wailing songs you can hear two miles away.","My whole family sings together, and each family has its own tune.","I leap 30 feet between trees standing straight upright.","I cannot survive anywhere but Madagascar, not even in a zoo."] },
+
+{ "id":"hissingcockroach", "name":"Hissing Cockroach", "wiki":"Gromphadorhina portentosa", "emoji":"🪳", "where":"island", "zones":[2], "tier":"rare", "endemicTo":"Madagascar",
+  "facts":["I HISS by squeezing air out of holes in my sides — no other bug does it that way.","I'm as long as your thumb and shiny brown.","I can climb straight up glass.","I only live on Madagascar, in rotting logs on the forest floor."] },
+
+{ "id":"takahe", "name":"Takahē", "wiki":"Takahē", "emoji":"🦜", "where":"island", "zones":[4], "tier":"legendary", "endemicTo":"New Zealand",
+  "facts":["People thought my whole kind had died out — then somebody found us again in 1948.","I'm a big blue bird who cannot fly at all.","There are only a few hundred of me alive in the world.","I pull up grass and eat only the soft bottom part, then drop the rest."] },
+
+{ "id":"galapagossealion", "name":"Galápagos Sea Lion", "wiki":"Galápagos sea lion", "emoji":"🦭", "where":"island", "zones":[1], "tier":"rare", "endemicTo":"the Galápagos Islands",
+  "facts":["I sleep on benches, boats and doorsteps, because nothing here has ever hunted me.","I'm not afraid of people at all, so I'll swim right up and look at you.","I can hold my breath for ten minutes chasing fish.","My whole kind lives around these islands and nowhere else."] },
+
+{ "id":"wombat", "name":"Wombat", "wiki":"Wombat", "emoji":"🐻", "where":"underground", "zones":[1], "tier":"rare",
+  "facts":["My poop comes out in CUBES. Actual little cubes.","I stack the cubes on rocks as signs, and being square means they don't roll off.","I dig tunnel systems 100 feet long with rooms in them.","My bottom is mostly hard bone, so I block my tunnel with it and let things bite that instead."] },
+
+{ "id":"meerkat", "name":"Meerkat", "wiki":"Meerkat", "emoji":"🦫", "where":"underground", "zones":[1], "tier":"rare",
+  "facts":["One of us always stands guard while everybody else digs and eats.","The guard has a different bark for eagle, snake and jackal, so we know which way to run.","We have a hundred entrances to our burrow so there's always a way in.","I can eat scorpions, stinger and all — I bite the stinger off first."] },
+
+{ "id":"prairiedog", "name":"Prairie Dog", "wiki":"Prairie dog", "emoji":"🐿️", "where":"underground", "zones":[1], "tier":"uncommon",
+  "facts":["I KISS my family to say hello and check they're really family.","Our towns can hold millions of us, with tunnels running for miles.","I have different calls for different animals, and even for different people.","When danger passes we all throw our arms up and yip together."] },
+
+{ "id":"armadillo", "name":"Armadillo", "wiki":"Armadillo", "emoji":"🦔", "where":"underground", "zones":[1,2], "tier":"rare",
+  "facts":["I'm wearing armour made of bony plates, like a walking tank.","The little ones can roll up into a perfect ball.","I can hold my breath six minutes and walk along the bottom of a river.","I jump straight UP when I'm startled."] },
+
+{ "id":"aardvark", "name":"Aardvark", "wiki":"Aardvark", "emoji":"🐽", "where":"underground", "zones":[2], "tier":"rare",
+  "facts":["I eat 50,000 ants and termites in a single night with a foot-long sticky tongue.","I can dig a hole and disappear into it faster than a person with a shovel.","My nose has more smell-detectors in it than a dog's.","I can close my nostrils to keep ants from crawling in."] },
+
+{ "id":"molecricket", "name":"Mole Cricket", "wiki":"Mole cricket", "emoji":"🦗", "where":"underground", "zones":[1], "tier":"uncommon", "tiny":true,
+  "facts":["I have shovel hands like a mole, on a body like a cricket.","I dig a tunnel shaped like a horn and sing into it to make myself LOUDER.","You can hear my burrow-song from a mile away.","I swim, I fly, and I dig. Not many animals do all three."] },
+
+{ "id":"trapdoorspider", "name":"Trapdoor Spider", "wiki":"Trapdoor spider", "emoji":"🕷️", "where":"underground", "zones":[2], "tier":"rare",
+  "facts":["I build a burrow with a hinged LID and hold it shut from the inside.","I lay silk trip-lines around my door and feel them twitch.","When something walks past, the door flies open and I'm out and back in under a second.","Some of us live 40 years in the same burrow."] }
+]

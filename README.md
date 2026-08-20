@@ -1,6 +1,7 @@
 # Cam's Crazy Creatures
 
-A creature-collecting exploration game designed by Cam (age 6). Open `index.html` in a
+A creature-collecting exploration game designed by Cam (age 6). 198 real animals, each
+with a real photo and hand-written facts. Open `index.html` in a
 browser — no installs, no server, works offline.
 
 ## How you play
@@ -93,16 +94,45 @@ the fetcher re-downloads anything that failed that check.
 
 ## Adding creatures
 
-1. Add an entry to `creatures.js` with a unique `id`, a `tier`, and the `zones` it lives in.
-2. Add `id: "Wikipedia Article Title"` to the `WIKI` map in `tools/fetch-photos.js`.
-3. Run:
+This is how the catalog grows, and it's meant to be easy — if Cam names an animal he
+wants, it can be in the game in a couple of minutes.
+
+**One animal:**
 
 ```bash
-node tools/fetch-photos.js     # skips photos already downloaded
-node tools/make-photos-js.js   # rebuilds photos.js
+node tools/add-animal.js '{"id":"axolotl","name":"Axolotl","wiki":"Axolotl",
+  "emoji":"🦎","tier":"legendary","where":"underground","zones":[3],
+  "facts":["If I lose a leg, I grow a whole new one.","..."]}'
 ```
 
+**A batch** — write a JSON list in `batch/`, then:
+
+```bash
+node tools/add-batch.js batch/001-forty-more.json
+```
+
+It appends the creatures, registers their Wikipedia titles, fetches every photo in one
+pass, and rebuilds `photos.js`. Then **look at the new photos** (see above) before shipping.
+
+`tools/harvest-wild.js` is a helper for deciding *who* to add: it asks Wikidata for
+famous animals not already in the game, ranked by how many language Wikipedias cover
+them, which is a good proxy for "an animal a kid has heard of."
+
 A creature with no photo still works — it falls back to its emoji.
+
+### Why the facts are written at build time
+
+The facts are hand-written (by a person, or by Claude at build time with a human reading
+them before they ship) rather than generated live while Cam is playing. Three reasons:
+
+1. A live generator needs an API key, and the game is a public web page — anything in
+   the page can be read and spent by anyone.
+2. Unreviewed facts reach a six-year-old who will believe and repeat them. Every fact in
+   here has been read by an adult first.
+3. Build-time facts work offline, in the shared single-file copy, and on the iPad.
+
+`WILD-TRAP.md` has the full reasoning, including the measured latency and quality of the
+live-Wikipedia version that was tested and rejected.
 
 ## ⚠️ Never break Cam's book
 

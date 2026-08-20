@@ -1,6 +1,11 @@
 /* Real photos of every creature, from Wikipedia.
    Built by tools/make-photos-js.js — don't edit by hand. */
 var PHOTOS = {
+  "aardvark": {
+    "file": "aardvark.jpg",
+    "title": "Aardvark",
+    "url": "https://en.wikipedia.org/wiki/Aardvark"
+  },
   "anglerfish": {
     "file": "anglerfish.jpg",
     "title": "Humpback anglerfish",
@@ -16,10 +21,20 @@ var PHOTOS = {
     "title": "Black garden ant",
     "url": "https://en.wikipedia.org/wiki/Black_garden_ant"
   },
+  "armadillo": {
+    "file": "armadillo.jpg",
+    "title": "Armadillo",
+    "url": "https://en.wikipedia.org/wiki/Armadillo"
+  },
   "atlasmoth": {
     "file": "atlasmoth.jpg",
     "title": "Attacus atlas",
     "url": "https://en.wikipedia.org/wiki/Attacus_atlas"
+  },
+  "axolotl": {
+    "file": "axolotl.jpg",
+    "title": "Axolotl",
+    "url": "https://en.wikipedia.org/wiki/Axolotl"
   },
   "ayeaye": {
     "file": "ayeaye.jpg",
@@ -60,6 +75,11 @@ var PHOTOS = {
     "file": "beetle.jpg",
     "title": "Chrysochroa fulgidissima",
     "url": "https://en.wikipedia.org/wiki/Chrysochroa_fulgidissima"
+  },
+  "beluga": {
+    "file": "beluga.jpg",
+    "title": "Beluga whale",
+    "url": "https://en.wikipedia.org/wiki/Beluga_whale"
   },
   "blackwidow": {
     "file": "blackwidow.jpg",
@@ -141,6 +161,11 @@ var PHOTOS = {
     "title": "Clownfish",
     "url": "https://en.wikipedia.org/wiki/Clownfish"
   },
+  "coconutcrab": {
+    "file": "coconutcrab.jpg",
+    "title": "Coconut crab",
+    "url": "https://en.wikipedia.org/wiki/Coconut_crab"
+  },
   "coelacanth": {
     "file": "coelacanth.jpg",
     "title": "Coelacanth",
@@ -156,6 +181,11 @@ var PHOTOS = {
     "title": "Ctenophora",
     "url": "https://en.wikipedia.org/wiki/Ctenophora"
   },
+  "cookiecutter": {
+    "file": "cookiecutter.jpg",
+    "title": "Cookiecutter shark",
+    "url": "https://en.wikipedia.org/wiki/Cookiecutter_shark"
+  },
   "crab": {
     "file": "crab.jpg",
     "title": "Crab",
@@ -166,6 +196,11 @@ var PHOTOS = {
     "title": "Gryllus campestris",
     "url": "https://en.wikipedia.org/wiki/Gryllus_campestris"
   },
+  "cuttlefish": {
+    "file": "cuttlefish.jpg",
+    "title": "Cuttlefish",
+    "url": "https://en.wikipedia.org/wiki/Cuttlefish"
+  },
   "darwinsfinch": {
     "file": "darwinsfinch.jpg",
     "title": "Medium ground finch",
@@ -175,6 +210,11 @@ var PHOTOS = {
     "file": "deepseaoctopus.jpg",
     "title": "Graneledone boreopacifica",
     "url": "https://en.wikipedia.org/wiki/Graneledone_boreopacifica"
+  },
+  "desertcentipede": {
+    "file": "desertcentipede.jpg",
+    "title": "Scolopendra heros",
+    "url": "https://en.wikipedia.org/wiki/Scolopendra_heros"
   },
   "deserttortoise": {
     "file": "deserttortoise.jpg",
@@ -191,6 +231,11 @@ var PHOTOS = {
     "title": "Stomiidae",
     "url": "https://en.wikipedia.org/wiki/Stomiidae"
   },
+  "dragonfly": {
+    "file": "dragonfly.jpg",
+    "title": "Dragonfly",
+    "url": "https://en.wikipedia.org/wiki/Dragonfly"
+  },
   "dumbo": {
     "file": "dumbo.jpg",
     "title": "Grimpoteuthis",
@@ -201,15 +246,30 @@ var PHOTOS = {
     "title": "Earthworm",
     "url": "https://en.wikipedia.org/wiki/Earthworm"
   },
+  "earwig": {
+    "file": "earwig.jpg",
+    "title": "Earwig",
+    "url": "https://en.wikipedia.org/wiki/Earwig"
+  },
   "fennecfox": {
     "file": "fennecfox.jpg",
     "title": "Fennec fox",
     "url": "https://en.wikipedia.org/wiki/Fennec_fox"
   },
+  "firefly": {
+    "file": "firefly.jpg",
+    "title": "Firefly",
+    "url": "https://en.wikipedia.org/wiki/Firefly"
+  },
   "flightlesscormorant": {
     "file": "flightlesscormorant.jpg",
     "title": "Flightless cormorant",
     "url": "https://en.wikipedia.org/wiki/Flightless_cormorant"
+  },
+  "flyingfish": {
+    "file": "flyingfish.jpg",
+    "title": "Flying fish",
+    "url": "https://en.wikipedia.org/wiki/Flying_fish"
   },
   "fossa": {
     "file": "fossa.jpg",
@@ -231,6 +291,11 @@ var PHOTOS = {
     "title": "Galapagos penguin",
     "url": "https://en.wikipedia.org/wiki/Galapagos_penguin"
   },
+  "galapagossealion": {
+    "file": "galapagossealion.jpg",
+    "title": "Galápagos sea lion",
+    "url": "https://en.wikipedia.org/wiki/Gal%C3%A1pagos_sea_lion"
+  },
   "galapagostortoise": {
     "file": "galapagostortoise.jpg",
     "title": "Galápagos tortoise",
@@ -250,6 +315,11 @@ var PHOTOS = {
     "file": "giantamphipod.jpg",
     "title": "Alicella",
     "url": "https://en.wikipedia.org/wiki/Alicella"
+  },
+  "giantclam": {
+    "file": "giantclam.jpg",
+    "title": "Giant clam",
+    "url": "https://en.wikipedia.org/wiki/Giant_clam"
   },
   "giantisopod": {
     "file": "giantisopod.jpg",
@@ -296,6 +366,11 @@ var PHOTOS = {
     "title": "Goblin shark",
     "url": "https://en.wikipedia.org/wiki/Goblin_shark"
   },
+  "goliathbeetle": {
+    "file": "goliathbeetle.jpg",
+    "title": "Goliathus goliatus",
+    "url": "https://en.wikipedia.org/wiki/Goliathus_goliatus"
+  },
   "goliathbirdeater": {
     "file": "goliathbirdeater.jpg",
     "title": "Goliath birdeater",
@@ -331,6 +406,11 @@ var PHOTOS = {
     "title": "Pseudoliparis swirei",
     "url": "https://en.wikipedia.org/wiki/Pseudoliparis_swirei"
   },
+  "hagfish": {
+    "file": "hagfish.jpg",
+    "title": "Pacific hagfish",
+    "url": "https://en.wikipedia.org/wiki/Pacific_hagfish"
+  },
   "hammerhead": {
     "file": "hammerhead.jpg",
     "title": "Hammerhead shark",
@@ -346,6 +426,11 @@ var PHOTOS = {
     "title": "Hedgehog",
     "url": "https://en.wikipedia.org/wiki/Hedgehog"
   },
+  "hissingcockroach": {
+    "file": "hissingcockroach.jpg",
+    "title": "Madagascar hissing cockroach",
+    "url": "https://en.wikipedia.org/wiki/Madagascar_hissing_cockroach"
+  },
   "hornedlizard": {
     "file": "hornedlizard.jpg",
     "title": "Horned lizard",
@@ -355,6 +440,11 @@ var PHOTOS = {
     "file": "hornet.jpg",
     "title": "Hornet",
     "url": "https://en.wikipedia.org/wiki/Hornet"
+  },
+  "horseshoecrab": {
+    "file": "horseshoecrab.jpg",
+    "title": "Horseshoe crab",
+    "url": "https://en.wikipedia.org/wiki/Horseshoe_crab"
   },
   "humpback": {
     "file": "humpback.jpg",
@@ -370,6 +460,11 @@ var PHOTOS = {
     "file": "immortaljelly.jpg",
     "title": "Turritopsis dohrnii",
     "url": "https://en.wikipedia.org/wiki/Turritopsis_dohrnii"
+  },
+  "indri": {
+    "file": "indri.jpg",
+    "title": "Indri",
+    "url": "https://en.wikipedia.org/wiki/Indri"
   },
   "ironclad": {
     "file": "ironclad.jpg",
@@ -391,6 +486,11 @@ var PHOTOS = {
     "title": "Kākāpō",
     "url": "https://en.wikipedia.org/wiki/K%C4%81k%C4%81p%C5%8D"
   },
+  "kangaroorat": {
+    "file": "kangaroorat.jpg",
+    "title": "Kangaroo rat",
+    "url": "https://en.wikipedia.org/wiki/Kangaroo_rat"
+  },
   "kea": {
     "file": "kea.jpg",
     "title": "Kea",
@@ -411,25 +511,55 @@ var PHOTOS = {
     "title": "Komodo dragon",
     "url": "https://en.wikipedia.org/wiki/Komodo_dragon"
   },
+  "ladybug": {
+    "file": "ladybug.jpg",
+    "title": "Coccinellidae",
+    "url": "https://en.wikipedia.org/wiki/Coccinellidae"
+  },
   "lanternfish": {
     "file": "lanternfish.jpg",
     "title": "Lanternfish",
     "url": "https://en.wikipedia.org/wiki/Lanternfish"
+  },
+  "leafinsect": {
+    "file": "leafinsect.jpg",
+    "title": "Pulchriphyllium giganteum",
+    "url": "https://en.wikipedia.org/wiki/Pulchriphyllium_giganteum"
+  },
+  "leaftailedgecko": {
+    "file": "leaftailedgecko.jpg",
+    "title": "Uroplatus",
+    "url": "https://en.wikipedia.org/wiki/Uroplatus"
   },
   "leafyseadragon": {
     "file": "leafyseadragon.jpg",
     "title": "Leafy seadragon",
     "url": "https://en.wikipedia.org/wiki/Leafy_seadragon"
   },
+  "lionfish": {
+    "file": "lionfish.jpg",
+    "title": "Lionfish",
+    "url": "https://en.wikipedia.org/wiki/Lionfish"
+  },
   "lonesomegeorge": {
     "file": "lonesomegeorge.jpg",
     "title": "Lonesome George",
     "url": "https://en.wikipedia.org/wiki/Lonesome_George"
   },
+  "lunamoth": {
+    "file": "lunamoth.jpg",
+    "title": "Luna moth",
+    "url": "https://en.wikipedia.org/wiki/Luna_moth"
+  },
   "maleo": {
     "file": "maleo.jpg",
     "title": "Maleo",
     "url": "https://en.wikipedia.org/wiki/Maleo"
+  },
+  "manowar": {
+    "file": "manowar.jpg",
+    "title": "Portuguese man o' war",
+    "url": "https://en.wikipedia.org/wiki/Portuguese_man_o'_war"
   },
   "mantaray": {
     "file": "mantaray.jpg",
@@ -456,6 +586,11 @@ var PHOTOS = {
     "title": "Marlin",
     "url": "https://en.wikipedia.org/wiki/Marlin"
   },
+  "meerkat": {
+    "file": "meerkat.jpg",
+    "title": "Meerkat",
+    "url": "https://en.wikipedia.org/wiki/Meerkat"
+  },
   "megamouth": {
     "file": "megamouth.jpg",
     "title": "Megamouth shark",
@@ -470,6 +605,21 @@ var PHOTOS = {
     "file": "mole.jpg",
     "title": "Mole (animal)",
     "url": "https://en.wikipedia.org/wiki/Mole_(animal)"
+  },
+  "molecricket": {
+    "file": "molecricket.jpg",
+    "title": "Gryllotalpa gryllotalpa",
+    "url": "https://en.wikipedia.org/wiki/Gryllotalpa_gryllotalpa"
+  },
+  "monarch": {
+    "file": "monarch.jpg",
+    "title": "Monarch butterfly",
+    "url": "https://en.wikipedia.org/wiki/Monarch_butterfly"
+  },
+  "moray": {
+    "file": "moray.jpg",
+    "title": "Moray eel",
+    "url": "https://en.wikipedia.org/wiki/Moray_eel"
   },
   "movilecentipede": {
     "file": "movilecentipede.jpg",
@@ -506,6 +656,11 @@ var PHOTOS = {
     "title": "Olm",
     "url": "https://en.wikipedia.org/wiki/Olm"
   },
+  "orbweaver": {
+    "file": "orbweaver.jpg",
+    "title": "Orb-weaver spider",
+    "url": "https://en.wikipedia.org/wiki/Orb-weaver_spider"
+  },
   "orca": {
     "file": "orca.jpg",
     "title": "Orca",
@@ -526,6 +681,11 @@ var PHOTOS = {
     "title": "Panther chameleon",
     "url": "https://en.wikipedia.org/wiki/Panther_chameleon"
   },
+  "pistolshrimp": {
+    "file": "pistolshrimp.jpg",
+    "title": "Alpheidae",
+    "url": "https://en.wikipedia.org/wiki/Alpheidae"
+  },
   "poisondartfrog": {
     "file": "poisondartfrog.jpg",
     "title": "Poison dart frog",
@@ -535,6 +695,11 @@ var PHOTOS = {
     "file": "pompeiiworm.jpg",
     "title": "Alvinella pompejana",
     "url": "https://en.wikipedia.org/wiki/Alvinella_pompejana"
+  },
+  "prairiedog": {
+    "file": "prairiedog.jpg",
+    "title": "Prairie dog",
+    "url": "https://en.wikipedia.org/wiki/Prairie_dog"
   },
   "pseudoscorpion": {
     "file": "pseudoscorpion.jpg",
@@ -546,6 +711,11 @@ var PHOTOS = {
     "title": "Long-spine porcupinefish",
     "url": "https://en.wikipedia.org/wiki/Long-spine_porcupinefish"
   },
+  "rattlesnake": {
+    "file": "rattlesnake.jpg",
+    "title": "Rattlesnake",
+    "url": "https://en.wikipedia.org/wiki/Rattlesnake"
+  },
   "rhinobeetle": {
     "file": "rhinobeetle.jpg",
     "title": "Hercules beetle",
@@ -556,10 +726,20 @@ var PHOTOS = {
     "title": "Ring-tailed lemur",
     "url": "https://en.wikipedia.org/wiki/Ring-tailed_lemur"
   },
+  "roadrunner": {
+    "file": "roadrunner.jpg",
+    "title": "Greater roadrunner",
+    "url": "https://en.wikipedia.org/wiki/Greater_roadrunner"
+  },
   "rolypoly": {
     "file": "rolypoly.jpg",
     "title": "Armadillidiidae",
     "url": "https://en.wikipedia.org/wiki/Armadillidiidae"
+  },
+  "sawfish": {
+    "file": "sawfish.jpg",
+    "title": "Sawfish",
+    "url": "https://en.wikipedia.org/wiki/Sawfish"
   },
   "scalyfootsnail": {
     "file": "scalyfootsnail.jpg",
@@ -575,6 +755,11 @@ var PHOTOS = {
     "file": "seahorse.jpg",
     "title": "Seahorse",
     "url": "https://en.wikipedia.org/wiki/Seahorse"
+  },
+  "seaotter": {
+    "file": "seaotter.jpg",
+    "title": "Sea otter",
+    "url": "https://en.wikipedia.org/wiki/Sea_otter"
   },
   "seapig": {
     "file": "seapig.jpg",
@@ -636,10 +821,20 @@ var PHOTOS = {
     "title": "Star-nosed mole",
     "url": "https://en.wikipedia.org/wiki/Star-nosed_mole"
   },
+  "stingray": {
+    "file": "stingray.jpg",
+    "title": "Stingray",
+    "url": "https://en.wikipedia.org/wiki/Stingray"
+  },
   "sunfish": {
     "file": "sunfish.jpg",
     "title": "Ocean sunfish",
     "url": "https://en.wikipedia.org/wiki/Ocean_sunfish"
+  },
+  "takahe": {
+    "file": "takahe.jpg",
+    "title": "Takahē",
+    "url": "https://en.wikipedia.org/wiki/Takah%C4%93"
   },
   "tarantula": {
     "file": "tarantula.jpg",
@@ -691,6 +886,11 @@ var PHOTOS = {
     "title": "Thorny devil",
     "url": "https://en.wikipedia.org/wiki/Thorny_devil"
   },
+  "thresher": {
+    "file": "thresher.jpg",
+    "title": "Thresher shark",
+    "url": "https://en.wikipedia.org/wiki/Thresher_shark"
+  },
   "titanbeetle": {
     "file": "titanbeetle.jpg",
     "title": "Titan beetle",
@@ -700,6 +900,11 @@ var PHOTOS = {
     "file": "tomatofrog.jpg",
     "title": "Dyscophus antongilii",
     "url": "https://en.wikipedia.org/wiki/Dyscophus_antongilii"
+  },
+  "trapdoorspider": {
+    "file": "trapdoorspider.jpg",
+    "title": "Cyclocosmia",
+    "url": "https://en.wikipedia.org/wiki/Cyclocosmia"
   },
   "tuatara": {
     "file": "tuatara.jpg",
@@ -726,6 +931,11 @@ var PHOTOS = {
     "title": "Vampire squid",
     "url": "https://en.wikipedia.org/wiki/Vampire_squid"
   },
+  "velvetant": {
+    "file": "velvetant.jpg",
+    "title": "Dasymutilla occidentalis",
+    "url": "https://en.wikipedia.org/wiki/Dasymutilla_occidentalis"
+  },
   "ventshrimp": {
     "file": "ventshrimp.jpg",
     "title": "Rimicaris exoculata",
@@ -750,6 +960,21 @@ var PHOTOS = {
     "file": "whaleshark.jpg",
     "title": "Whale shark",
     "url": "https://en.wikipedia.org/wiki/Whale_shark"
+  },
+  "whipscorpion": {
+    "file": "whipscorpion.jpg",
+    "title": "Thelyphonida",
+    "url": "https://en.wikipedia.org/wiki/Thelyphonida"
+  },
+  "wolfspider": {
+    "file": "wolfspider.jpg",
+    "title": "Wolf spider",
+    "url": "https://en.wikipedia.org/wiki/Wolf_spider"
+  },
+  "wombat": {
+    "file": "wombat.jpg",
+    "title": "Wombat",
+    "url": "https://en.wikipedia.org/wiki/Wombat"
   },
   "yeticrab": {
     "file": "yeticrab.jpg",

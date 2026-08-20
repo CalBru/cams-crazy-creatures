@@ -758,5 +758,230 @@
     "file": "theempress.jpg",
     "title": "Black garden ant",
     "url": "https://en.wikipedia.org/wiki/Black_garden_ant"
+  },
+  "axolotl": {
+    "file": "axolotl.jpg",
+    "title": "Axolotl",
+    "url": "https://en.wikipedia.org/wiki/Axolotl"
+  },
+  "ladybug": {
+    "file": "ladybug.jpg",
+    "title": "Coccinellidae",
+    "url": "https://en.wikipedia.org/wiki/Coccinellidae"
+  },
+  "earwig": {
+    "file": "earwig.jpg",
+    "title": "Earwig",
+    "url": "https://en.wikipedia.org/wiki/Earwig"
+  },
+  "dragonfly": {
+    "file": "dragonfly.jpg",
+    "title": "Dragonfly",
+    "url": "https://en.wikipedia.org/wiki/Dragonfly"
+  },
+  "monarch": {
+    "file": "monarch.jpg",
+    "title": "Monarch butterfly",
+    "url": "https://en.wikipedia.org/wiki/Monarch_butterfly"
+  },
+  "orbweaver": {
+    "file": "orbweaver.jpg",
+    "title": "Orb-weaver spider",
+    "url": "https://en.wikipedia.org/wiki/Orb-weaver_spider"
+  },
+  "firefly": {
+    "file": "firefly.jpg",
+    "title": "Firefly",
+    "url": "https://en.wikipedia.org/wiki/Firefly"
+  },
+  "wolfspider": {
+    "file": "wolfspider.jpg",
+    "title": "Wolf spider",
+    "url": "https://en.wikipedia.org/wiki/Wolf_spider"
+  },
+  "lunamoth": {
+    "file": "lunamoth.jpg",
+    "title": "Luna moth",
+    "url": "https://en.wikipedia.org/wiki/Luna_moth"
+  },
+  "leafinsect": {
+    "file": "leafinsect.jpg",
+    "title": "Pulchriphyllium giganteum",
+    "url": "https://en.wikipedia.org/wiki/Pulchriphyllium_giganteum"
+  },
+  "velvetant": {
+    "file": "velvetant.jpg",
+    "title": "Dasymutilla occidentalis",
+    "url": "https://en.wikipedia.org/wiki/Dasymutilla_occidentalis"
+  },
+  "goliathbeetle": {
+    "file": "goliathbeetle.jpg",
+    "title": "Goliathus goliatus",
+    "url": "https://en.wikipedia.org/wiki/Goliathus_goliatus"
+  },
+  "whipscorpion": {
+    "file": "whipscorpion.jpg",
+    "title": "Thelyphonida",
+    "url": "https://en.wikipedia.org/wiki/Thelyphonida"
+  },
+  "rattlesnake": {
+    "file": "rattlesnake.jpg",
+    "title": "Rattlesnake",
+    "url": "https://en.wikipedia.org/wiki/Rattlesnake"
+  },
+  "roadrunner": {
+    "file": "roadrunner.jpg",
+    "title": "Greater roadrunner",
+    "url": "https://en.wikipedia.org/wiki/Greater_roadrunner"
+  },
+  "kangaroorat": {
+    "file": "kangaroorat.jpg",
+    "title": "Kangaroo rat",
+    "url": "https://en.wikipedia.org/wiki/Kangaroo_rat"
+  },
+  "desertcentipede": {
+    "file": "desertcentipede.jpg",
+    "title": "Scolopendra heros",
+    "url": "https://en.wikipedia.org/wiki/Scolopendra_heros"
+  },
+  "stingray": {
+    "file": "stingray.jpg",
+    "title": "Stingray",
+    "url": "https://en.wikipedia.org/wiki/Stingray"
+  },
+  "flyingfish": {
+    "file": "flyingfish.jpg",
+    "title": "Flying fish",
+    "url": "https://en.wikipedia.org/wiki/Flying_fish"
+  },
+  "giantclam": {
+    "file": "giantclam.jpg",
+    "title": "Giant clam",
+    "url": "https://en.wikipedia.org/wiki/Giant_clam"
+  },
+  "seaotter": {
+    "file": "seaotter.jpg",
+    "title": "Sea otter",
+    "url": "https://en.wikipedia.org/wiki/Sea_otter"
+  },
+  "cuttlefish": {
+    "file": "cuttlefish.jpg",
+    "title": "Cuttlefish",
+    "url": "https://en.wikipedia.org/wiki/Cuttlefish"
+  },
+  "moray": {
+    "file": "moray.jpg",
+    "title": "Moray eel",
+    "url": "https://en.wikipedia.org/wiki/Moray_eel"
+  },
+  "lionfish": {
+    "file": "lionfish.jpg",
+    "title": "Lionfish",
+    "url": "https://en.wikipedia.org/wiki/Lionfish"
+  },
+  "pistolshrimp": {
+    "file": "pistolshrimp.jpg",
+    "title": "Alpheidae",
+    "url": "https://en.wikipedia.org/wiki/Alpheidae"
+  },
+  "horseshoecrab": {
+    "file": "horseshoecrab.jpg",
+    "title": "Horseshoe crab",
+    "url": "https://en.wikipedia.org/wiki/Horseshoe_crab"
+  },
+  "manowar": {
+    "file": "manowar.jpg",
+    "title": "Portuguese man o' war",
+    "url": "https://en.wikipedia.org/wiki/Portuguese_man_o'_war"
+  },
+  "thresher": {
+    "file": "thresher.jpg",
+    "title": "Thresher shark",
+    "url": "https://en.wikipedia.org/wiki/Thresher_shark"
+  },
+  "hagfish": {
+    "file": "hagfish.jpg",
+    "title": "Pacific hagfish",
+    "url": "https://en.wikipedia.org/wiki/Pacific_hagfish"
+  },
+  "cookiecutter": {
+    "file": "cookiecutter.jpg",
+    "title": "Cookiecutter shark",
+    "url": "https://en.wikipedia.org/wiki/Cookiecutter_shark"
+  },
+  "sawfish": {
+    "file": "sawfish.jpg",
+    "title": "Sawfish",
+    "url": "https://en.wikipedia.org/wiki/Sawfish"
+  },
+  "beluga": {
+    "file": "beluga.jpg",
+    "title": "Beluga whale",
+    "url": "https://en.wikipedia.org/wiki/Beluga_whale"
+  },
+  "coconutcrab": {
+    "file": "coconutcrab.jpg",
+    "title": "Coconut crab",
+    "url": "https://en.wikipedia.org/wiki/Coconut_crab"
+  },
+  "leaftailedgecko": {
+    "file": "leaftailedgecko.jpg",
+    "title": "Uroplatus",
+    "url": "https://en.wikipedia.org/wiki/Uroplatus"
+  },
+  "indri": {
+    "file": "indri.jpg",
+    "title": "Indri",
+    "url": "https://en.wikipedia.org/wiki/Indri"
+  },
+  "hissingcockroach": {
+    "file": "hissingcockroach.jpg",
+    "title": "Madagascar hissing cockroach",
+    "url": "https://en.wikipedia.org/wiki/Madagascar_hissing_cockroach"
+  },
+  "takahe": {
+    "file": "takahe.jpg",
+    "title": "Takahē",
+    "url": "https://en.wikipedia.org/wiki/Takah%C4%93"
+  },
+  "galapagossealion": {
+    "file": "galapagossealion.jpg",
+    "title": "Galápagos sea lion",
+    "url": "https://en.wikipedia.org/wiki/Gal%C3%A1pagos_sea_lion"
+  },
+  "wombat": {
+    "file": "wombat.jpg",
+    "title": "Wombat",
+    "url": "https://en.wikipedia.org/wiki/Wombat"
+  },
+  "meerkat": {
+    "file": "meerkat.jpg",
+    "title": "Meerkat",
+    "url": "https://en.wikipedia.org/wiki/Meerkat"
+  },
+  "prairiedog": {
+    "file": "prairiedog.jpg",
+    "title": "Prairie dog",
+    "url": "https://en.wikipedia.org/wiki/Prairie_dog"
+  },
+  "armadillo": {
+    "file": "armadillo.jpg",
+    "title": "Armadillo",
+    "url": "https://en.wikipedia.org/wiki/Armadillo"
+  },
+  "aardvark": {
+    "file": "aardvark.jpg",
+    "title": "Aardvark",
+    "url": "https://en.wikipedia.org/wiki/Aardvark"
+  },
+  "molecricket": {
+    "file": "molecricket.jpg",
+    "title": "Gryllotalpa gryllotalpa",
+    "url": "https://en.wikipedia.org/wiki/Gryllotalpa_gryllotalpa"
+  },
+  "trapdoorspider": {
+    "file": "trapdoorspider.jpg",
+    "title": "Cyclocosmia",
+    "url": "https://en.wikipedia.org/wiki/Cyclocosmia"
   }
 }
