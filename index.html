@@ -324,6 +324,7 @@
   .whoCard .kidName { font-size: 28px; font-weight: bold; color: #ffe680; margin: 2px 0 8px; }
   .whoCard .kidPerkTitle { font-size: 17px; font-weight: bold; color: #80ed99; }
   .whoCard .kidPerk { font-size: 14px; line-height: 1.35; color: #cfe6ff; margin-top: 4px; }
+  .whoCard .kidBook { font-size: 14px; color: #ffe680; margin-top: 8px; }
   .whoCard .youAre { font-size: 14px; color: #80ed99; margin-top: 8px; min-height: 18px; }
 
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
@@ -347,7 +348,8 @@
 <!-- ============ WHO'S EXPLORING ============ -->
 <div id="who" class="screen">
   <h2>Who is exploring today?</h2>
-  <p class="sub">Everybody shares the same creature book — swapping never loses anything you found.</p>
+  <p class="sub">Everybody keeps their own book and their own bucket. Points, gear and traps are shared,
+    so nobody starts out stuck in the shallow water.</p>
   <div class="whoPicker" id="whoPicker"></div>
 </div>
 
@@ -532,7 +534,7 @@ const CHARACTERS = {
     shirt: "#8fc0e0", shirtL: "#a9d3ee", shorts: "#e4dcc2", shoes: "#efe8dc",
     freckles: false, shirtArt: "dragon",
     perkTitle: "🦎 REPTILE KEEPER",
-    perk: "Carter keeps a real bearded dragon called Jack. Every reptile is worth DOUBLE points for him — and Jack only shows up when Carter is the one exploring.",
+    perk: "Carter keeps a real bearded dragon called Jack — and Jack is in the game, out in the desert, for anybody to find. Every reptile is worth DOUBLE points for Carter.",
     loves: { re: /lizard|snake|gecko|dragon|iguana|tortoise|turtle|croc|viper|cobra|python|skink|chameleon|tuatara|monitor|adder|mamba|anole|caiman|gharial|boa/i,
              label: "🦎 CARTER'S KIND OF ANIMAL!", mult: 2 }
   },
@@ -550,26 +552,54 @@ const CHARACTERS = {
 };
 const CHAR_ORDER = ["cam", "reece", "carter", "campbell"];
 function me() { return CHARACTERS[state.who] || CHARACTERS.cam; }
-let state = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
-              bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0, who: null };
+/* ============================================================
+   EVERY KID HAS THEIR OWN BOOK
+   What you have discovered, how many times, what's in your bucket and how
+   deep you have ever been belong to whoever found them. Points, gear,
+   traps and animals added with ➕ Add are shared by everybody, so the
+   little ones aren't locked out of the deep water.
+
+   state.found / state.counts / state.bucket / state.deepest are windows
+   onto the book of whoever is exploring — the rest of the game reads them
+   exactly as it always did.
+   ============================================================ */
+const BOOK_FIELDS = ["found", "counts", "bucket", "deepest"];
+function blankBook() { return { found: [], counts: {}, bucket: [], deepest: 0 }; }
+function bookOf(st, who) {
+  st.books = st.books || {};
+  if (!st.books[who]) st.books[who] = blankBook();
+  return st.books[who];
+}
+function installBookViews(st) {
+  BOOK_FIELDS.forEach(f => {
+    Object.defineProperty(st, f, {
+      configurable: true, enumerable: true,
+      get() { return bookOf(st, st.who || "cam")[f]; },
+      set(v) { bookOf(st, st.who || "cam")[f] = v; }
+    });
+  });
+  return st;
+}
+function myBook() { return bookOf(state, state.who || "cam"); }
+function bookCount(who) { return ((state.books || {})[who] || blankBook()).found.length; }
+
+let state = installBookViews({ score: 0, magic: 1, traps: Object.assign({}, DEFAULT_TRAPS),
+              mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {} });
 
 function mergeInto(target, data) {
   if (!data || typeof data !== "object") return target;
   target.score = Math.max(target.score || 0, Number(data.score) || 0);
   target.magic = Math.max(target.magic || 0, Number(data.magic) || 0);
-  target.deepest = Math.max(target.deepest || 0, Number(data.deepest) || 0);
-  const set = new Set(target.found || []);
-  (Array.isArray(data.found) ? data.found : []).forEach(id => set.add(id));
-  target.found = [...set];
+  /* Saves from before there were separate books hold one book at the top
+     level, and that book was Cam's. Newer saves hold state.books. The
+     top-level copy in a newer save is only a mirror, so it is ignored. */
+  target.books = target.books || {};
+  if (data.books && typeof data.books === "object") {
+    Object.keys(data.books).forEach(who => mergeBook(bookOf(target, who), data.books[who]));
+  } else {
+    mergeBook(bookOf(target, "cam"), data);
+  }
 
-  /* how many times he's caught each one — keep the bigger number */
-  target.counts = target.counts || {};
-  const incoming = (data.counts && typeof data.counts === "object") ? data.counts : {};
-  Object.keys(incoming).forEach(id => {
-    target.counts[id] = Math.max(target.counts[id] || 0, Number(incoming[id]) || 0);
-  });
-  /* an older save with no counts still means he found each one at least once */
-  target.found.forEach(id => { if (!target.counts[id]) target.counts[id] = 1; });
   /* traps: keep the bigger count of each kind */
   target.traps = target.traps || Object.assign({}, DEFAULT_TRAPS);
   Object.keys(DEFAULT_TRAPS).forEach(k => {
@@ -584,11 +614,6 @@ function mergeInto(target, data) {
     else if ((m.facts || []).length > (have.facts || []).length) have.facts = m.facts;
   });
 
-  /* bucket: keep whichever save had more in it */
-  const incomingBucket = Array.isArray(data.bucket) ? data.bucket : [];
-  if (incomingBucket.length > (target.bucket || []).length) target.bucket = incomingBucket.slice(0, BUCKET_SIZE);
-  target.bucket = target.bucket || [];
-
   /* whoever was picked last is who we start as next time */
   if (data.who && CHARACTERS[data.who]) target.who = data.who;
 
@@ -599,15 +624,40 @@ function mergeInto(target, data) {
   return target;
 }
 
+/* One kid's book, merged. This is the part that must never lose anything. */
+function mergeBook(book, data) {
+  if (!data || typeof data !== "object") return book;
+  const set = new Set(book.found || []);
+  (Array.isArray(data.found) ? data.found : []).forEach(id => set.add(id));
+  book.found = [...set];
+
+  /* how many times they caught each one — keep the bigger number */
+  book.counts = book.counts || {};
+  const incoming = (data.counts && typeof data.counts === "object") ? data.counts : {};
+  Object.keys(incoming).forEach(id => {
+    book.counts[id] = Math.max(book.counts[id] || 0, Number(incoming[id]) || 0);
+  });
+  /* an older save with no counts still means they found each one at least once */
+  book.found.forEach(id => { if (!book.counts[id]) book.counts[id] = 1; });
+
+  /* bucket: keep whichever save had more in it */
+  const incomingBucket = Array.isArray(data.bucket) ? data.bucket : [];
+  if (incomingBucket.length > (book.bucket || []).length) book.bucket = incomingBucket.slice(0, BUCKET_SIZE);
+  book.bucket = book.bucket || [];
+
+  book.deepest = Math.max(book.deepest || 0, Number(data.deepest) || 0);
+  return book;
+}
+
 function load() {
-  const merged = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
-                   bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0, who: null };
+  const merged = { score: 0, magic: 1, traps: Object.assign({}, DEFAULT_TRAPS),
+                   mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {} };
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k || k.toLowerCase().indexOf("camscrazycreatures") !== 0) continue;
     try { mergeInto(merged, JSON.parse(localStorage.getItem(k))); } catch (e) {}
   }
-  state = merged;
+  state = installBookViews(merged);
   save();
 }
 
@@ -1310,11 +1360,11 @@ function catchWith(trap, where, zone, promised) {
     let pool = unseen(inZone(where, zone.n, false).concat(inZone(where, zone.n, true)));
     let from = null;
     if (!pool.length) {
-      pool = unseen(CREATURES.filter(c => c.where === where && mineToFind(c)));
+      pool = unseen(CREATURES.filter(c => c.where === where));
       from = "somewhere else in the " + PLACES[where].name.toLowerCase();
     }
     if (!pool.length) {
-      pool = unseen(CREATURES.filter(mineToFind));
+      pool = unseen(CREATURES);
       from = "the other side of the world";
     }
     if (!pool.length) {
@@ -1335,7 +1385,7 @@ function catchWith(trap, where, zone, promised) {
 
   if (trap === "mystery") {
     /* anywhere in the world, including places he can't reach yet */
-    const pool = CREATURES.filter(c => !c.breaksTrap && mineToFind(c));
+    const pool = CREATURES.filter(c => !c.breaksTrap);
     const c = pick(pool);
     const zoneName = ZONES[c.where][c.zones[0] - 1].name;
     return { c: c, trap: trap, from: PLACES[c.where].name + " — " + zoneName,
@@ -1356,12 +1406,8 @@ const RARE_HUNT_WEIGHTS = { common: 0, uncommon: 1, rare: 8, epic: 26, legendary
 
 function inZone(where, zoneNum, magicOnly) {
   return CREATURES.filter(c =>
-    c.where === where && c.zones.indexOf(zoneNum) !== -1 && (magicOnly ? c.magicOnly : !c.magicOnly) &&
-    mineToFind(c));
+    c.where === where && c.zones.indexOf(zoneNum) !== -1 && (magicOnly ? c.magicOnly : !c.magicOnly));
 }
-
-/* Jack is Carter's own bearded dragon, so he only turns up for Carter. */
-function mineToFind(c) { return !c.onlyFor || c.onlyFor === state.who; }
 
 /* Is there anything here that actually needs the magic trap? */
 function hasGiants(where, zoneNum) { return inZone(where, zoneNum, true).length > 0; }
@@ -2740,7 +2786,7 @@ function fillCard(c, opts) {
     ? "<br>🪄 A crab! Cam gets TWO magic traps!"
     : "<br>🪄 A crab! You earned a MAGIC TRAP!";
   if (opts.fav) line += '<br><span style="color:#b06a00"><b>' + opts.fav.label + "</b></span>";
-  if (c.isPet) line += "<br><b>🦎 This is a real pet. Carter feeds him.</b>";
+  if (c.isPet) line += "<br><b>🦎 This is a real pet. He lives at Carter's house.</b>";
   if (c.mine) {
     line += '<br><span style="color:#0b7a5a"><b>You added this one to the game' +
             (c.kind ? " — " + c.kind : "") + ".</b></span>";
@@ -2971,6 +3017,14 @@ function buildWhoPicker() {
     const pk = document.createElement("div");
     pk.className = "kidPerk"; pk.textContent = ch.perk;
     card.appendChild(pk);
+    const bk = document.createElement("div");
+    bk.className = "kidBook";
+    const n = bookCount(id);
+    bk.textContent = n
+      ? "📖 " + n + " of " + CREATURES.length + " creatures found"
+      : "📖 A brand new book";
+    card.appendChild(bk);
+
     const you = document.createElement("div");
     you.className = "youAre";
     you.textContent = state.who === id ? "✅ This is you right now" : "";
@@ -2985,6 +3039,7 @@ function showWho() { buildWhoPicker(); show("who"); }
 function pickWho(id) {
   if (!CHARACTERS[id]) return;
   state.who = id;
+  bookOf(state, id);              /* first time out, start them a book */
   save();
   playFanfare();
   refresh();
@@ -3175,7 +3230,7 @@ function showBook() {
   });
 
   document.getElementById("bookCount").textContent =
-    "You have discovered " + state.found.length + " of " + CREATURES.length + " creatures!";
+    me().label + " has discovered " + state.found.length + " of " + CREATURES.length + " creatures!";
   labelBackButtons();
   show("book");
 }
@@ -3837,9 +3892,12 @@ function removeMine(id) {
   state.mine = state.mine.filter(x => x.id !== id);
   const i = CREATURES.findIndex(c => c.id === id);
   if (i > -1) CREATURES.splice(i, 1);
-  state.found = state.found.filter(f => f !== id);
-  state.bucket = state.bucket.filter(b => b !== id);
-  delete state.counts[id];
+  Object.keys(state.books || {}).forEach(who => {
+    const b = state.books[who];
+    b.found = b.found.filter(f => f !== id);
+    b.bucket = b.bucket.filter(x => x !== id);
+    delete b.counts[id];
+  });
   save();
   buildMyList();
   refresh();

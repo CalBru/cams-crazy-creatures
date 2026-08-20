@@ -14,17 +14,28 @@ them in the game, so the picture on the card is exactly who shows up in the wate
 |---|---|
 | **Cam** | 🪄 Magic Trap Master — every crab hands him **two** magic traps |
 | **Reece** | 🐙 Octopus Lover — octopuses, squid, cuttlefish and nautiluses pay **double** |
-| **Carter** | 🦎 Reptile Keeper — every reptile pays **double**, and **Jack** only appears for him |
+| **Carter** | 🦎 Reptile Keeper — every reptile pays **double**, and **Jack** is his real pet |
 | **Campbell** | 🩷 Axolotl Friend — axolotls, salamanders, newts and the olm pay **double** |
 
 **Jack is real.** He is Carter's bearded dragon, the photo in `images/jack.jpg` is Jack
-himself, and he waits in The Desert for whenever Carter goes looking. A creature with an
-`onlyFor` field belongs to one kid: `mineToFind()` filters it out of every pool — ordinary
-catches, the magic trap, the rainbow trap and the mystery trap alike — for everybody else.
+himself, and he is out in The Desert as a legendary for anybody to find.
 
-Everyone shares one creature book. Swapping who is exploring never touches what anybody
-has already found, and the game remembers who went last. Every kid is on the shared link,
-so anybody who opens it can pick any of them.
+**Every kid keeps their own book.** What you have discovered, how many times, what's in
+your bucket and how deep you have ever been belong to whoever found them — `state.books`
+holds one book per kid, and `state.found` / `state.counts` / `state.bucket` /
+`state.deepest` are windows onto the book of whoever is exploring, so the rest of the game
+reads them exactly as it always did. Points, gear, traps and animals added with ➕ Add are
+shared, so a three-year-old picking Reece isn't stuck in the shallow water while Cam has
+the Volcano Suit.
+
+**No creature belongs to one kid.** Anybody can find anything, Jack included — a favourite
+animal pays double, it is never a lock. The pick screen shows how far along each book is,
+and the game remembers who went last. Every kid is on the shared link, so anybody who
+opens it can pick any of them.
+
+Saves from before books existed hold one book at the top level, and that book was Cam's —
+`mergeInto()` migrates it into `books.cam` and ignores the top-level mirror that newer
+saves keep for older copies of the game.
 
 Adding another kid means adding an entry to `CHARACTERS` in index.html: a name, a few
 colours, a hair style (`swoosh`/`sweep`/`crop`/`bob`), and optionally `dress: true`, a

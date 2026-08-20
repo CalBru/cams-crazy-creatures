@@ -121,13 +121,15 @@ are blind, pale, and strange, which is a good pairing with the island idea.
         ring in the water, because he's little.
       - **Carter** — REPTILE KEEPER. Every reptile is worth double for him, he wears his
         bearded dragon on his shirt, and **Jack** — his real bearded dragon, with his real
-        photo in `images/jack.jpg` — only appears in the desert when Carter is exploring.
+        photo in `images/jack.jpg` — is a legendary out in the desert for anybody to find.
       - **Campbell** — AXOLOTL FRIEND. Axolotls, salamanders, newts and the olm are worth
         double for her. The axolotl is legendary and lives in the Crystal Caverns, so her
         favourite animal is a reason to buy the Shovel and dig.
 
-      Everyone shares one creature book. Swapping who is exploring never touches anything
-      anybody has already found, and the game remembers who went last.
+      Every kid keeps their own book, their own bucket and their own deepest dive. Points,
+      gear, traps and animals added with ➕ Add are shared, so nobody starts out stuck in
+      the shallow water. No creature belongs to one kid — a favourite animal pays double,
+      it is never a lock. Old saves from before books existed become Cam's book.
 
 - [ ] **More characters.** The roster is `CHARACTERS` in index.html — a name, a few
       colours, a hair style (`swoosh`/`sweep`/`crop`/`bob`), optionally `dress: true`, and

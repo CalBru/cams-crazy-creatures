@@ -555,9 +555,9 @@ const CREATURES = [
     facts:["I'm as long as a grown-up's forearm, with a black head and red legs.","I have a pair of legs on every body ring, and they ripple like a wave.","My front legs are venom claws, not really legs at all.","I hunt at night and I can catch a lizard."] },
 
   /* Jack is real. He is Carter's bearded dragon and he lives in a tank with
-     an AREA 51 sign in it. Only Carter can find him in the game. */
+     an AREA 51 sign in it. Anybody can find him; he's worth double to Carter. */
   { id:"jack", name:"Jack the Bearded Dragon", emoji:"🦎", where:"land", zones:[3], tier:"legendary",
-    onlyFor:"carter", isPet:true,
+    isPet:true,
     facts:["I'm Carter's bearded dragon, and my name is Jack.","When I'm cross I puff out my beard and it turns BLACK.","I wave one arm slowly at other lizards. It means 'I see you, I'm not fighting.'","My family comes from the hot deserts in the middle of Australia.","I eat crickets, and greens, and I sit on Carter's shoulder.","I can look at two different things at once, with one eye each."] },
 
   { id:"stingray", name:"Stingray", emoji:"🐟", where:"ocean", zones:[1], tier:"uncommon",
