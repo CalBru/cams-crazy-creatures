@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Cam's Crazy Creatures</title>
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; }
+  html, body { height: 100%; overscroll-behavior: none; }
   body {
     margin: 0;
     font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", sans-serif;
@@ -206,6 +206,21 @@
   .big-back.bottom { position: static; display: inline-block; margin: 6px auto 30px; }
   #shop, #book { position: relative; padding-top: 62px; }
 
+  /* a finger needs somewhere to press for the SPACE action */
+  #catchBtn {
+    position: absolute; right: 18px; bottom: 74px;
+    font-size: 26px; padding: 20px 30px; border-radius: 22px;
+    background: #ffb703; border-color: #d68f00; box-shadow: 0 6px 0 #9c6800;
+    color: #2b2000; z-index: 6;
+  }
+  #catchBtn:active { transform: translateY(5px); box-shadow: 0 1px 0 #9c6800; }
+  #catchBtn.ready { animation: catchPulse .9s infinite; }
+  @keyframes catchPulse { 50% { transform: scale(1.07); } }
+  @media (prefers-reduced-motion: reduce) { #catchBtn.ready { animation: none; } }
+
+  /* the canvas must not scroll or zoom under a finger */
+  #game { touch-action: none; }
+
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
 </style>
 </head>
@@ -254,7 +269,9 @@
   <canvas id="game"></canvas>
   <div id="controls">
     <button class="btn purple" id="magicBtn" onclick="armMagic()">🪄 Magic</button>
+    <button class="btn gray" id="ladderBtn" onclick="climbOut()" style="display:none">🪜 Climb out</button>
   </div>
+  <button class="btn catch" id="catchBtn" onclick="pressSpace()">CATCH!</button>
   <div id="zoneBanner"></div>
   <div id="flash"></div>
   <div id="hint"></div>
@@ -538,6 +555,7 @@ function startWorld(kind) {
     zone: 1, lastZone: 0,
     spots: [], deco: [], fish: [], bubbles: [], pops: [], sparks: [], shadows: [],
     reveal: null, wanderer: null, nextWander: 420,
+    pendingOpen: null, pendingUntil: 0,
     blocked: 0,
     player: { x: 300, y: vert ? (kind === "underground" ? 200 : 220) : H - 172, vx: 0, vy: 0, face: 1, kick: 0, onGround: false },
     target: null
@@ -694,17 +712,67 @@ addEventListener("keydown", e => {
 });
 addEventListener("keyup", e => { keys[e.key.toLowerCase()] = false; });
 
+/* ============================================================
+   TOUCH (iPad) — no keyboard, so everything has to work by finger:
+     • drag anywhere to steer him, like a joystick
+     • tap a trap/rock/nest/pool and he walks or swims over and opens it
+     • the big CATCH button does what the SPACE bar does
+   ============================================================ */
+let dragging = false;
+
+function worldPoint(e) {
+  const r = cv.getBoundingClientRect();
+  return { x: e.clientX - r.left + world.cam.x, y: e.clientY - r.top + world.cam.y };
+}
+
+/* the spot he tapped, if he tapped near one */
+function spotAt(pt) {
+  let best = null, bestD = 1e9;
+  world.spots.forEach(sp => {
+    if (sp.opened) return;
+    const d = Math.hypot(sp.x - pt.x, sp.y - pt.y);
+    if (d < bestD) { bestD = d; best = sp; }
+  });
+  return bestD < 80 ? best : null;
+}
+
 cv.addEventListener("pointerdown", e => {
   if (!world || frozen()) return;
-  const r = cv.getBoundingClientRect();
-  const wx = e.clientX - r.left + world.cam.x;
-  const wy = e.clientY - r.top + world.cam.y;
+  cv.setPointerCapture && cv.setPointerCapture(e.pointerId);
+  dragging = true;
+  const pt = worldPoint(e);
 
-  if (world.wanderer && Math.hypot(wx - world.wanderer.x, wy - world.wanderer.y) < 150) { pressSpace(); return; }
-  const s = nearestSpot();
-  if (s && Math.hypot(wx - s.x, wy - s.y) < 80) { pressSpace(); return; }
-  world.target = { x: wx, y: wy };
+  /* tapped the big roaming creature? grab it */
+  if (world.wanderer && Math.hypot(pt.x - world.wanderer.x, pt.y - world.wanderer.y) < 150) {
+    pressSpace();
+    return;
+  }
+
+  const tapped = spotAt(pt);
+  if (tapped) {
+    const near = nearestSpot();
+    if (near === tapped) { pressSpace(); return; }   /* already there — open it */
+    /* otherwise head over and open it when he arrives */
+    world.target = { x: tapped.x, y: tapped.y };
+    world.pendingOpen = tapped;
+    world.pendingUntil = world.t + 900;
+    return;
+  }
+
+  world.pendingOpen = null;
+  world.target = pt;
 });
+
+cv.addEventListener("pointermove", e => {
+  if (!dragging || !world || frozen()) return;
+  world.pendingOpen = null;          /* he's steering by hand now */
+  world.target = worldPoint(e);
+});
+
+function endDrag() { dragging = false; }
+cv.addEventListener("pointerup", endDrag);
+cv.addEventListener("pointercancel", endDrag);
+cv.addEventListener("pointerleave", endDrag);
 
 function overlayOpen() { return document.getElementById("overlay").classList.contains("show"); }
 function frozen() { return overlayOpen() || (world && world.reveal); }
@@ -769,6 +837,12 @@ function update() {
   }
 
   if (world.blocked > 0) world.blocked--;
+
+  /* he tapped something far away — open it as soon as he reaches it */
+  if (world.pendingOpen && !frozen()) {
+    if (world.pendingOpen.opened || world.t > world.pendingUntil) world.pendingOpen = null;
+    else if (nearestSpot() === world.pendingOpen) { world.pendingOpen = null; pressSpace(); }
+  }
 
   /* zone change */
   const z = currentZone();
@@ -2250,6 +2324,19 @@ function updateHint() {
     island: "⛵ Head RIGHT to the next island — each one has animals found nowhere else!",
     underground: "⛏️ Dig DOWN — everything down there is blind and pale and strange."
   };
+
+  /* the CATCH button glows when he's standing at something */
+  const catchBtn = document.getElementById("catchBtn");
+  if (catchBtn) {
+    const grabbable = !!near || (world.wanderer &&
+      Math.hypot(world.wanderer.x - world.player.x, world.wanderer.y - world.player.y) < 160);
+    catchBtn.classList.toggle("ready", !!grabbable && !world.reveal);
+    catchBtn.style.opacity = grabbable ? "1" : ".72";   /* always visible, brighter when there's something to grab */
+  }
+  const ladderBtn = document.getElementById("ladderBtn");
+  if (ladderBtn) {
+    ladderBtn.style.display = (state.gear.ladder && world.kind === "underground") ? "" : "none";
+  }
 
   if (world.reveal) {
     h.textContent = "Ohhh what is it?!";
