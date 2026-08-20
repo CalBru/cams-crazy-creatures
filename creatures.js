@@ -12,13 +12,13 @@
 const CREATURES = [
 
   /* ================= OCEAN — ZONE 1: THE SUNLIGHT ZONE ================= */
-  { id:"starfish", name:"Starfish", emoji:"⭐", where:"ocean", zones:[1], tier:"common",
+  { id:"starfish", name:"Starfish", emoji:"⭐", where:"ocean", zones:[1], tier:"common", tiny:true,
     facts:["If I lose an arm, I grow a whole new one.","I have no brain and no blood.","My stomach comes OUT of my body to eat!","I have a tiny eye on the end of every arm."] },
 
-  { id:"urchin", name:"Sea Urchin", emoji:"🟣", where:"ocean", zones:[1], tier:"common",
+  { id:"urchin", name:"Sea Urchin", emoji:"🟣", where:"ocean", zones:[1], tier:"common", tiny:true,
     facts:["I'm a ball of spikes that walks on hundreds of tiny tube feet.","My mouth is on my bottom and it has five teeth.","Some of my family live to be 200 years old!"] },
 
-  { id:"clownfish", name:"Clownfish", emoji:"🐠", where:"ocean", zones:[1], tier:"common",
+  { id:"clownfish", name:"Clownfish", emoji:"🐠", where:"ocean", zones:[1], tier:"common", tiny:true,
     facts:["I live inside a stinging anemone, but it never stings me.","A slimy coat protects me like a raincoat.","I never swim very far from my home."] },
 
   { id:"crab", name:"Crab", emoji:"🦀", where:"ocean", zones:[1,2], tier:"uncommon", givesMagic:true,
@@ -30,7 +30,7 @@ const CREATURES = [
   { id:"pufferfish", name:"Puffer Fish", emoji:"🐡", where:"ocean", zones:[1], tier:"uncommon",
     facts:["I blow up like a spiky balloon when I'm scared.","I gulp water super fast to puff up big.","I draw beautiful circle patterns in the sand with my fins."] },
 
-  { id:"seahorse", name:"Seahorse", emoji:"🐴", where:"ocean", zones:[1], tier:"uncommon",
+  { id:"seahorse", name:"Seahorse", emoji:"🐴", where:"ocean", zones:[1], tier:"uncommon", tiny:true,
     facts:["The DADS have the babies, not the moms!","I hold onto seaweed with my tail so I don't float away.","I'm the slowest fish in the whole ocean."] },
 
   { id:"barracuda", name:"Barracuda", emoji:"🐟", where:"ocean", zones:[1,2], tier:"uncommon",
@@ -60,17 +60,17 @@ const CREATURES = [
   { id:"marlin", name:"Marlin", emoji:"🐠", where:"ocean", zones:[1,2], tier:"epic",
     facts:["I have a long pointy sword on my face!","I'm the fastest fish in the ocean.","I flash bright glowing stripes when I get excited.","I'm as long as a canoe."] },
 
-  { id:"mantisshrimp", name:"Mantis Shrimp", emoji:"🦐", where:"ocean", zones:[1], tier:"epic",
+  { id:"mantisshrimp", name:"Mantis Shrimp", emoji:"🦐", where:"ocean", zones:[1], tier:"epic", tiny:true,
     facts:["I punch as fast as a bullet — my punch boils the water!","I can break aquarium glass with one hit.","I see 12 to 16 colors. You only see 3.","I'm only the size of your hand."] },
 
   { id:"leafyseadragon", name:"Leafy Sea Dragon", emoji:"🐉", where:"ocean", zones:[1], tier:"epic",
     facts:["I look exactly like floating seaweed, but I'm a fish!","My leafy bits aren't fins — they're just for hiding.","I have no teeth and no stomach, so I eat all day long."] },
 
-  { id:"bluedragon", name:"Blue Dragon", emoji:"🐉", where:"ocean", zones:[1], tier:"legendary",
+  { id:"bluedragon", name:"Blue Dragon", emoji:"🐉", where:"ocean", zones:[1], tier:"legendary", tiny:true,
     facts:["I'm a tiny sea slug that floats upside down at the top of the sea.","I look like a beautiful little blue dragon.","I steal stingers from jellyfish and use them myself!","I'm only as long as your thumb."] },
 
   /* ================= OCEAN — ZONE 2: THE TWILIGHT ZONE ================= */
-  { id:"lanternfish", name:"Lanternfish", emoji:"🐟", where:"ocean", zones:[2,3], tier:"common",
+  { id:"lanternfish", name:"Lanternfish", emoji:"🐟", where:"ocean", zones:[2,3], tier:"common", tiny:true,
     facts:["I have rows of glowing lights along my belly.","There are more of me than almost any other fish on Earth.","Every night I swim way up to eat, then back down at sunrise."] },
 
   { id:"nautilus", name:"Nautilus", emoji:"🐚", where:"ocean", zones:[2,3], tier:"rare",
@@ -106,7 +106,7 @@ const CREATURES = [
   { id:"yeticrab", name:"Yeti Crab", emoji:"🦀", where:"ocean", zones:[3,4], tier:"epic",
     facts:["My arms are covered in furry hair.","I grow my own food ON my hairy arms and then eat it.","I live next to super-hot volcano vents at the bottom of the sea."] },
 
-  { id:"immortaljelly", name:"Immortal Jellyfish", emoji:"🪼", where:"ocean", zones:[2,3], tier:"legendary",
+  { id:"immortaljelly", name:"Immortal Jellyfish", emoji:"🪼", where:"ocean", zones:[2,3], tier:"legendary", tiny:true,
     facts:["When I get old or hurt, I turn back into a baby and grow up again.","Scientists think I might never have to die.","I'm smaller than your pinky fingernail."] },
 
   /* ================= OCEAN — ZONE 3 & 4: MIDNIGHT + THE TRENCH ================= */
@@ -152,7 +152,7 @@ const CREATURES = [
 
   /* ================= OCEAN — ZONE 5: THE HADAL ZONE =================
      Needs the Deep Suit. Nothing up above looks like these. */
-  { id:"hatchetfish", name:"Hatchetfish", emoji:"🐟", where:"ocean", zones:[5], tier:"rare",
+  { id:"hatchetfish", name:"Hatchetfish", emoji:"🐟", where:"ocean", zones:[5], tier:"rare", tiny:true,
     facts:["My body is flat and shiny like a silver axe.","I have lights on my belly so I disappear against the water above me.","My eyes point straight up, watching for dinner."] },
 
   { id:"giantamphipod", name:"Giant Amphipod", emoji:"🦐", where:"ocean", zones:[5], tier:"rare",
@@ -164,7 +164,7 @@ const CREATURES = [
   { id:"glasssquid", name:"Glass Squid", emoji:"🦑", where:"ocean", zones:[5], tier:"rare",
     facts:["My whole body is completely see-through except my eyeballs.","I swallow water to puff up into a ball when I'm scared.","I have little lights under my eyes to hide my own shadow."] },
 
-  { id:"barreleye", name:"Barreleye Fish", emoji:"🐟", where:"ocean", zones:[5], tier:"epic",
+  { id:"barreleye", name:"Barreleye Fish", emoji:"🐟", where:"ocean", zones:[5], tier:"epic", tiny:true,
     facts:["My HEAD IS SEE-THROUGH — you can watch my eyeballs move inside it!","The two dots on my face aren't eyes. They're my nose.","My real eyes are the green barrels inside my head, and they rotate to look up.","Nobody knew my head was see-through until 2009, because it pops when you pull me up."] },
 
   { id:"dragonfish", name:"Deep Sea Dragonfish", emoji:"🐉", where:"ocean", zones:[5], tier:"epic",
@@ -173,7 +173,7 @@ const CREATURES = [
   { id:"ghostshark", name:"Ghost Shark", emoji:"🦈", where:"ocean", zones:[5], tier:"epic",
     facts:["I'm not really a shark — my family split off 400 million years ago.","My skeleton is made of bendy stuff instead of bone.","The boys have a spiky club on their FOREHEAD.","I feel the tiny sparks of electricity that other animals make."] },
 
-  { id:"combjelly", name:"Comb Jelly", emoji:"🪼", where:"ocean", zones:[5], tier:"epic",
+  { id:"combjelly", name:"Comb Jelly", emoji:"🪼", where:"ocean", zones:[5], tier:"epic", tiny:true,
     facts:["Rainbow lights ripple down my sides when I swim, like a tiny light show.","I'm not a jellyfish at all, and I can't sting you.","I swim using eight rows of tiny hairs called combs.","Comb jellies might be the oldest animals on the whole planet."] },
 
   { id:"hadalsnailfish", name:"Hadal Snailfish", emoji:"🐟", where:"ocean", zones:[5], tier:"legendary",
@@ -181,22 +181,22 @@ const CREATURES = [
 
   /* ================= OCEAN — ZONE 6: THE VOLCANO VENTS =================
      Needs the Volcano Suit. Boiling water, total darkness, no sunlight ever. */
-  { id:"zombieworm", name:"Zombie Worm", emoji:"🪱", where:"ocean", zones:[6], tier:"rare",
+  { id:"zombieworm", name:"Zombie Worm", emoji:"🪱", where:"ocean", zones:[6], tier:"rare", tiny:true,
     facts:["I eat the BONES of dead whales.","I have no mouth and no stomach at all.","I drill into bone using acid I make myself.","My name really means 'bone-eating snot flower.'"] },
 
-  { id:"ventshrimp", name:"Vent Shrimp", emoji:"🦐", where:"ocean", zones:[6], tier:"rare",
+  { id:"ventshrimp", name:"Vent Shrimp", emoji:"🦐", where:"ocean", zones:[6], tier:"rare", tiny:true,
     facts:["I swarm the boiling volcano chimneys in the thousands.","I have no normal eyes — I have a heat detector on my back instead.","I use it to see the glow of the super-hot water.","I farm bacteria on my own shell and eat them."] },
 
   { id:"tubeworm", name:"Giant Tube Worm", emoji:"🪱", where:"ocean", zones:[6], tier:"epic",
     facts:["I'm taller than a grown-up — 8 feet of worm in a white tube.","I have no mouth, no stomach, and no bottom.","Bacteria live inside me and make my food out of volcano chemicals.","My red plume is full of blood."] },
 
-  { id:"pompeiiworm", name:"Pompeii Worm", emoji:"🪱", where:"ocean", zones:[6], tier:"epic",
+  { id:"pompeiiworm", name:"Pompeii Worm", emoji:"🪱", where:"ocean", zones:[6], tier:"epic", tiny:true,
     facts:["I live in water hot enough to cook an egg — 176 degrees!","I'm the most heat-proof animal on the planet.","I wear a fuzzy coat of bacteria like a blanket.","My tail sits in the hot water while my head stays cool."] },
 
   { id:"deepseaoctopus", name:"Deep-Sea Octopus", emoji:"🐙", where:"ocean", zones:[6], tier:"legendary",
     facts:["I'm a pale pink octopus who lives a mile down in the cold dark.","Moms guard their eggs for FOUR AND A HALF YEARS without eating once — longer than any animal on Earth.","That's longer than you've been alive!","My skin is covered in little bumps instead of being smooth."] },
 
-  { id:"scalyfootsnail", name:"Scaly-Foot Snail", emoji:"🐚", where:"ocean", zones:[6], tier:"legendary",
+  { id:"scalyfootsnail", name:"Scaly-Foot Snail", emoji:"🐚", where:"ocean", zones:[6], tier:"legendary", tiny:true,
     facts:["I build ARMOR OUT OF IRON. I'm the only animal on Earth with a metal skeleton.","My shell is magnetic — a magnet sticks to me!","I live on volcano chimneys at the bottom of the Indian Ocean.","Scientists study my armor to build better spacesuits."] },
 
   /* ================= THE MYTHICS =================
@@ -218,31 +218,31 @@ const CREATURES = [
     facts:["I am a Galápagos tortoise and I am 187 years old.","I was alive before cars, before airplanes, before electric lights.","I have walked the same slow path up the same volcano for almost two centuries.","I will probably still be here when you are a grown-up."] },
 
   /* ================= LAND — ZONE 1: THE BACKYARD ================= */
-  { id:"rolypoly", name:"Roly Poly", emoji:"🪲", where:"land", zones:[1], tier:"common",
+  { id:"rolypoly", name:"Roly Poly", emoji:"🪲", where:"land", zones:[1], tier:"common", tiny:true,
     facts:["I curl into a perfect little ball when I get scared.","I'm not a bug at all — I'm related to crabs and lobsters!","I breathe with gills, so I hide where it's damp."] },
 
-  { id:"earthworm", name:"Earthworm", emoji:"🪱", where:"land", zones:[1], tier:"common",
+  { id:"earthworm", name:"Earthworm", emoji:"🪱", where:"land", zones:[1], tier:"common", tiny:true,
     facts:["I have no eyes, but I can feel light on my skin.","I eat dirt, and my poop helps plants grow.","I have five hearts!"] },
 
-  { id:"ant", name:"Ant", emoji:"🐜", where:"land", zones:[1], tier:"common",
+  { id:"ant", name:"Ant", emoji:"🐜", where:"land", zones:[1], tier:"common", tiny:true,
     facts:["I can carry things 50 times heavier than me.","I live with thousands of sisters in one nest.","We leave smelly trails so everybody can find the food."] },
 
-  { id:"snail", name:"Snail", emoji:"🐌", where:"land", zones:[1], tier:"common",
+  { id:"snail", name:"Snail", emoji:"🐌", where:"land", zones:[1], tier:"common", tiny:true,
     facts:["I carry my whole house on my back.","I glide along on slime that I make myself.","I have thousands of tiny teeth on my tongue!"] },
 
-  { id:"cricket", name:"Cricket", emoji:"🦗", where:"land", zones:[1], tier:"common",
+  { id:"cricket", name:"Cricket", emoji:"🦗", where:"land", zones:[1], tier:"common", tiny:true,
     facts:["I sing by rubbing my wings together.","My ears are on my front knees!","I chirp faster when the weather gets warm."] },
 
-  { id:"bee", name:"Honey Bee", emoji:"🐝", where:"land", zones:[1], tier:"uncommon",
+  { id:"bee", name:"Honey Bee", emoji:"🐝", where:"land", zones:[1], tier:"uncommon", tiny:true,
     facts:["I flap my wings 200 times every single second.","I tell my friends where the flowers are by dancing.","I visit 2 million flowers to make one jar of honey.","My honey never goes bad. Ever!"] },
 
-  { id:"grasshopper", name:"Grasshopper", emoji:"🦗", where:"land", zones:[1], tier:"uncommon",
+  { id:"grasshopper", name:"Grasshopper", emoji:"🦗", where:"land", zones:[1], tier:"uncommon", tiny:true,
     facts:["I can jump 20 times the length of my own body.","My back legs work like springs that snap open.","I hear with my belly, not my head!"] },
 
-  { id:"beetle", name:"Jewel Beetle", emoji:"🪲", where:"land", zones:[1,2], tier:"uncommon",
+  { id:"beetle", name:"Jewel Beetle", emoji:"🪲", where:"land", zones:[1,2], tier:"uncommon", tiny:true,
     facts:["My shell shines like a rainbow in the sun.","My colors aren't paint — they're tiny layers that bend light.","People have worn my shells as jewelry for hundreds of years."] },
 
-  { id:"spider", name:"Jumping Spider", emoji:"🕷️", where:"land", zones:[1], tier:"uncommon",
+  { id:"spider", name:"Jumping Spider", emoji:"🕷️", where:"land", zones:[1], tier:"uncommon", tiny:true,
     facts:["I have eight eyes and I can see in color.","I can jump 50 times my own body length.","I do a little dance to say hello."] },
 
   { id:"hornet", name:"Hornet", emoji:"🐝", where:"land", zones:[1,2], tier:"uncommon",
@@ -270,7 +270,7 @@ const CREATURES = [
   { id:"rhinobeetle", name:"Rhinoceros Beetle", emoji:"🪲", where:"land", zones:[2], tier:"rare",
     facts:["I can lift 850 times my own weight — the strongest animal on Earth for my size.","I have a big horn like a rhino.","If you were as strong as me, you could lift a school bus.","I'm totally harmless."] },
 
-  { id:"blackwidow", name:"Black Widow", emoji:"🕷️", where:"land", zones:[2,3], tier:"rare",
+  { id:"blackwidow", name:"Black Widow", emoji:"🕷️", where:"land", zones:[2,3], tier:"rare", tiny:true,
     facts:["I have a bright red hourglass painted on my belly.","My web is stronger than steel for its size!","I hang upside down all day long.","I like dark quiet corners, so watch where you reach."] },
 
   { id:"tarantula", name:"Tarantula", emoji:"🕷️", where:"land", zones:[2,3], tier:"rare",
@@ -285,10 +285,10 @@ const CREATURES = [
   { id:"chameleon", name:"Chameleon", emoji:"🦎", where:"land", zones:[2], tier:"rare",
     facts:["My two eyes look in two different directions at the same time.","My tongue shoots out twice as long as my whole body.","I change color to show how I'm feeling, not just to hide.","My tongue is faster than a race car."] },
 
-  { id:"glassfrog", name:"Glass Frog", emoji:"🐸", where:"land", zones:[2], tier:"epic",
+  { id:"glassfrog", name:"Glass Frog", emoji:"🐸", where:"land", zones:[2], tier:"epic", tiny:true,
     facts:["My belly is SEE-THROUGH — you can watch my heart beating!","When I sleep, I hide my red blood in my liver so I turn clear.","I'm only as big as a grape.","Dads guard the eggs until they hatch."] },
 
-  { id:"poisondartfrog", name:"Poison Dart Frog", emoji:"🐸", where:"land", zones:[2], tier:"epic",
+  { id:"poisondartfrog", name:"Poison Dart Frog", emoji:"🐸", where:"land", zones:[2], tier:"epic", tiny:true,
     facts:["My bright colors are a warning sign that says 'don't eat me!'","I'm smaller than a paper clip.","I get my poison from the bugs I eat — in a zoo I'm not poisonous at all.","I carry my tadpoles on my back."] },
 
   { id:"orchidmantis", name:"Orchid Mantis", emoji:"🌸", where:"land", zones:[2], tier:"epic",
@@ -357,7 +357,7 @@ const CREATURES = [
      ISLAND 1 = Galápagos  2 = Madagascar  3 = Komodo & Sulawesi  4 = New Zealand */
 
   /* ---- Galápagos ---- */
-  { id:"darwinsfinch", name:"Darwin's Finch", emoji:"🐦", where:"island", zones:[1], tier:"uncommon", endemicTo:"the Galápagos Islands",
+  { id:"darwinsfinch", name:"Darwin's Finch", emoji:"🐦", where:"island", zones:[1], tier:"uncommon", tiny:true, endemicTo:"the Galápagos Islands",
     facts:["There are 18 kinds of us, and we all came from ONE bird that blew here long ago.","Each island's finches grew a different beak for the food on that island.","Big seeds made thick beaks. Little bugs made pointy beaks.","We're the birds that taught people how animals change."] },
 
   { id:"marineiguana", name:"Marine Iguana", emoji:"🦎", where:"island", zones:[1], tier:"uncommon", endemicTo:"the Galápagos Islands",
@@ -379,10 +379,10 @@ const CREATURES = [
   { id:"pantherchameleon", name:"Panther Chameleon", emoji:"🦎", where:"island", zones:[2], tier:"rare", endemicTo:"Madagascar",
     facts:["Chameleons from different parts of my island are completely different colors.","My tongue shoots out twice as long as my body in a hundredth of a second.","My two eyes look in two directions at the same time.","Madagascar has half of all the chameleon kinds in the world."] },
 
-  { id:"tomatofrog", name:"Tomato Frog", emoji:"🐸", where:"island", zones:[2], tier:"rare", endemicTo:"Madagascar",
+  { id:"tomatofrog", name:"Tomato Frog", emoji:"🐸", where:"island", zones:[2], tier:"rare", tiny:true, endemicTo:"Madagascar",
     facts:["I'm bright red and round, exactly like a tomato.","When something grabs me I puff up and ooze white glue that gums up its mouth.","I bury myself in the dirt and wait for rain.","I live in one small part of one island."] },
 
-  { id:"giraffeweevil", name:"Giraffe Weevil", emoji:"🪲", where:"island", zones:[2], tier:"epic", endemicTo:"Madagascar",
+  { id:"giraffeweevil", name:"Giraffe Weevil", emoji:"🪲", where:"island", zones:[2], tier:"epic", tiny:true, endemicTo:"Madagascar",
     facts:["My neck is longer than the rest of my body — like a giraffe made of beetle.","Boys use their long necks to wrestle each other.","I'm bright red and shiny black.","I'm only as long as your fingernail."] },
 
   { id:"ayeaye", name:"Aye-Aye", emoji:"🐒", where:"island", zones:[2], tier:"epic", endemicTo:"Madagascar",
@@ -430,16 +430,16 @@ const CREATURES = [
      LAYER 1 = Topsoil  2 = The Caves  3 = Crystal Caverns  4 = The Deep Dark */
 
   /* ---- Topsoil ---- */
-  { id:"springtail", name:"Springtail", emoji:"🪳", where:"underground", zones:[1], tier:"common",
+  { id:"springtail", name:"Springtail", emoji:"🪳", where:"underground", zones:[1], tier:"common", tiny:true,
     facts:["I have a spring-loaded tail I snap to fling myself into the air.","There are more of me in one footstep of soil than people in a city.","I'm smaller than this letter O."] },
 
-  { id:"grub", name:"Beetle Grub", emoji:"🐛", where:"underground", zones:[1], tier:"common",
+  { id:"grub", name:"Beetle Grub", emoji:"🐛", where:"underground", zones:[1], tier:"common", tiny:true,
     facts:["I'm a baby beetle, and I live in the dirt eating roots.","I'll spend years down here before I turn into a beetle.","I curl into a C shape when you dig me up."] },
 
-  { id:"soilcentipede", name:"Soil Centipede", emoji:"🐛", where:"underground", zones:[1,2], tier:"uncommon",
+  { id:"soilcentipede", name:"Soil Centipede", emoji:"🐛", where:"underground", zones:[1,2], tier:"uncommon", tiny:true,
     facts:["I'm long and skinny with a leg on every single body ring.","I always have an ODD number of pairs of legs. Never even!","I hunt in the dark with my feelers, not my eyes."] },
 
-  { id:"cicadanymph", name:"Cicada Nymph", emoji:"🦗", where:"underground", zones:[1], tier:"uncommon",
+  { id:"cicadanymph", name:"Cicada Nymph", emoji:"🦗", where:"underground", zones:[1], tier:"uncommon", tiny:true,
     facts:["I live underground sucking on tree roots for SEVENTEEN YEARS.","Then I climb out, become a cicada, sing for a few weeks, and that's my whole life.","All of us come out the same year, billions at once.","I've been down here longer than you've been alive."] },
 
   { id:"mole", name:"Mole", emoji:"🐭", where:"underground", zones:[1,2], tier:"rare",
@@ -449,10 +449,10 @@ const CREATURES = [
     facts:["I'm the mother of every single ant in this nest — thousands of them.","I can live 30 years, while my workers live a few months.","I had wings once, then chewed them off when I started my nest.","I never leave this room again."] },
 
   /* ---- The Caves ---- */
-  { id:"cavecricket", name:"Cave Cricket", emoji:"🦗", where:"underground", zones:[2], tier:"common",
+  { id:"cavecricket", name:"Cave Cricket", emoji:"🦗", where:"underground", zones:[2], tier:"common", tiny:true,
     facts:["I have enormous back legs and I jump at anything that startles me.","My feelers are longer than my body — that's how I 'see' down here.","I can't chirp at all, unlike crickets up in the grass."] },
 
-  { id:"pseudoscorpion", name:"Pseudoscorpion", emoji:"🦂", where:"underground", zones:[2], tier:"uncommon",
+  { id:"pseudoscorpion", name:"Pseudoscorpion", emoji:"🦂", where:"underground", zones:[2], tier:"uncommon", tiny:true,
     facts:["I have scorpion pincers but no stinger and no tail.","I'm smaller than a grain of rice.","I catch a ride on beetles and even birds to get around.","I spin silk out of my JAWS to make a winter sleeping bag."] },
 
   { id:"bat", name:"Cave Bat", emoji:"🦇", where:"underground", zones:[2], tier:"uncommon",
@@ -461,14 +461,14 @@ const CREATURES = [
   { id:"cavespider", name:"Cave Spider", emoji:"🕷️", where:"underground", zones:[2,3], tier:"rare",
     facts:["I hang my egg sacs from the cave roof like little lanterns.","I have long thin legs for feeling my way in total dark.","I can wait months between meals down here."] },
 
-  { id:"glowworm", name:"Glowworm", emoji:"✨", where:"underground", zones:[2,3], tier:"rare",
+  { id:"glowworm", name:"Glowworm", emoji:"✨", where:"underground", zones:[2,3], tier:"rare", tiny:true,
     facts:["I glow BLUE-GREEN on the cave ceiling so it looks like a starry sky.","I hang sticky fishing lines down to catch bugs that fly toward my light.","Whole cave ceilings of us light up together.","I'm not a worm — I'm a baby fly."] },
 
   /* ---- Crystal Caverns ---- */
   { id:"cavecrayfish", name:"Blind Cave Crayfish", emoji:"🦞", where:"underground", zones:[3], tier:"rare",
     facts:["I'm ghost white with no color anywhere on me.","I have eye stalks, but no eyes on the ends.","I can live 75 years in a cave pool.","I might go a whole year without eating."] },
 
-  { id:"blindcavefish", name:"Blind Cave Fish", emoji:"🐟", where:"underground", zones:[3], tier:"rare",
+  { id:"blindcavefish", name:"Blind Cave Fish", emoji:"🐟", where:"underground", zones:[3], tier:"rare", tiny:true,
     facts:["My great-great-grandparents had eyes. Mine grew over with skin.","In the dark, eyes were no use — so we stopped growing them.","I 'see' by feeling tiny ripples in the water with my whole face.","My cousins in the river above still have eyes and stripes."] },
 
   { id:"starnosedmole", name:"Star-Nosed Mole", emoji:"🐭", where:"underground", zones:[3], tier:"epic",
@@ -487,16 +487,16 @@ const CREATURES = [
   { id:"caverobberfly", name:"Cave Robber Fly", emoji:"🪰", where:"underground", zones:[4], tier:"rare",
     facts:["I was only discovered in 2009, deep in Colorado caves.","I have no eyes worth using and I can barely fly.","Nobody knows for sure what I eat.","I live where no light has ever reached."] },
 
-  { id:"caveshrimp", name:"Cave Shrimp", emoji:"🦐", where:"underground", zones:[4], tier:"rare",
+  { id:"caveshrimp", name:"Cave Shrimp", emoji:"🦐", where:"underground", zones:[4], tier:"rare", tiny:true,
     facts:["I'm completely see-through — you can watch my food move through me.","I have no eyes at all, just smooth skin where they'd be.","I live in pitch-black rivers under the ground.","I eat whatever washes down from the world above."] },
 
-  { id:"illacme", name:"750-Legged Millipede", emoji:"🐛", where:"underground", zones:[4], tier:"epic",
+  { id:"illacme", name:"750-Legged Millipede", emoji:"🐛", where:"underground", zones:[4], tier:"epic", tiny:true,
     facts:["I have up to 750 legs — more than any animal on Earth.","I'm only an inch long, thinner than a noodle.","I live 3 feet under the dirt in one tiny corner of California.","I have four penises and no eyes. Scientists find me very confusing."] },
 
   { id:"movilecentipede", name:"Movile Cave Centipede", emoji:"🐛", where:"underground", zones:[4], tier:"epic",
     facts:["My cave was sealed off from the whole world for 5 MILLION years.","Nothing in my cave has ever seen the sun, not once.","Down here we live on poison gas instead of sunlight.","People only found me in 2020, and I live nowhere else."] },
 
-  { id:"devilworm", name:"Devil Worm", emoji:"🪱", where:"underground", zones:[4], tier:"legendary",
+  { id:"devilworm", name:"Devil Worm", emoji:"🪱", where:"underground", zones:[4], tier:"legendary", tiny:true,
     facts:["I live a MILE AND A HALF underground — deeper than any animal ever found.","The rock around me is hot enough to cook in.","I was found in a South African gold mine.","My real name means 'the worm from hell.'"] },
 
   { id:"thesleeper", name:"The Sleeper", emoji:"🐉", where:"underground", zones:[3,4], tier:"mythic", mythic:true,
@@ -548,6 +548,30 @@ const ZONES = {
     { n:4, name:"THE DEEP DARK",    bonus:10, needs:{gear:"dig", level:3, item:"Pickaxe"},       weights:{ common:0,  uncommon:4,  rare:26, epic:42, legendary:22,  mythic:6 } }
   ]
 };
+
+
+/* ============================================================
+   THE TRAPS
+   Cam's favourite thing in the game is the magic trap, so there
+   are several, and each one does a different kind of magic.
+   `giant` is the original — it's what a crab earns him, and it
+   is stored as state.magic so old saves keep their traps.
+   ============================================================ */
+const TRAPS = [
+  { id:"giant",   name:"Giant Trap",   emoji:"🪄", key:"1", color:"#c77dff", cost:400,
+    blurb:"Grows enormous to catch the very biggest animals." },
+  { id:"shrink",  name:"Shrink Trap",  emoji:"🔬", key:"2", color:"#80ed99", cost:500,
+    blurb:"Shrinks tiny to catch the smallest creatures — then shows them GIANT size." },
+  { id:"rainbow", name:"Rainbow Trap", emoji:"🌈", key:"3", color:"#4cc9f0", cost:1400,
+    blurb:"Always catches something you have never seen before." },
+  { id:"double",  name:"Double Trap",  emoji:"✌️", key:"4", color:"#ffcc00", cost:1000,
+    blurb:"Catches TWO creatures at the same time." },
+  { id:"mystery", name:"Mystery Trap", emoji:"❓", key:"5", color:"#ff5ec7", cost:2200,
+    blurb:"Reaches anywhere in the whole world. Could catch ANYTHING." }
+];
+
+/* how many creatures fit in the bucket */
+const BUCKET_SIZE = 12;
 
 /* Things you can buy with points.
    `where` decides which shop it shows up in — every place sells different gear.
@@ -606,9 +630,27 @@ const SHOP = [
   { id:"ladder",   where:"underground", name:"Rope Ladder", emoji:"🪜", cost:800,  gear:"ladder",   level:1,
     blurb:"Press R to climb straight back up to the surface." },
 
+  /* ---------- POWERS (buttons he can press while exploring) ---------- */
+  { id:"whistle", where:"any", name:"Creature Whistle", emoji:"📢", cost:3500, gear:"whistle", level:1,
+    blurb:"Press it and EVERY trap and rock near you pops open at once." },
+  { id:"freeze",  where:"any", name:"Time Freeze",      emoji:"⏱️", cost:2800, gear:"freeze",  level:1,
+    blurb:"Freezes the huge creature swimming past so it can't get away." },
+  { id:"magnet",  where:"any", name:"Super Magnet",     emoji:"🧲", cost:2400, gear:"magnet",  level:1,
+    blurb:"Yanks the three nearest traps and rocks straight over to you." },
+  { id:"xray",    where:"any", name:"X-Ray Goggles",    emoji:"🥸", cost:4200, gear:"xray",    level:1,
+    blurb:"See exactly what is hiding inside everything on the screen." },
+
   /* ---------- ANYWHERE ---------- */
-  { id:"magic", where:"any", name:"Magic Trap", emoji:"🪄", cost:400, repeat:true,
-    blurb:"One more magic trap, for catching the giants. Buy as many as you want." }
+  { id:"trap_giant",   where:"any", name:"Giant Trap",   emoji:"🪄", cost:400,  repeat:true, trap:"giant",
+    blurb:"Grows enormous to catch the very biggest animals." },
+  { id:"trap_shrink",  where:"any", name:"Shrink Trap",  emoji:"🔬", cost:500,  repeat:true, trap:"shrink",
+    blurb:"Shrinks tiny to catch the smallest creatures — then shows them GIANT size." },
+  { id:"trap_double",  where:"any", name:"Double Trap",  emoji:"✌️", cost:1000, repeat:true, trap:"double",
+    blurb:"Catches TWO creatures at the same time." },
+  { id:"trap_rainbow", where:"any", name:"Rainbow Trap", emoji:"🌈", cost:1400, repeat:true, trap:"rainbow",
+    blurb:"Always catches something you have never seen before." },
+  { id:"trap_mystery", where:"any", name:"Mystery Trap", emoji:"❓", cost:2200, repeat:true, trap:"mystery",
+    blurb:"Reaches anywhere in the whole world. Could catch ANYTHING." }
 ];
 
 /* What each place is called in the shop, and its sign */

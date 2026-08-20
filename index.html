@@ -45,7 +45,7 @@
 
   .screen { display: none; }
   .screen.active { display: block; }
-  #home, #book, #shop { height: calc(100vh - 58px); overflow-y: auto; }
+  #home, #book, #shop, #bucket { height: calc(100vh - 58px); overflow-y: auto; }
 
   /* ---------- home ---------- */
   #home { text-align: center; padding: 20px 20px 60px; }
@@ -207,6 +207,28 @@
   #shop, #book { position: relative; padding-top: 62px; }
 
   /* a finger needs somewhere to press for the SPACE action */
+  #trapTray, #powerTray { display: flex; gap: 6px; flex-wrap: wrap; }
+  .powerBtn {
+    font-family: inherit; cursor: pointer;
+    background: #2a1d57; color: #e6c3ff;
+    border: 3px solid #7b2cbf; border-radius: 14px;
+    padding: 6px 10px; font-size: 17px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .powerBtn .n { font-size: 12px; opacity: .85; }
+  .powerBtn.cooling { opacity: .4; }
+  .trapBtn {
+    font-family: inherit; cursor: pointer;
+    background: #1d3557; color: #fff;
+    border: 3px solid #4a7ab5; border-radius: 14px;
+    padding: 6px 10px; font-size: 17px; line-height: 1.1;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .trapBtn .n { font-size: 14px; opacity: .9; }
+  .trapBtn.on { border-width: 4px; transform: translateY(-2px); box-shadow: 0 0 16px currentColor; }
+  .trapBtn.empty { opacity: .35; }
+  .trapBtn:disabled { cursor: default; }
+
   #catchBtn {
     position: absolute; right: 18px; bottom: 74px;
     font-size: 26px; padding: 20px 30px; border-radius: 22px;
@@ -221,6 +243,27 @@
   /* the canvas must not scroll or zoom under a finger */
   #game { touch-action: none; }
 
+  /* ---------- bucket ---------- */
+  #bucket { padding: 16px; text-align: center; position: relative; padding-top: 62px; }
+  #bucket h2 { font-size: 26px; margin: 4px 0; }
+  #bucketCount { font-size: 18px; color: #9fd3ff; margin-bottom: 10px; }
+  #bucketCanvas {
+    display: block; margin: 0 auto; border-radius: 20px;
+    background: #0e2136; border: 5px solid #4a7ab5; max-width: 100%;
+    touch-action: none;
+  }
+  #bucketNote { font-size: 15px; color: #80ed99; min-height: 22px; margin: 8px 0; }
+  #bucketActions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  #bucketSets {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    max-width: 700px; margin: 0 auto 30px;
+  }
+  .setChip {
+    background: #1d3557; border: 3px solid #4a7ab5; border-radius: 999px;
+    padding: 5px 14px; font-size: 14px;
+  }
+  .setChip.done { border-color: #80ed99; color: #caffbf; }
+
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
 </style>
 </head>
@@ -230,6 +273,7 @@
   <div id="gameTitle">🌟 Cam's Crazy Creatures 🌟</div>
   <div class="chip score">⭐ <span id="scoreNum">0</span></div>
   <div class="chip magic">🪄 <span id="magicNum">0</span></div>
+  <button class="btn small" id="bucketBtn" onclick="showBucket()">🪣 <span id="bucketNum">0/12</span></button>
   <button class="btn gold small" onclick="showShop()">🛒 Shop</button>
   <button class="btn gray small" onclick="showBook()">📖 Book</button>
   <button class="btn gray small" onclick="goHome()">🏠 Home</button>
@@ -268,8 +312,9 @@
 <div id="explore" class="screen">
   <canvas id="game"></canvas>
   <div id="controls">
-    <button class="btn purple" id="magicBtn" onclick="armMagic()">🪄 Magic</button>
-    <button class="btn gray" id="ladderBtn" onclick="climbOut()" style="display:none">🪜 Climb out</button>
+    <div id="trapTray"></div>
+    <div id="powerTray"></div>
+    <button class="btn gray small" id="ladderBtn" onclick="climbOut()" style="display:none">🪜 Climb out</button>
   </div>
   <button class="btn catch" id="catchBtn" onclick="pressSpace()">CATCH!</button>
   <div id="zoneBanner"></div>
@@ -285,6 +330,17 @@
   <div id="shopNote"></div>
   <div class="shopGrid" id="shopGrid"></div>
   <button class="btn big-back bottom" onclick="backFromMenu()">⬅️ Back</button>
+</div>
+
+<!-- ============ BUCKET ============ -->
+<div id="bucket" class="screen">
+  <button class="btn big-back" onclick="backFromMenu()">⬅️ Back</button>
+  <h2>🪣 My Bucket</h2>
+  <div id="bucketCount"></div>
+  <canvas id="bucketCanvas"></canvas>
+  <div id="bucketNote"></div>
+  <div id="bucketActions"></div>
+  <div id="bucketSets"></div>
 </div>
 
 <!-- ============ BOOK ============ -->
@@ -344,9 +400,12 @@ const DEFAULT_GEAR = {
   suit: 1, light: 1, fins: 1, radar: 0, sonar: 0, chum: 0,      /* ocean */
   boots: 1, hammer: 0, binocs: 0, bugjar: 0,                     /* land */
   boat: 0, snorkel: 0, notebook: 0,                              /* islands */
+  whistle: 0, freeze: 0, magnet: 0, xray: 0,                      /* powers */
   dig: 1, headlamp: 1, ladder: 0                                 /* underground */
 };
-let state = { score: 0, magic: 1, found: [], counts: {}, gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
+const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
+let state = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
+              bucket: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
 
 function mergeInto(target, data) {
   if (!data || typeof data !== "object") return target;
@@ -365,6 +424,16 @@ function mergeInto(target, data) {
   });
   /* an older save with no counts still means he found each one at least once */
   target.found.forEach(id => { if (!target.counts[id]) target.counts[id] = 1; });
+  /* traps: keep the bigger count of each kind */
+  target.traps = target.traps || Object.assign({}, DEFAULT_TRAPS);
+  Object.keys(DEFAULT_TRAPS).forEach(k => {
+    target.traps[k] = Math.max(target.traps[k] || 0, (data.traps && Number(data.traps[k])) || 0);
+  });
+  /* bucket: keep whichever save had more in it */
+  const incomingBucket = Array.isArray(data.bucket) ? data.bucket : [];
+  if (incomingBucket.length > (target.bucket || []).length) target.bucket = incomingBucket.slice(0, BUCKET_SIZE);
+  target.bucket = target.bucket || [];
+
   target.gear = target.gear || Object.assign({}, DEFAULT_GEAR);
   Object.keys(DEFAULT_GEAR).forEach(k => {
     target.gear[k] = Math.max(target.gear[k] || DEFAULT_GEAR[k], (data.gear && Number(data.gear[k])) || 0);
@@ -373,7 +442,8 @@ function mergeInto(target, data) {
 }
 
 function load() {
-  const merged = { score: 0, magic: 1, found: [], counts: {}, gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
+  const merged = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
+                   bucket: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k || k.toLowerCase().indexOf("camscrazycreatures") !== 0) continue;
@@ -531,12 +601,17 @@ function canReach(kind) { return kind !== "island" || state.gear.boat >= 1; }
 
 /* ---------- the world ---------- */
 let world = null;
-let magicArmed = false;
+let armedTrap = null;          /* which kind of trap is switched on */
+
+function trapCount(id) { return id === "giant" ? state.magic : (state.traps[id] || 0); }
+function spendTrap(id) { if (id === "giant") state.magic--; else state.traps[id]--; }
+function totalTraps() { return TRAPS.reduce((n, t) => n + trapCount(t.id), 0); }
+function trapDef(id) { return TRAPS.find(t => t.id === id); }
 
 function startWorld(kind) {
   show("explore");
   fitCanvas();
-  magicArmed = false;
+  armedTrap = null;
 
   const vert = isVertical(kind);
   const zoneCount = ZONES[kind].length;
@@ -554,7 +629,7 @@ function startWorld(kind) {
     t: 0,
     zone: 1, lastZone: 0,
     spots: [], deco: [], fish: [], bubbles: [], pops: [], sparks: [], shadows: [],
-    reveal: null, wanderer: null, nextWander: 420,
+    reveal: null, wanderer: null, nextWander: 420, xray: 0,
     pendingOpen: null, pendingUntil: 0,
     blocked: 0,
     player: { x: 300, y: vert ? (kind === "underground" ? 200 : 220) : H - 172, vx: 0, vy: 0, face: 1, kick: 0, onGround: false },
@@ -705,7 +780,8 @@ addEventListener("keydown", e => {
   if (e.key === "Escape") {
     if (overlayOpen()) closeCard();
     else if (document.getElementById("shop").classList.contains("active") ||
-             document.getElementById("book").classList.contains("active")) backFromMenu();
+             document.getElementById("book").classList.contains("active") ||
+             document.getElementById("bucket").classList.contains("active")) backFromMenu();
   }
   if (e.key.toLowerCase() === "m") armMagic();
   if (e.key.toLowerCase() === "r") climbOut();
@@ -837,6 +913,11 @@ function update() {
   }
 
   if (world.blocked > 0) world.blocked--;
+  if (world.xray > 0) world.xray--;
+  if (world.wanderer && world.wanderer.frozen > 0) world.wanderer.frozen--;
+  world.spots.forEach(s => { if (s.magnetGlow > 0) s.magnetGlow--; });
+  if (whistleQueue.length && !frozen()) runWhistleQueue();
+  if (world.t % 20 === 0) drawPowerTray();
 
   /* he tapped something far away — open it as soon as he reaches it */
   if (world.pendingOpen && !frozen()) {
@@ -946,46 +1027,134 @@ function pressSpace() {
 
   const wd = world.wanderer;
   if (wd && Math.hypot(wd.x - world.player.x, wd.y - world.player.y) < 160) {
-    if (wd.c.magicOnly && !(magicArmed && state.magic > 0)) {
-      flashHint("It's way too big for a normal trap! Turn on 🪄 Magic and try again!");
+    if (wd.c.magicOnly && !(armedTrap === "giant" && trapCount("giant") > 0)) {
+      flashHint("It's way too big for a normal trap! Switch on the 🪄 Giant Trap and try again!");
       beep(160, 240, "sawtooth", .08);
       return;
     }
-    const usingMagic = wd.c.magicOnly || (magicArmed && state.magic > 0);
-    if (usingMagic && state.magic > 0 && magicArmed) { state.magic--; magicArmed = false; }
+    const usingMagic = wd.c.magicOnly || armedTrap === "giant";
+    if (armedTrap === "giant" && trapCount("giant") > 0) { spendTrap("giant"); armedTrap = null; }
     world.wanderer = null;
-    startReveal({ x: wd.x, y: wd.y }, wd.c, usingMagic, zoneAt(wd.y, wd.x), true);
+    startReveal({ x: wd.x, y: wd.y }, wd.c, zoneAt(wd.y, wd.x), true,
+                { c: wd.c, trap: usingMagic ? "giant" : null, usedMagic: usingMagic });
     return;
   }
 
   const s = nearestSpot();
   if (!s) return;
-  const usingMagic = magicArmed && state.magic > 0;
-  if (usingMagic) { state.magic--; magicArmed = false; }
+
   const zone = ZONES[world.kind][s.zone - 1];
 
-  /* A tide pool is a little piece of ocean sitting on the beach, so what's in it
-     is sea life — starfish, urchins, crabs — and a crab still earns a magic trap. */
-  const pool = s.type === "pool";
-  const pickWhere = pool ? "ocean" : world.kind;
-  const pickZone = pool ? ZONES.ocean[0] : zone;
+  /* A tide pool is a piece of ocean sitting on the beach, so it holds sea life. */
+  const isPool = s.type === "pool";
+  const pickWhere = isPool ? "ocean" : world.kind;
+  const pickZone = isPool ? ZONES.ocean[0] : zone;
 
-  let c = pickCreature(pickWhere, pickZone, usingMagic);
-  let rareHunt = pickCreature.rareHunt;
+  /* which trap did he switch on? */
+  const trap = (armedTrap && trapCount(armedTrap) > 0) ? armedTrap : null;
+  /* the X-Ray and the binoculars promise what's inside, so honour it */
+  const promised = (world.xray > 0 || state.gear.binocs) && !trap ? s.hint : null;
+  const caught = catchWith(trap, pickWhere, pickZone, promised);
+  if (!caught) return;                       /* nothing to catch — trap not spent */
+  if (trap) { spendTrap(trap); armedTrap = null; }
 
-  /* the bug jar catches whichever of two was rarer */
-  if (state.gear.bugjar && !world.vertical) {
-    const other = pickCreature(pickWhere, pickZone, usingMagic);
-    if (other && c && TIERS[other.tier].points > TIERS[c.tier].points) { c = other; rareHunt = pickCreature.rareHunt; }
-  }
-  if (!c) return;
+  const c = caught.c;
   s.opened = true;
   s.timer = 220;
-  startReveal(s, c, usingMagic, zone, false, rareHunt);
+  startReveal(s, c, zone, false, caught);
 }
 
 /* Pick a creature that lives in this zone. Mythics stay findable forever —
    they're just very, very rare, and the game counts how many times you've met one. */
+/* ============================================================
+   WHAT EACH TRAP DOES
+   Returns { c, trap, usedMagic, rareHunt, tiny, second, from }
+   or null when the trap has nothing to catch (then it isn't used up).
+   ============================================================ */
+function catchWith(trap, where, zone, promised) {
+  /* no trap: an ordinary catch */
+  if (!trap) {
+    let c = pickCreature(where, zone, false);
+    if (!c) return null;
+
+    /* If the X-Ray or binoculars showed him a rarity, give him that rarity —
+       otherwise the goggles would be lying to him. */
+    if (promised != null) {
+      const want = promised > .95 ? "legendary" : promised > .84 ? "epic"
+                 : promised > .62 ? "rare" : promised > .34 ? "uncommon" : "common";
+      const match = inZone(where, zone.n, false).filter(x => x.tier === want);
+      if (match.length) c = pick(match);
+    }
+    /* the bug jar keeps whichever of two was rarer */
+    if (state.gear.bugjar && !world.vertical) {
+      const other = pickCreature(where, zone, false);
+      if (other && TIERS[other.tier].points > TIERS[c.tier].points) c = other;
+    }
+    return { c: c, trap: null };
+  }
+
+  if (trap === "giant") {
+    const c = pickCreature(where, zone, true);
+    if (!c) return null;
+    return { c: c, trap: trap, usedMagic: true, rareHunt: pickCreature.rareHunt };
+  }
+
+  if (trap === "shrink") {
+    /* the tiniest things here, shown giant size on the card */
+    const tinyPool = inZone(where, zone.n, false).filter(c => c.tiny);
+    let c;
+    if (tinyPool.length) c = pick(tinyPool);
+    else {
+      /* nothing officially tiny lives here, so take the smallest kind there is */
+      const pool = inZone(where, zone.n, false);
+      if (!pool.length) return null;
+      const lowest = Math.min.apply(null, pool.map(x => TIERS[x.tier].points));
+      c = pick(pool.filter(x => TIERS[x.tier].points === lowest));
+    }
+    return { c: c, trap: trap, tiny: true };
+  }
+
+  if (trap === "rainbow") {
+    /* always something he has never seen — look wider and wider until we find one */
+    const unseen = list => list.filter(c => !state.found.includes(c.id) && !c.breaksTrap);
+    let pool = unseen(inZone(where, zone.n, false).concat(inZone(where, zone.n, true)));
+    let from = null;
+    if (!pool.length) {
+      pool = unseen(CREATURES.filter(c => c.where === where));
+      from = "somewhere else in the " + PLACES[where].name.toLowerCase();
+    }
+    if (!pool.length) {
+      pool = unseen(CREATURES);
+      from = "the other side of the world";
+    }
+    if (!pool.length) {
+      /* he has genuinely found all 153 — say so and keep the trap */
+      flashHint("🌈 You have already found EVERY creature in the game! Keeping your trap.");
+      playFanfare();
+      return null;
+    }
+    return { c: pick(pool), trap: trap, from: from };
+  }
+
+  if (trap === "double") {
+    const a = pickCreature(where, zone, false);
+    const b = pickCreature(where, zone, false);
+    if (!a) return null;
+    return { c: a, trap: trap, second: b || null };
+  }
+
+  if (trap === "mystery") {
+    /* anywhere in the world, including places he can't reach yet */
+    const pool = CREATURES.filter(c => !c.breaksTrap);
+    const c = pick(pool);
+    const zoneName = ZONES[c.where][c.zones[0] - 1].name;
+    return { c: c, trap: trap, from: PLACES[c.where].name + " — " + zoneName,
+             usedMagic: !!c.magicOnly };
+  }
+
+  return null;
+}
+
 /* Pick a creature that lives in THIS zone. It must never reach into another
    zone — Cam opened a magic trap in New Zealand and got a Komodo dragon, which
    made no sense to him.
@@ -1027,22 +1196,25 @@ function pickCreature(where, zone, useMagic) {
   return pool[pool.length - 1];
 }
 
-function armMagic() {
-  if (state.magic < 1) return;
-  magicArmed = !magicArmed;
+function armTrap(id) {
+  if (!trapCount(id)) return;
+  armedTrap = (armedTrap === id) ? null : id;
+  const t = trapDef(armedTrap || id);
+  if (armedTrap) beep(700, 90, "triangle", .07);
   refresh();
 }
+/* the old name, kept so nothing breaks */
+function armMagic() { armTrap("giant"); }
 
 /* ============================================================
    THE SLOW REVEAL — the best part is the waiting
    ============================================================ */
-function startReveal(spot, creature, usedMagic, zone, fromWanderer, rareHunt) {
+function startReveal(spot, creature, zone, fromWanderer, caught) {
   const stars = TIERS[creature.tier].stars;
   const dur = creature.tier === "mythic" ? 190 : (stars >= 5 ? 150 : (stars >= 4 ? 125 : (stars >= 3 ? 100 : 70)));
   world.reveal = {
     x: spot.x, y: spot.y, c: creature, t: 0, dur: dur,
-    usedMagic: usedMagic, zone: zone, fromWanderer: !!fromWanderer,
-    rareHunt: !!rareHunt, nextBeep: 0
+    zone: zone, fromWanderer: !!fromWanderer, caught: caught || { c: creature }, nextBeep: 0
   };
   if (spot.shake !== undefined) spot.shake = dur;
 }
@@ -1063,7 +1235,7 @@ function tickReveal() {
     const c = r.c;
     world.pops.push({ x: r.x, y: r.y - 20, emoji: c.emoji, life: 130 });
     world.reveal = null;
-    discover(c, r.usedMagic, r.zone, r.rareHunt);
+    discover(c, r.zone, r.caught);
   }
 }
 
@@ -1075,6 +1247,7 @@ function updateWanderer() {
 
   if (world.wanderer) {
     const wd = world.wanderer;
+    if (wd.frozen > 0) { wd.life++; return; }      /* time-frozen: it waits for him */
     wd.x += wd.vx;
     wd.y += Math.sin(world.t / 40) * .6;
     wd.life--;
@@ -1618,8 +1791,31 @@ function drawSpot(s, cam, isNear) {
   if (isNear && !s.opened) {
     g.save();
     g.globalAlpha = .55 + Math.sin(world.t / 8) * .25;
-    g.fillStyle = magicArmed ? "#e0aaff" : "#ffe680";
+    g.fillStyle = armedTrap ? trapDef(armedTrap).color : "#ffe680";
     g.beginPath(); g.arc(0, 6, 54, 0, 6.3); g.fill();
+    g.restore();
+  }
+
+  /* X-Ray goggles: show how good this one is, right through the lid */
+  if (world.xray > 0 && !s.opened) {
+    const guessTier = s.hint > .95 ? "legendary" : s.hint > .84 ? "epic"
+                    : s.hint > .62 ? "rare" : s.hint > .34 ? "uncommon" : "common";
+    g.save();
+    g.globalAlpha = .85;
+    g.fillStyle = TIERS[guessTier].color;
+    g.beginPath(); g.arc(0, 0, 15, 0, 6.3); g.fill();
+    g.fillStyle = "#10203a";
+    g.font = "bold 15px sans-serif"; g.textAlign = "center";
+    g.fillText(TIERS[guessTier].stars, 0, 5);
+    g.restore();
+  }
+
+  /* the magnet leaves a spark trail on whatever it yanked over */
+  if (s.magnetGlow > 0) {
+    g.save();
+    g.globalAlpha = Math.min(1, s.magnetGlow / 90) * .8;
+    g.strokeStyle = "#4cc9f0"; g.lineWidth = 4;
+    g.beginPath(); g.arc(0, 0, 48 - s.magnetGlow * .2, 0, 6.3); g.stroke();
     g.restore();
   }
 
@@ -1688,7 +1884,7 @@ function drawSpot(s, cam, isNear) {
     for (let i = -2; i <= 2; i++) { g.beginPath(); g.moveTo(i * 11, -20); g.lineTo(i * 13, 24); g.stroke(); }
     for (let j = -1; j <= 1; j++) { g.beginPath(); g.moveTo(-27, j * 14 + 4); g.lineTo(27, j * 14 + 4); g.stroke(); }
   } else {
-    g.fillStyle = magicArmed && isNear ? "#b98cd9" : "#96a0ad";
+    g.fillStyle = armedTrap && isNear ? "#b98cd9" : "#96a0ad";
     g.beginPath();
     g.moveTo(-34, 24); g.lineTo(-24, -10); g.lineTo(2, -24); g.lineTo(28, -8); g.lineTo(34, 24);
     g.closePath(); g.fill();
@@ -1704,7 +1900,7 @@ function drawSpot(s, cam, isNear) {
     roundRect(-78, bubbleY, 156, 34, 12); g.fill();
     g.fillStyle = "#fff";
     g.font = "bold 17px sans-serif"; g.textAlign = "center";
-    g.fillText(magicArmed ? "SPACE = MAGIC! 🪄" : "Press SPACE!", 0, bubbleY + 23);
+    g.fillText(armedTrap ? "SPACE = " + trapDef(armedTrap).emoji + " !" : "Press SPACE!", 0, bubbleY + 23);
   }
   g.restore();
 }
@@ -1944,17 +2140,18 @@ function drawZoneHud() {
 
   g.save();
   g.fillStyle = "rgba(0,0,0,.5)";
-  roundRect(CW / 2 - 175, 10, 350, world.vertical ? 52 : 34, 12); g.fill();
+  const hudY = 54;                       /* under the trap buttons */
+  roundRect(CW / 2 - 175, hudY, 350, world.vertical ? 52 : 34, 12); g.fill();
   g.fillStyle = z.n >= 5 ? "#ff5ec7" : (z.n >= 3 ? "#ffcc00" : "#fff");
   g.font = "bold 19px sans-serif"; g.textAlign = "center";
-  g.fillText(PLACES[world.kind].emoji + " " + z.name + "   (x" + z.bonus + " points)", CW / 2, 33);
+  g.fillText(PLACES[world.kind].emoji + " " + z.name + "   (x" + z.bonus + " points)", CW / 2, hudY + 23);
   if (world.vertical) {
     g.fillStyle = "#bfe6ff";
     g.font = "bold 15px sans-serif";
     const line = world.kind === "ocean"
       ? depthFeet(world.player.y).toLocaleString() + " ft down   •   deepest ever " + state.deepest.toLocaleString() + " ft"
       : depthFeet(world.player.y).toLocaleString() + " ft underground";
-    g.fillText(line, CW / 2, 53);
+    g.fillText(line, CW / 2, hudY + 43);
   }
   g.restore();
 
@@ -1964,15 +2161,15 @@ function drawZoneHud() {
     const got = here.filter(c => state.found.includes(c.id)).length;
     g.save();
     g.fillStyle = "rgba(0,0,0,.5)";
-    roundRect(CW / 2 - 110, world.vertical ? 66 : 48, 220, 26, 9); g.fill();
+    roundRect(CW / 2 - 110, world.vertical ? 110 : 92, 220, 26, 9); g.fill();
     g.fillStyle = "#caffbf";
     g.font = "bold 14px sans-serif"; g.textAlign = "center";
     g.fillText("📓 " + got + " of " + here.length + " found here — " +
-               (here.length - got) + " to go", CW / 2, (world.vertical ? 66 : 48) + 18);
+               (here.length - got) + " to go", CW / 2, (world.vertical ? 110 : 92) + 18);
     g.restore();
   }
 
-  const w = 16, h = Math.min(360, CH - 140), x = CW - 44, y = 78;
+  const w = 16, h = Math.min(360, CH - 190), x = CW - 44, y = 122;
   g.save();
   g.fillStyle = "rgba(0,0,0,.45)";
   roundRect(x - 6, y - 6, w + 12, h + 12, 9); g.fill();
@@ -2019,11 +2216,14 @@ function loop() {
 /* ============================================================
    FINDING A CREATURE
    ============================================================ */
-function discover(c, usedMagic, zone, rareHunt) {
+function discover(c, zone, caught) {
+  caught = caught || { c: c };
   const tier = TIERS[c.tier];
   const isNew = !state.found.includes(c.id);
   let points = tier.points * zone.bonus;
   if (isNew) points *= 2;
+  /* the shrink trap pays a big bonus, so hunting tiny things is worth doing */
+  if (caught.tiny) points *= 5;
 
   if (c.breaksTrap) {
     points = 0;
@@ -2039,11 +2239,26 @@ function discover(c, usedMagic, zone, rareHunt) {
   state.counts[c.id] = (state.counts[c.id] || 0) + 1;
   if (c.givesMagic) state.magic++;
 
+  /* everything he catches goes in the bucket, while there's room */
+  let bucketFull = false;
+  if (!c.breaksTrap) {
+    if (state.bucket.length < BUCKET_SIZE) state.bucket.push(c.id);
+    else bucketFull = true;
+  }
+
+  /* the double trap has a second creature waiting */
+  pendingSecond = caught.second
+    ? { c: caught.second, zone: zone, caught: { c: caught.second, trap: "double", secondOfTwo: true } }
+    : null;
+
   save();
   refresh();
-  fillCard(c, { isNew: isNew, points: points, usedMagic: usedMagic, zone: zone, rareHunt: rareHunt });
+  fillCard(c, { isNew: isNew, points: points, zone: zone, caught: caught, bucketFull: bucketFull });
   document.getElementById("overlay").classList.add("show");
 }
+
+/* the second half of a double catch, shown after he closes the first card */
+let pendingSecond = null;
 
 function screenFlash() {
   const f = document.getElementById("flash");
@@ -2059,6 +2274,10 @@ function fillCard(c, opts) {
 
   const img = document.getElementById("cardPhoto");
   const em = document.getElementById("cardEmoji");
+  /* a shrink-trap catch gets shown extra big, which is the whole joke */
+  const grown = (opts.caught || {}).trap === "shrink";
+  img.style.height = grown ? "300px" : "220px";
+  img.style.borderColor = grown ? "#80ed99" : "#6fb3e0";
   const src = photoOf(c.id);
   if (src) {
     img.style.display = "block";
@@ -2093,6 +2312,7 @@ function fillCard(c, opts) {
     pts.textContent = "+" + opts.points.toLocaleString() + " points" +
       (opts.zone && opts.zone.bonus > 1
         ? "  (x" + opts.zone.bonus + " " + (WHY[c.where] || "for going deep") + "!)" : "") +
+      ((opts.caught || {}).tiny ? "  (x5 TINY BONUS!)" : "") +
       (opts.isNew ? "  (doubled — brand new!)" : "");
   } else {
     pts.textContent = "Worth " + tier.points.toLocaleString() + " points";
@@ -2108,11 +2328,26 @@ function fillCard(c, opts) {
   if (c.magicOnly) line += "  🪄 (needs the magic trap)";
   if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
   if (c.givesMagic) line += "<br>🪄 A crab! You earned a MAGIC TRAP!";
-  if (opts.usedMagic && !c.breaksTrap) {
-    line += opts.rareHunt
-      ? "<br>🪄 Nothing giant lives here, so the magic trap hunted down the rarest thing instead!"
-      : "<br>The magic trap grew GIANT to catch it!";
+  const got = opts.caught || {};
+  if (got.trap === "giant" && !c.breaksTrap) {
+    line += got.rareHunt
+      ? "<br>🪄 Nothing giant lives here, so the trap hunted down the rarest thing instead!"
+      : "<br>🪄 The trap grew GIANT to catch it!";
   }
+  if (got.trap === "shrink") {
+    line += "<br>🔬 The trap shrank down tiny to catch it — and here it is, blown up GIANT size!";
+  }
+  if (got.trap === "rainbow") {
+    line += "<br>🌈 The Rainbow Trap found one you had never seen" +
+            (got.from ? " — all the way from " + got.from + "!" : "!");
+  }
+  if (got.trap === "double") {
+    line += got.secondOfTwo ? "<br>✌️ …and the second one!" : "<br>✌️ TWO AT ONCE — here's the first one!";
+  }
+  if (got.trap === "mystery") {
+    line += "<br>❓ The Mystery Trap reached all the way to <b>" + got.from + "</b>!";
+  }
+  if (opts.bucketFull) line += "<br>🪣 Your bucket is full! Empty it to keep collecting.";
 
   /* meeting one again is something to brag about, not a repeat */
   const times = state.counts[c.id] || 0;
@@ -2134,7 +2369,15 @@ function fillCard(c, opts) {
     ? 'Photo from <a href="' + PHOTOS[c.id].url + '" target="_blank">Wikipedia</a>' : "";
 }
 
-function closeCard() { document.getElementById("overlay").classList.remove("show"); }
+function closeCard() {
+  document.getElementById("overlay").classList.remove("show");
+  /* the double trap caught two — show the other one now */
+  if (pendingSecond) {
+    const next = pendingSecond;
+    pendingSecond = null;
+    setTimeout(() => discover(next.c, next.zone, next.caught), 260);
+  }
+}
 
 /* ============================================================
    THE SHOP
@@ -2145,6 +2388,12 @@ function ownedLevel(itemId) {
   return (state.gear[item.gear] || 0) >= item.level;
 }
 
+/* how many of a repeatable thing he already has, shown on its shop card */
+function ownedCount(item) {
+  if (!item.trap) return 0;
+  return trapCount(item.trap);
+}
+
 function buy(itemId) {
   const item = SHOP.find(i => i.id === itemId);
   if (!item) return;
@@ -2153,8 +2402,12 @@ function buy(itemId) {
   if (state.score < item.cost) { shopNote("Not enough points yet — go find more creatures! ⭐"); return; }
 
   state.score -= item.cost;
-  if (item.id === "magic") state.magic++;
-  else state.gear[item.gear] = Math.max(state.gear[item.gear] || 0, item.level);
+  if (item.trap) {
+    if (item.trap === "giant") state.magic++;
+    else state.traps[item.trap] = (state.traps[item.trap] || 0) + 1;
+  } else {
+    state.gear[item.gear] = Math.max(state.gear[item.gear] || 0, item.level);
+  }
 
   save();
   playBuy();
@@ -2220,7 +2473,9 @@ function shopCard(item) {
     '<div class="ic">' + item.emoji + "</div>" +
     '<div class="nm">' + item.name + "</div>" +
     '<div class="bl">' + item.blurb + "</div>" +
-    '<div class="pr">' + (owned ? "✅ You have it!" : item.cost.toLocaleString() + " points") + "</div>";
+    '<div class="pr">' + (owned ? "✅ You have it!" : item.cost.toLocaleString() + " points") +
+      (item.trap ? '<br><span style="font-size:13px;color:#9fd3ff">you have ' + ownedCount(item) + "</span>" : "") +
+      "</div>";
 
   if (!owned) {
     const b = document.createElement("button");
@@ -2252,7 +2507,7 @@ function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
-function goHome() { world = null; magicArmed = false; updateHomeText(); show("home"); }
+function goHome() { world = null; armedTrap = null; updateHomeText(); show("home"); }
 
 /* Leaving the shop or the book puts him back exactly where he was.
    If he was in the middle of a dive, the dive is still going. */
@@ -2297,19 +2552,47 @@ function updateHomeText() {
 
 function refresh() {
   document.getElementById("scoreNum").textContent = state.score.toLocaleString();
-  document.getElementById("magicNum").textContent = state.magic;
-  const btn = document.getElementById("magicBtn");
-  btn.disabled = state.magic < 1;
-  btn.textContent = magicArmed ? "🪄 MAGIC ON!" : "🪄 Magic";
+  document.getElementById("magicNum").textContent = totalTraps();
+  const bucketNum = document.getElementById("bucketNum");
+  if (bucketNum) bucketNum.textContent = state.bucket.length + "/" + BUCKET_SIZE;
+  drawTrapTray();
+  drawPowerTray();
   updateHomeText();
   updateHint();
 }
+
+/* one button per kind of trap, with how many he has left */
+function drawTrapTray() {
+  const tray = document.getElementById("trapTray");
+  if (!tray) return;
+  tray.innerHTML = "";
+  TRAPS.forEach(t => {
+    const n = trapCount(t.id);
+    /* the giant trap is always shown; the others only once he owns one */
+    if (!n && t.id !== "giant") return;
+    const b = document.createElement("button");
+    b.className = "trapBtn" + (armedTrap === t.id ? " on" : "") + (n ? "" : " empty");
+    b.style.color = t.color;
+    b.style.borderColor = armedTrap === t.id ? t.color : "#4a7ab5";
+    b.innerHTML = t.emoji + '<span class="n">' + n + "</span>";
+    b.title = t.name + " — " + t.blurb;
+    b.disabled = !n;
+    b.onclick = () => armTrap(t.id);
+    tray.appendChild(b);
+  });
+}
+
+/* number keys pick a trap */
+addEventListener("keydown", e => {
+  const t = TRAPS.find(x => x.key === e.key);
+  if (t) armTrap(t.id);
+});
 
 function updateHint() {
   const h = document.getElementById("hint");
   if (!world || flashHint._m) return;
   const near = nearestSpot();
-  h.classList.toggle("magicOn", magicArmed && !world.reveal);
+  h.classList.toggle("magicOn", !!armedTrap && !world.reveal);
 
   const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow" };
   const OPEN = {
@@ -2342,8 +2625,14 @@ function updateHint() {
     h.textContent = "Ohhh what is it?!";
   } else if (world.blocked > 0) {
     h.textContent = "🔒 You need the " + (nextGateItem(world.kind) || "next gear") + " from the 🛒 shop to get past here.";
-  } else if (magicArmed) {
-    h.textContent = "🪄 Magic is ON! Open a " + thing + " to catch something HUGE!";
+  } else if (armedTrap) {
+    const t = trapDef(armedTrap);
+    const WHAT = {
+      giant: "to catch something HUGE!", shrink: "to catch something TINY!",
+      rainbow: "to catch something you've never seen!", double: "to catch TWO at once!",
+      mystery: "and it could be ANYTHING!"
+    };
+    h.textContent = t.emoji + " " + t.name + " is ON! Open a " + thing + " " + WHAT[armedTrap];
   } else if (near) {
     h.textContent = "Press SPACE to " + (inPool ? "look in the tide pool!" : OPEN[world.kind]);
   } else {
@@ -2441,6 +2730,322 @@ function makePlaceholder(txt) {
   d.textContent = txt;
   return d;
 }
+
+/* ============================================================
+   POWERS — shop things he presses and watches happen.
+   Each one has a short cooldown so it stays special.
+   ============================================================ */
+const POWERS = [
+  { id:"whistle", emoji:"📢", name:"Whistle", cool: 1500 },
+  { id:"freeze",  emoji:"⏱️", name:"Freeze",  cool: 900 },
+  { id:"magnet",  emoji:"🧲", name:"Magnet",  cool: 700 },
+  { id:"xray",    emoji:"🥸", name:"X-Ray",   cool: 1100 }
+];
+let powerReady = { whistle: 0, freeze: 0, magnet: 0, xray: 0 };
+
+function usePower(id) {
+  if (!world || frozen()) return;
+  if (!state.gear[id]) return;
+  if (world.t < powerReady[id]) { beep(200, 120, "square", .05); return; }
+
+  const p = POWERS.find(x => x.id === id);
+
+  if (id === "whistle") {
+    /* everything close by pops open, one after another */
+    const near = world.spots
+      .filter(s => !s.opened && Math.hypot(s.x - world.player.x, s.y - world.player.y) < 460)
+      .slice(0, 4);
+    if (!near.length) { flashHint("📢 Nothing nearby to call!"); return; }
+    flashHint("📢 You blew the whistle — everything is coming out!");
+    near.forEach((s, i) => setTimeout(() => {
+      if (!world || s.opened) return;
+      whistleQueue.push(s);
+    }, i * 900));
+  }
+
+  if (id === "freeze") {
+    if (!world.wanderer) { flashHint("⏱️ Nothing big is out there to freeze!"); return; }
+    world.wanderer.frozen = 900;
+    world.wanderer.vx = 0;
+    flashHint("⏱️ FROZEN! Swim over and catch it before it wakes up!");
+    [880, 660, 440].forEach((n, i) => setTimeout(() => beep(n, 200, "sine", .08), i * 90));
+  }
+
+  if (id === "magnet") {
+    const three = world.spots
+      .filter(s => !s.opened)
+      .sort((a, b) => Math.hypot(a.x - world.player.x, a.y - world.player.y) -
+                      Math.hypot(b.x - world.player.x, b.y - world.player.y))
+      .slice(0, 3);
+    if (!three.length) { flashHint("🧲 Nothing left to pull!"); return; }
+    three.forEach((s, i) => {
+      s.x = world.player.x + (i - 1) * 120;
+      if (world.vertical) s.y = world.player.y + 40;
+      s.magnetGlow = 90;
+    });
+    flashHint("🧲 ZOOP! Three of them came right to you!");
+    [400, 600, 900].forEach((n, i) => setTimeout(() => beep(n, 120, "triangle", .07), i * 70));
+  }
+
+  if (id === "xray") {
+    world.xray = 330;                 /* about 5 seconds of seeing inside things */
+    flashHint("🥸 X-Ray on! You can see what's inside everything!");
+    beep(1200, 200, "sine", .06);
+  }
+
+  powerReady[id] = world.t + p.cool;
+  refresh();
+}
+
+/* the whistle opens things one at a time, waiting for each card to be closed */
+let whistleQueue = [];
+function runWhistleQueue() {
+  if (!world || frozen() || !whistleQueue.length) return;
+  const s = whistleQueue.shift();
+  if (!s || s.opened) return;
+  const zone = ZONES[world.kind][s.zone - 1];
+  const isPool = s.type === "pool";
+  const caught = catchWith(null, isPool ? "ocean" : world.kind, isPool ? ZONES.ocean[0] : zone);
+  if (!caught) return;
+  s.opened = true; s.timer = 220;
+  startReveal(s, caught.c, zone, false, caught);
+}
+
+function drawPowerTray() {
+  const tray = document.getElementById("powerTray");
+  if (!tray) return;
+  tray.innerHTML = "";
+  POWERS.forEach(p => {
+    if (!state.gear[p.id]) return;
+    const ready = !world || world.t >= powerReady[p.id];
+    const b = document.createElement("button");
+    b.className = "powerBtn" + (ready ? "" : " cooling");
+    b.innerHTML = p.emoji + '<span class="n">' + p.name + "</span>";
+    b.onclick = () => usePower(p.id);
+    tray.appendChild(b);
+  });
+}
+
+/* ============================================================
+   THE BUCKET
+   Everything he catches goes in here, and unlike the book the
+   creatures are alive: they swim and crawl around inside it.
+   ============================================================ */
+const bucketCv = document.getElementById("bucketCanvas");
+const bg2 = bucketCv.getContext("2d");
+let bucketPets = [];
+let bucketImgs = {};
+
+function bucketOpen() { return document.getElementById("bucket").classList.contains("active"); }
+
+function showBucket() {
+  sizeBucketCanvas();
+  bucketPets = state.bucket.map((id, i) => {
+    const c = CREATURES.find(x => x.id === id);
+    return {
+      id: id, c: c,
+      x: rand(60, Math.max(120, bucketCv.width - 60)),
+      y: rand(60, Math.max(120, bucketCv.height - 60)),
+      vx: rand(-1.1, 1.1) || .6, vy: rand(-.7, .7),
+      r: 30, wob: rand(0, 6.28), flip: Math.random() < .5 ? -1 : 1
+    };
+  });
+  /* load each photo once so they can be drawn in the tank */
+  state.bucket.forEach(id => {
+    if (bucketImgs[id] || !photoOf(id)) return;
+    const im = new Image();
+    im.src = photoOf(id);
+    bucketImgs[id] = im;
+  });
+
+  document.getElementById("bucketCount").textContent = state.bucket.length
+    ? "You are carrying " + state.bucket.length + " of " + BUCKET_SIZE + " creatures. Tap one to look at it!"
+    : "Your bucket is empty. Go catch something!";
+
+  buildBucketActions();
+  buildBucketSets();
+  document.getElementById("bucketNum").textContent = state.bucket.length + "/" + BUCKET_SIZE;
+  document.getElementById("scoreNum").textContent = state.score.toLocaleString();
+  labelBackButtons();
+  show("bucket");
+}
+
+function sizeBucketCanvas() {
+  const w = Math.min(880, window.innerWidth - 40);
+  bucketCv.width = w;
+  bucketCv.height = Math.max(260, Math.min(430, window.innerHeight - 330));
+}
+
+function bucketTick() {
+  if (bucketOpen()) {
+    const W = bucketCv.width, H = bucketCv.height;
+    bg2.clearRect(0, 0, W, H);
+
+    /* water in the bucket */
+    const grad = bg2.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, "#1b4f74");
+    grad.addColorStop(1, "#0b2a44");
+    bg2.fillStyle = grad;
+    bg2.fillRect(0, 0, W, H);
+    bg2.fillStyle = "rgba(255,255,255,.07)";
+    for (let i = 0; i < 5; i++) {
+      const y = 26 + i * 30 + Math.sin(Date.now() / 900 + i) * 5;
+      bg2.fillRect(0, y, W, 2);
+    }
+
+    bucketPets.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.wob += .05;
+      if (p.x < p.r) { p.x = p.r; p.vx *= -1; p.flip *= -1; }
+      if (p.x > W - p.r) { p.x = W - p.r; p.vx *= -1; p.flip *= -1; }
+      if (p.y < p.r) { p.y = p.r; p.vy *= -1; }
+      if (p.y > H - p.r) { p.y = H - p.r; p.vy *= -1; }
+
+      const bob = Math.sin(p.wob) * 3;
+      bg2.save();
+      bg2.translate(p.x, p.y + bob);
+
+      /* a round window with the animal's photo in it */
+      const im = bucketImgs[p.id];
+      bg2.beginPath(); bg2.arc(0, 0, p.r, 0, 6.3);
+      bg2.fillStyle = "#0a1a2a"; bg2.fill();
+      if (im && im.complete && im.naturalWidth) {
+        bg2.save();
+        bg2.beginPath(); bg2.arc(0, 0, p.r - 3, 0, 6.3); bg2.clip();
+        bg2.scale(p.flip, 1);
+        bg2.drawImage(im, -p.r, -p.r, p.r * 2, p.r * 2);
+        bg2.restore();
+      } else {
+        bg2.font = "30px serif"; bg2.textAlign = "center";
+        bg2.fillText(p.c ? p.c.emoji : "❓", 0, 11);
+      }
+      bg2.lineWidth = 3;
+      bg2.strokeStyle = p.c ? TIERS[p.c.tier].color : "#4a7ab5";
+      bg2.beginPath(); bg2.arc(0, 0, p.r, 0, 6.3); bg2.stroke();
+
+      /* a few bubbles trailing behind */
+      bg2.fillStyle = "rgba(255,255,255,.35)";
+      bg2.beginPath(); bg2.arc(-p.flip * (p.r + 6), -6 + Math.sin(p.wob * 2) * 4, 2.5, 0, 6.3); bg2.fill();
+      bg2.restore();
+    });
+
+    if (!bucketPets.length) {
+      bg2.fillStyle = "rgba(255,255,255,.5)";
+      bg2.font = "bold 20px sans-serif"; bg2.textAlign = "center";
+      bg2.fillText("empty!", bucketCv.width / 2, bucketCv.height / 2);
+    }
+  }
+  requestAnimationFrame(bucketTick);
+}
+bucketTick();
+
+/* tap a creature in the bucket to read about it */
+bucketCv.addEventListener("pointerdown", e => {
+  const r = bucketCv.getBoundingClientRect();
+  const x = (e.clientX - r.left) * (bucketCv.width / r.width);
+  const y = (e.clientY - r.top) * (bucketCv.height / r.height);
+  const hit = bucketPets.find(p => Math.hypot(p.x - x, p.y - y) < p.r + 4);
+  if (hit && hit.c) {
+    fillCard(hit.c, {});
+    document.getElementById("overlay").classList.add("show");
+  }
+});
+
+function bucketNote(msg) {
+  const el = document.getElementById("bucketNote");
+  el.textContent = msg;
+  clearTimeout(bucketNote._t);
+  bucketNote._t = setTimeout(() => { el.textContent = ""; }, 5000);
+}
+
+function buildBucketActions() {
+  const box = document.getElementById("bucketActions");
+  box.innerHTML = "";
+
+  /* trade the little ones for a magic trap */
+  const littles = state.bucket.filter(id => {
+    const c = CREATURES.find(x => x.id === id);
+    return c && (c.tier === "common" || c.tier === "uncommon");
+  });
+  const tradeBtn = document.createElement("button");
+  tradeBtn.className = "btn " + (littles.length >= 2 ? "purple" : "gray");
+  tradeBtn.textContent = "🪄 Trade 2 little ones for a Giant Trap";
+  tradeBtn.disabled = littles.length < 2;
+  tradeBtn.onclick = () => {
+    for (let i = 0; i < 2; i++) {
+      const idx = state.bucket.indexOf(littles[i]);
+      if (idx > -1) state.bucket.splice(idx, 1);
+    }
+    state.magic++;
+    save(); playBuy(); confettiBurst(60);
+    showBucket(); refresh();
+    bucketNote("Traded 2 creatures for a 🪄 Giant Trap!");
+  };
+  box.appendChild(tradeBtn);
+
+  /* tip the whole bucket into the book for a bonus */
+  const emptyBtn = document.createElement("button");
+  emptyBtn.className = "btn " + (state.bucket.length ? "gold" : "gray");
+  const bonus = bucketBonus();
+  emptyBtn.textContent = state.bucket.length
+    ? "📖 Put them all in my book  (+" + bonus.toLocaleString() + " points)"
+    : "📖 Nothing to put away yet";
+  emptyBtn.disabled = !state.bucket.length;
+  emptyBtn.onclick = () => {
+    const n = state.bucket.length;
+    state.score += bucketBonus();
+    state.bucket = [];
+    save(); playFanfare(); confettiBurst(120);
+    showBucket(); refresh();
+    bucketNote("Put " + n + " creatures safely in your book!");
+  };
+  box.appendChild(emptyBtn);
+}
+
+/* what emptying the bucket is worth, sets included */
+function bucketBonus() {
+  let total = 0;
+  state.bucket.forEach(id => {
+    const c = CREATURES.find(x => x.id === id);
+    if (c) total += TIERS[c.tier].points;
+  });
+  bucketSets().forEach(set => { if (set.done) total += set.bonus; });
+  return total;
+}
+
+/* little collections he can aim for */
+function bucketSets() {
+  const cs = state.bucket.map(id => CREATURES.find(x => x.id === id)).filter(Boolean);
+  const worlds = new Set(cs.map(c => c.where));
+  const tierCount = {};
+  cs.forEach(c => { tierCount[c.tier] = (tierCount[c.tier] || 0) + 1; });
+  const tiny = cs.filter(c => c.tiny).length;
+  const endemic = cs.filter(c => c.endemicTo).length;
+
+  return [
+    { label: "🌍 One from all 4 places (" + worlds.size + "/4)", done: worlds.size >= 4, bonus: 2000 },
+    { label: "🔬 3 tiny ones (" + tiny + "/3)", done: tiny >= 3, bonus: 600 },
+    { label: "⛵ 3 island-only ones (" + endemic + "/3)", done: endemic >= 3, bonus: 1200 },
+    { label: "💜 3 EPICS (" + (tierCount.epic || 0) + "/3)", done: (tierCount.epic || 0) >= 3, bonus: 1500 },
+    { label: "🪣 A full bucket (" + state.bucket.length + "/" + BUCKET_SIZE + ")", done: state.bucket.length >= BUCKET_SIZE, bonus: 2500 }
+  ];
+}
+
+function buildBucketSets() {
+  const box = document.getElementById("bucketSets");
+  box.innerHTML = "";
+  const head = document.createElement("div");
+  head.style.cssText = "width:100%;font-size:15px;color:#9fd3ff;margin-bottom:4px";
+  head.textContent = "Bucket bonuses — fill these up before you put them in your book:";
+  box.appendChild(head);
+  bucketSets().forEach(set => {
+    const chip = document.createElement("div");
+    chip.className = "setChip" + (set.done ? " done" : "");
+    chip.textContent = (set.done ? "✅ " : "") + set.label + "  +" + set.bonus.toLocaleString();
+    box.appendChild(chip);
+  });
+}
+
+addEventListener("resize", () => { if (bucketOpen()) sizeBucketCanvas(); });
 
 /* ---------- confetti ---------- */
 const cvs = document.getElementById("confetti");

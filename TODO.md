@@ -104,18 +104,32 @@ are blind, pale, and strange, which is a good pairing with the island idea.
 
 ## Still to build
 
-- [ ] **A bucket to keep the creatures he catches in.** Needs a decision on what it
-      *does* — see the note below.
-- [ ] **His brother Reece as a character.** Playable second character, or someone who
-      comes along with him?
+- [x] **A bucket to keep the creatures he catches in.** Everything he catches goes in it,
+      and inside the bucket they are ALIVE — swimming and crawling around in a tank he can
+      tap. Two commons trade for a Giant Trap (so duplicates stop being a letdown), five
+      bucket bonuses to fill, and tipping it into the book banks a big score.
+- [ ] **His brother Reece as a character.** Recommended: a companion who follows Cam,
+      points at rare things, and has his own favourite kind of creature that pays a bonus
+      when Cam catches one. Let Reece pick the favourite himself.
 
 ## Dad's read on what Cam actually loves
 
 Variety in creatures, using magic traps to do magic things, and shop items that give
 him powers. Anything we build should feed one of those three.
 
-- [ ] Magic traps that do different magic things, not just "catch something big"
-- [ ] Shop items that feel like powers rather than upgrades
+- [x] **Magic traps that do different magic things.** Five kinds now, switchable from a
+      tray (or number keys 1-5):
+      🪄 Giant — the original.
+      🔬 Shrink — catches the tiniest creature and shows it blown up giant, x5 points.
+      🌈 Rainbow — always something he has never seen, hunting wider and wider until it
+      finds one; refunds itself if he has found all 153.
+      ✌️ Double — two creatures, two cards, one press.
+      ❓ Mystery — reaches anywhere in the world, including places he cannot get to yet,
+      and tells him where it went.
+- [x] **Shop items that feel like powers.** Four he presses, each on a cooldown:
+      📢 Whistle (everything nearby pops open one after another), ⏱️ Time Freeze (holds a
+      roaming giant still), 🧲 Super Magnet (yanks three traps to him), 🥸 X-Ray Goggles
+      (see the rarity inside everything — and the pick honours what it showed him).
 - [ ] More variety per session, so no two trips feel the same
 
 ---
