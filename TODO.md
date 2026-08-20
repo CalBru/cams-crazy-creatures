@@ -122,13 +122,18 @@ are blind, pale, and strange, which is a good pairing with the island idea.
       - **Carter** — REPTILE KEEPER. Every reptile is worth double for him, he wears his
         bearded dragon on his shirt, and **Jack** — his real bearded dragon, with his real
         photo in `images/jack.jpg` — only appears in the desert when Carter is exploring.
+      - **Campbell** — AXOLOTL FRIEND. Axolotls, salamanders, newts and the olm are worth
+        double for her. The axolotl is legendary and lives in the Crystal Caverns, so her
+        favourite animal is a reason to buy the Shovel and dig.
 
       Everyone shares one creature book. Swapping who is exploring never touches anything
       anybody has already found, and the game remembers who went last.
 
 - [ ] **More characters.** The roster is `CHARACTERS` in index.html — a name, a few
-      colours, a hair style, and a `loves` pattern is a whole new kid. Ages were dropped
-      on purpose: asking everybody their age added a step and told the game nothing.
+      colours, a hair style (`swoosh`/`sweep`/`crop`/`bob`), optionally `dress: true`, and
+      a `loves` pattern is a whole new kid. Ages were dropped on purpose: asking everybody
+      their age added a step and told the game nothing. Anybody with the link gets all of
+      them, so a new kid only has to be added once.
 
 ## Dad's read on what Cam actually loves
 

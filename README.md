@@ -15,6 +15,7 @@ them in the game, so the picture on the card is exactly who shows up in the wate
 | **Cam** | 🪄 Magic Trap Master — every crab hands him **two** magic traps |
 | **Reece** | 🐙 Octopus Lover — octopuses, squid, cuttlefish and nautiluses pay **double** |
 | **Carter** | 🦎 Reptile Keeper — every reptile pays **double**, and **Jack** only appears for him |
+| **Campbell** | 🩷 Axolotl Friend — axolotls, salamanders, newts and the olm pay **double** |
 
 **Jack is real.** He is Carter's bearded dragon, the photo in `images/jack.jpg` is Jack
 himself, and he waits in The Desert for whenever Carter goes looking. A creature with an
@@ -22,10 +23,13 @@ himself, and he waits in The Desert for whenever Carter goes looking. A creature
 catches, the magic trap, the rainbow trap and the mystery trap alike — for everybody else.
 
 Everyone shares one creature book. Swapping who is exploring never touches what anybody
-has already found, and the game remembers who went last. Adding another kid means adding
-an entry to `CHARACTERS` in index.html: a name, a few colours, a hair style
-(`swoosh`/`sweep`/`crop`), and optionally a `loves` pattern and something printed on the
-shirt.
+has already found, and the game remembers who went last. Every kid is on the shared link,
+so anybody who opens it can pick any of them.
+
+Adding another kid means adding an entry to `CHARACTERS` in index.html: a name, a few
+colours, a hair style (`swoosh`/`sweep`/`crop`/`bob`), and optionally `dress: true`, a
+`loves` pattern, and something printed on the shirt. Ages are deliberately not a field —
+asking everybody their age added a step and told the game nothing.
 
 ## How you play
 

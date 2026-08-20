@@ -311,11 +311,11 @@
   /* the who's-exploring screen */
   .whoPicker {
     display: flex; flex-wrap: wrap; gap: 18px; justify-content: center;
-    max-width: 960px; margin: 8px auto 0;
+    max-width: 1180px; margin: 8px auto 0;
   }
   .whoCard {
     background: #16283f; border: 5px solid #2f4a6b; border-radius: 22px;
-    padding: 14px 14px 18px; width: 250px; cursor: pointer; color: #eaf6ff;
+    padding: 14px 12px 18px; width: 232px; cursor: pointer; color: #eaf6ff;
     font-family: inherit; text-align: center; transition: transform .08s, border-color .08s;
   }
   .whoCard:hover, .whoCard:focus { border-color: #ffcc00; transform: translateY(-4px); }
@@ -506,7 +506,7 @@ const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
    ============================================================ */
 const CHARACTERS = {
   cam: {
-    id: "cam", name: "CAM", label: "Cam", scale: 1,
+    id: "cam", name: "CAM", label: "Cam", scale: 1, chip: "🧒",
     hair: "#8b5a2b", hairL: "#a8703a", hairStyle: "swoosh",
     skin: "#f6cfae", skinD: "#e3ac86", eyes: "#5aa9dd",
     shirt: "#2f7d52", shirtL: "#3f9c69", shorts: "#3a4a63", shoes: "#e63946",
@@ -516,7 +516,7 @@ const CHARACTERS = {
     crabDouble: true, loves: null
   },
   reece: {
-    id: "reece", name: "REECE", label: "Reece", scale: .8,
+    id: "reece", name: "REECE", label: "Reece", scale: .8, chip: "🧒",
     hair: "#c8a05e", hairL: "#e0c088", hairStyle: "sweep",
     skin: "#f9d6b8", skinD: "#eab595", eyes: "#7ec8f0",
     shirt: "#ffffff", shirtL: "#e6ecf2", shorts: "#d8c49a", shoes: "#f2f2f2",
@@ -526,7 +526,7 @@ const CHARACTERS = {
     loves: { re: /octopus|squid|cuttlefish|nautilus/i, label: "🐙 REECE'S FAVOURITE ANIMAL!", mult: 2 }
   },
   carter: {
-    id: "carter", name: "CARTER", label: "Carter", scale: 1.05,
+    id: "carter", name: "CARTER", label: "Carter", scale: 1.05, chip: "🧑",
     hair: "#b98f52", hairL: "#d8b478", hairStyle: "crop",
     skin: "#f7d3b2", skinD: "#e4b18e", eyes: "#79b7dd",
     shirt: "#8fc0e0", shirtL: "#a9d3ee", shorts: "#e4dcc2", shoes: "#efe8dc",
@@ -535,9 +535,20 @@ const CHARACTERS = {
     perk: "Carter keeps a real bearded dragon called Jack. Every reptile is worth DOUBLE points for him — and Jack only shows up when Carter is the one exploring.",
     loves: { re: /lizard|snake|gecko|dragon|iguana|tortoise|turtle|croc|viper|cobra|python|skink|chameleon|tuatara|monitor|adder|mamba|anole|caiman|gharial|boa/i,
              label: "🦎 CARTER'S KIND OF ANIMAL!", mult: 2 }
+  },
+  campbell: {
+    id: "campbell", name: "CAMPBELL", label: "Campbell", scale: 1, chip: "👧",
+    hair: "#e2c684", hairL: "#f6e5b6", hairStyle: "bob",
+    skin: "#f8d7bb", skinD: "#e8bb99", eyes: "#6fa8cf",
+    shirt: "#1d1d24", shirtL: "#2c2c36", shorts: "#1d1d24", shoes: "#f4c3d2",
+    freckles: true, shirtArt: null, dress: true,
+    perkTitle: "🩷 AXOLOTL FRIEND",
+    perk: "Campbell's favourite animal is the axolotl. Axolotls and every salamander, newt and olm are worth DOUBLE points for her. The axolotl is hiding in the Crystal Caverns, underground.",
+    loves: { re: /axolotl|salamander|newt|\bolm\b|mudpuppy|siren/i,
+             label: "🩷 CAMPBELL'S FAVOURITE ANIMAL!", mult: 2 }
   }
 };
-const CHAR_ORDER = ["cam", "reece", "carter"];
+const CHAR_ORDER = ["cam", "reece", "carter", "campbell"];
 function me() { return CHARACTERS[state.who] || CHARACTERS.cam; }
 let state = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
               bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0, who: null };
@@ -2219,7 +2230,8 @@ function drawKid(ctx, x, y, p, ocean, ch, withName) {
   const gear = state.gear;
   const SUIT = ocean ? (gear.suit >= 3 ? "#5a2233" : (gear.suit >= 2 ? "#22405e" : "#1f2f4d")) : ch.shirt;
   const SUIT_L = ocean ? (gear.suit >= 3 ? "#7d3548" : "#31456b") : ch.shirtL;
-  const LEG = ocean ? SUIT : ch.shorts;
+  const wearsDress = !!ch.dress && !ocean;
+  const LEG = ocean ? SUIT : (wearsDress ? SKIN : ch.shorts);
 
   ctx.save();
   ctx.translate(x, y + bob);
@@ -2251,6 +2263,25 @@ function drawKid(ctx, x, y, p, ocean, ch, withName) {
   ctx.beginPath(); ctx.moveTo(-9, -12); ctx.lineTo(0, -2); ctx.lineTo(9, -12); ctx.closePath(); ctx.fill();
   ctx.fillStyle = "#d9c07a";
   ctx.beginPath(); ctx.arc(0, 4, 2.4, 0, 6.3); ctx.fill();
+
+  /* a dress: it flares out from the waist and covers the top of the legs */
+  if (wearsDress) {
+    ctx.fillStyle = SUIT;
+    ctx.beginPath();
+    ctx.moveTo(-14, 2);
+    ctx.lineTo(14, 2);
+    ctx.quadraticCurveTo(20, 16, 21, 26);
+    ctx.quadraticCurveTo(0, 31, -21, 26);
+    ctx.quadraticCurveTo(-20, 16, -14, 2);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = SUIT_L;
+    ctx.beginPath();
+    ctx.moveTo(-14, 2); ctx.lineTo(-6, 2);
+    ctx.quadraticCurveTo(-9, 16, -11, 27);
+    ctx.quadraticCurveTo(-17, 27, -21, 26);
+    ctx.quadraticCurveTo(-20, 16, -14, 2);
+    ctx.closePath(); ctx.fill();
+  }
 
   /* what's printed on the shirt — Carter wears his bearded dragon */
   if (!ocean && ch.shirtArt === "dragon") drawShirtDragon(ctx);
@@ -2291,6 +2322,37 @@ function drawKid(ctx, x, y, p, ocean, ch, withName) {
     ctx.beginPath();
     ctx.moveTo(-11, -40); ctx.quadraticCurveTo(0, -46, 11, -40);
     ctx.quadraticCurveTo(0, -42.5, -11, -40);
+    ctx.closePath(); ctx.fill();
+  } else if (ch.hairStyle === "bob") {
+    /* Campbell: blonde, straight, past her chin. The whole head of hair is
+       drawn first and her face is laid back over the top of it, so the hair
+       frames her face the way a bob actually does. */
+    ctx.beginPath();
+    ctx.moveTo(-18, -12);
+    ctx.quadraticCurveTo(-21, -36, -12, -47);
+    ctx.quadraticCurveTo(0, -53, 12, -47);
+    ctx.quadraticCurveTo(21, -36, 18, -12);
+    ctx.quadraticCurveTo(9, -8, 0, -9);
+    ctx.quadraticCurveTo(-9, -8, -18, -12);
+    ctx.closePath(); ctx.fill();
+    /* her face, back over the hair */
+    ctx.fillStyle = SKIN;
+    ctx.beginPath(); ctx.ellipse(0, -28, 12.6, 14.6, 0, 0, 6.3); ctx.fill();
+    /* the fringe, sitting on her forehead */
+    ctx.fillStyle = HAIR;
+    ctx.beginPath();
+    ctx.moveTo(-13.5, -33);
+    ctx.quadraticCurveTo(-13, -46, 1, -46);
+    ctx.quadraticCurveTo(14, -45.5, 13.5, -32);
+    ctx.quadraticCurveTo(6, -38.5, -3, -37.5);
+    ctx.quadraticCurveTo(-10, -37.5, -13.5, -33);
+    ctx.closePath(); ctx.fill();
+    /* one bright streak where the light hits it */
+    ctx.fillStyle = HAIR_L;
+    ctx.beginPath();
+    ctx.moveTo(-4, -44);
+    ctx.quadraticCurveTo(6, -49, 13, -42);
+    ctx.quadraticCurveTo(4, -43.5, -4, -41);
     ctx.closePath(); ctx.fill();
   } else if (ch.hairStyle === "sweep") {
     /* Reece: swept right across his forehead */
@@ -2984,7 +3046,7 @@ function refresh() {
   const bucketNum = document.getElementById("bucketNum");
   if (bucketNum) bucketNum.textContent = state.bucket.length + "/" + BUCKET_SIZE;
   const wb = document.getElementById("whoBtn");
-  if (wb) wb.textContent = (state.who === "reece" ? "🧒 " : state.who === "carter" ? "🧑 " : "🧒 ") + me().label;
+  if (wb) wb.textContent = (me().chip || "🧒") + " " + me().label;
   drawTrapTray();
   drawPowerTray();
   updateHomeText();
