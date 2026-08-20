@@ -523,7 +523,7 @@ function startWorld(kind) {
 
   const vert = isVertical(kind);
   const zoneCount = ZONES[kind].length;
-  const W = vert ? 2600 : (kind === "island" ? 5600 : 5200);
+  const W = vert ? 2600 : (kind === "island" ? 7000 : 5200);
   const H = vert ? (kind === "ocean" ? 6600 : 4600) : CH;
 
   world = {
@@ -544,10 +544,13 @@ function startWorld(kind) {
   };
 
   ZONES[kind].forEach(z => {
-    let perZone = vert ? 6 : 7;
-    /* the snorkel adds tide pools, so there's more to search on every island */
-    if (kind === "island" && state.gear.snorkel) perZone += 3;
+    /* islands hold fewer nests, because the tide pools need beach room too */
+    const perZone = vert ? 6 : (kind === "island" ? 6 : 7);
     for (let i = 0; i < perZone; i++) world.spots.push(makeSpot(z.n));
+    /* the snorkel mask opens up the tide pools down on the beach */
+    if (kind === "island" && state.gear.snorkel) {
+      for (let i = 0; i < 3; i++) world.spots.push(makeSpot(z.n, "pool"));
+    }
   });
 
   const DECO = {
@@ -608,8 +611,8 @@ function startWorld(kind) {
   refresh();
 }
 
-function makeSpot(zoneNum) {
-  const s = { zone: zoneNum, opened: false, timer: 0, wob: rand(0, 6.28), shake: 0 };
+function makeSpot(zoneNum, type) {
+  const s = { zone: zoneNum, type: type || "normal", opened: false, timer: 0, wob: rand(0, 6.28), shake: 0 };
   /* what the binoculars can see: a hint of how good this one is */
   s.hint = Math.random();
   placeSpot(s);
@@ -618,14 +621,27 @@ function makeSpot(zoneNum) {
 
 function placeSpot(s) {
   s.hint = Math.random();
-  if (world.vertical) {
-    const band = (world.ground - world.surface) / world.zoneCount;
-    s.x = rand(140, world.w - 140);
-    s.y = world.surface + band * (s.zone - 1) + rand(band * .2, band * .85);
-  } else {
-    const band = world.w / world.zoneCount;
-    s.x = band * (s.zone - 1) + rand(band * .1, band * .9);
-    s.y = world.ground - 26;
+  const zoneCount = world.zoneCount;
+
+  /* Try a few spots and take one that isn't sitting on top of another, so every
+     rock, nest and tide pool is reachable on its own. */
+  for (let attempt = 0; attempt < 40; attempt++) {
+    if (world.vertical) {
+      const band = (world.ground - world.surface) / zoneCount;
+      s.x = rand(140, world.w - 140);
+      s.y = world.surface + band * (s.zone - 1) + rand(band * .2, band * .85);
+    } else {
+      const band = world.w / zoneCount;
+      s.x = band * (s.zone - 1) + rand(band * .1, band * .9);
+      /* tide pools sit low on the wet sand, but still within reach as he walks */
+      s.y = world.ground - (s.type === "pool" ? 18 : 26);
+    }
+    let clear = true;
+    for (const other of world.spots) {
+      if (other === s) continue;
+      if (Math.hypot(other.x - s.x, other.y - s.y) < 130) { clear = false; break; }
+    }
+    if (clear) return;
   }
 }
 
@@ -873,34 +889,61 @@ function pressSpace() {
   const usingMagic = magicArmed && state.magic > 0;
   if (usingMagic) { state.magic--; magicArmed = false; }
   const zone = ZONES[world.kind][s.zone - 1];
-  let c = pickCreature(world.kind, zone, usingMagic);
+
+  /* A tide pool is a little piece of ocean sitting on the beach, so what's in it
+     is sea life — starfish, urchins, crabs — and a crab still earns a magic trap. */
+  const pool = s.type === "pool";
+  const pickWhere = pool ? "ocean" : world.kind;
+  const pickZone = pool ? ZONES.ocean[0] : zone;
+
+  let c = pickCreature(pickWhere, pickZone, usingMagic);
+  let rareHunt = pickCreature.rareHunt;
 
   /* the bug jar catches whichever of two was rarer */
   if (state.gear.bugjar && !world.vertical) {
-    const other = pickCreature(world.kind, zone, usingMagic);
-    if (other && TIERS[other.tier].points > TIERS[c.tier].points) c = other;
+    const other = pickCreature(pickWhere, pickZone, usingMagic);
+    if (other && c && TIERS[other.tier].points > TIERS[c.tier].points) { c = other; rareHunt = pickCreature.rareHunt; }
   }
+  if (!c) return;
   s.opened = true;
   s.timer = 220;
-  startReveal(s, c, usingMagic, zone, false);
+  startReveal(s, c, usingMagic, zone, false, rareHunt);
 }
 
 /* Pick a creature that lives in this zone. Mythics stay findable forever —
    they're just very, very rare, and the game counts how many times you've met one. */
+/* Pick a creature that lives in THIS zone. It must never reach into another
+   zone — Cam opened a magic trap in New Zealand and got a Komodo dragon, which
+   made no sense to him.
+
+   Some places have nothing big enough to need the magic trap (New Zealand,
+   the Backyard). There, the magic trap does a RARE HUNT instead: still an
+   animal from right here, but it searches out the rarest thing in the place. */
+const RARE_HUNT_WEIGHTS = { common: 0, uncommon: 1, rare: 8, epic: 26, legendary: 40, mythic: 12 };
+
+function inZone(where, zoneNum, magicOnly) {
+  return CREATURES.filter(c =>
+    c.where === where && c.zones.indexOf(zoneNum) !== -1 && (magicOnly ? c.magicOnly : !c.magicOnly));
+}
+
+/* Is there anything here that actually needs the magic trap? */
+function hasGiants(where, zoneNum) { return inZone(where, zoneNum, true).length > 0; }
+
 function pickCreature(where, zone, useMagic) {
-  let pool = CREATURES.filter(c =>
-    c.where === where &&
-    c.zones.indexOf(zone.n) !== -1 &&
-    (useMagic ? c.magicOnly : !c.magicOnly));
+  pickCreature.rareHunt = false;
+  let pool = inZone(where, zone.n, useMagic);
 
-  if (!pool.length) {
-    pool = CREATURES.filter(c => c.where === where && (useMagic ? c.magicOnly : !c.magicOnly));
+  if (useMagic && !pool.length) {
+    pickCreature.rareHunt = true;
+    pool = inZone(where, zone.n, false);
   }
-  if (!pool.length) pool = CREATURES.filter(c => c.where === where);
+  if (!pool.length) pool = inZone(where, zone.n, false);
+  if (!pool.length) return null;
 
+  const table = pickCreature.rareHunt ? RARE_HUNT_WEIGHTS : zone.weights;
   let total = 0;
   const weighted = pool.map(c => {
-    const w = zone.weights[c.tier] != null ? zone.weights[c.tier] : 1;
+    const w = table[c.tier] != null ? table[c.tier] : 1;
     total += w;
     return { c: c, upTo: total };
   });
@@ -908,17 +951,6 @@ function pickCreature(where, zone, useMagic) {
   const roll = Math.random() * total;
   for (const e of weighted) if (roll <= e.upTo) return e.c;
   return pool[pool.length - 1];
-}
-
-/* The rope ladder: pop straight back to the surface. */
-function climbOut() {
-  if (!world || frozen()) return;
-  if (!state.gear.ladder || world.kind !== "underground") return;
-  world.player.y = world.surface + 60;
-  world.player.vy = 0;
-  clampCamera();
-  flashHint("🪜 You climbed all the way back up!");
-  [523, 659, 784].forEach((n, i) => setTimeout(() => beep(n, 130, "triangle", .08), i * 70));
 }
 
 function armMagic() {
@@ -930,12 +962,13 @@ function armMagic() {
 /* ============================================================
    THE SLOW REVEAL — the best part is the waiting
    ============================================================ */
-function startReveal(spot, creature, usedMagic, zone, fromWanderer) {
+function startReveal(spot, creature, usedMagic, zone, fromWanderer, rareHunt) {
   const stars = TIERS[creature.tier].stars;
   const dur = creature.tier === "mythic" ? 190 : (stars >= 5 ? 150 : (stars >= 4 ? 125 : (stars >= 3 ? 100 : 70)));
   world.reveal = {
     x: spot.x, y: spot.y, c: creature, t: 0, dur: dur,
-    usedMagic: usedMagic, zone: zone, fromWanderer: !!fromWanderer, nextBeep: 0
+    usedMagic: usedMagic, zone: zone, fromWanderer: !!fromWanderer,
+    rareHunt: !!rareHunt, nextBeep: 0
   };
   if (spot.shake !== undefined) spot.shake = dur;
 }
@@ -956,7 +989,7 @@ function tickReveal() {
     const c = r.c;
     world.pops.push({ x: r.x, y: r.y - 20, emoji: c.emoji, life: 130 });
     world.reveal = null;
-    discover(c, r.usedMagic, r.zone);
+    discover(c, r.usedMagic, r.zone, r.rareHunt);
   }
 }
 
@@ -1544,6 +1577,21 @@ function drawSpot(s, cam, isNear) {
     [[-30, 22], [26, 20], [-14, 26], [16, 27]].forEach(pt => {
       g.beginPath(); g.arc(pt[0], pt[1], 4.5, 0, 6.3); g.fill();
     });
+  } else if (s.type === "pool") {
+    /* a tide pool: a puddle of sea left behind on the beach */
+    g.fillStyle = "#c9b98c";
+    g.beginPath(); g.ellipse(0, 6, 46, 21, 0, 0, 6.3); g.fill();
+    const shimmer = Math.sin(world.t / 30 + s.wob) * 2;
+    g.fillStyle = "#2f9fd0";
+    g.beginPath(); g.ellipse(0, 6, 38, 15 + shimmer * .3, 0, 0, 6.3); g.fill();
+    g.fillStyle = "rgba(160,235,255,.55)";
+    g.beginPath(); g.ellipse(-9, 1 + shimmer, 16, 5, -.2, 0, 6.3); g.fill();
+    g.fillStyle = "#8a8f9a";
+    [[-34, 12], [30, 10], [-20, 20]].forEach(pt => {
+      g.beginPath(); g.ellipse(pt[0], pt[1], 8, 5, 0, 0, 6.3); g.fill();
+    });
+    g.fillStyle = "#3f9e4d";
+    g.beginPath(); g.ellipse(24, 16, 7, 4, .4, 0, 6.3); g.fill();
   } else if (world.kind === "island") {
     /* a nest tucked in a bush */
     g.fillStyle = "#2f7d52";
@@ -1897,7 +1945,7 @@ function loop() {
 /* ============================================================
    FINDING A CREATURE
    ============================================================ */
-function discover(c, usedMagic, zone) {
+function discover(c, usedMagic, zone, rareHunt) {
   const tier = TIERS[c.tier];
   const isNew = !state.found.includes(c.id);
   let points = tier.points * zone.bonus;
@@ -1919,7 +1967,7 @@ function discover(c, usedMagic, zone) {
 
   save();
   refresh();
-  fillCard(c, { isNew: isNew, points: points, usedMagic: usedMagic, zone: zone });
+  fillCard(c, { isNew: isNew, points: points, usedMagic: usedMagic, zone: zone, rareHunt: rareHunt });
   document.getElementById("overlay").classList.add("show");
 }
 
@@ -1986,7 +2034,11 @@ function fillCard(c, opts) {
   if (c.magicOnly) line += "  🪄 (needs the magic trap)";
   if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
   if (c.givesMagic) line += "<br>🪄 A crab! You earned a MAGIC TRAP!";
-  if (opts.usedMagic && !c.breaksTrap) line += "<br>The magic trap grew GIANT to catch it!";
+  if (opts.usedMagic && !c.breaksTrap) {
+    line += opts.rareHunt
+      ? "<br>🪄 Nothing giant lives here, so the magic trap hunted down the rarest thing instead!"
+      : "<br>The magic trap grew GIANT to catch it!";
+  }
 
   /* meeting one again is something to brag about, not a repeat */
   const times = state.counts[c.id] || 0;
@@ -2037,7 +2089,8 @@ function buy(itemId) {
 
   /* buying a snorkel mid-island should add the tide pools right away */
   if (item.id === "snorkel" && world && world.kind === "island") {
-    ZONES.island.forEach(z => { for (let i = 0; i < 3; i++) world.spots.push(makeSpot(z.n)); });
+    ZONES.island.forEach(z => { for (let i = 0; i < 3; i++) world.spots.push(makeSpot(z.n, "pool")); });
+    flashHint("🤿 Tide pools opened up all along the beach!");
   }
   showShop();
   refresh();
@@ -2185,11 +2238,12 @@ function updateHint() {
   h.classList.toggle("magicOn", magicArmed && !world.reveal);
 
   const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow" };
-  const thing = THING[world.kind];
   const OPEN = {
     ocean: "open the trap!", land: "flip the rock!",
     island: "look in the nest!", underground: "dig out the burrow!"
   };
+  const inPool = near && near.type === "pool";
+  const thing = inPool ? "tide pool" : THING[world.kind];
   const GO = {
     ocean: "🏊 Swim DOWN — the deeper you go, the weirder they get!",
     land: "🚶 Walk RIGHT for rarer creatures! (up = jump)",
@@ -2204,7 +2258,7 @@ function updateHint() {
   } else if (magicArmed) {
     h.textContent = "🪄 Magic is ON! Open a " + thing + " to catch something HUGE!";
   } else if (near) {
-    h.textContent = "Press SPACE to " + OPEN[world.kind];
+    h.textContent = "Press SPACE to " + (inPool ? "look in the tide pool!" : OPEN[world.kind]);
   } else {
     h.textContent = GO[world.kind];
   }

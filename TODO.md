@@ -86,6 +86,40 @@ are blind, pale, and strange, which is a good pairing with the island idea.
 
 ---
 
+# Round 2 — from Cam, 2026-08-14
+
+## Fixed already
+
+- [x] **The snorkel didn't open the tide pools.** It was quietly adding more of the same
+      nests instead of anything he could see. Tide pools are now their own thing: a real
+      pool drawn on the wet sand, holding sea creatures (starfish, urchins, crabs) instead
+      of island birds — and a crab in a tide pool still earns a magic trap.
+- [x] **A magic trap in New Zealand opened a Komodo animal.** The picker fell back to
+      "anything in this world" when a zone had no giants, so it reached across the map.
+      It can never leave his zone now. Where nothing giant lives (New Zealand, the
+      Backyard), the magic trap does a **rare hunt** instead — still an animal from right
+      where he's standing, but it seeks out the rarest thing there, and the card says so.
+- [x] Spots no longer spawn on top of each other, so every rock, nest and pool is
+      reachable on its own.
+
+## Still to build
+
+- [ ] **A bucket to keep the creatures he catches in.** Needs a decision on what it
+      *does* — see the note below.
+- [ ] **His brother Reece as a character.** Playable second character, or someone who
+      comes along with him?
+
+## Dad's read on what Cam actually loves
+
+Variety in creatures, using magic traps to do magic things, and shop items that give
+him powers. Anything we build should feed one of those three.
+
+- [ ] Magic traps that do different magic things, not just "catch something big"
+- [ ] Shop items that feel like powers rather than upgrades
+- [ ] More variety per session, so no two trips feel the same
+
+---
+
 ## Open questions for Cam
 
 - Does he want the islands reached by **boat** (buy it once) or should they be open
