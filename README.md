@@ -2,7 +2,8 @@
 
 A creature-collecting exploration game designed by Cam (age 6). 198 real animals, each
 with a real photo and hand-written facts. Open `index.html` in a
-browser — no installs, no server, works offline.
+browser — no installs, no server. The shared copy everyone plays is
+**https://calbru.github.io/cams-crazy-creatures/**, deployed from `main` by GitHub Pages.
 
 ## How you play
 
@@ -91,6 +92,29 @@ no photo at all and falls back to its emoji, which is fine.
 error page, and an earlier version saved those as `.jpg` — seven silently broken photos.
 `looksLikeImage()` now checks the JPEG/PNG magic bytes and the file size, and re-running
 the fetcher re-downloads anything that failed that check.
+
+## Adding animals from inside the game
+
+There is an **➕ Add** button in the game. Type any real animal, pick it from a grid of
+Wikipedia photos, and then Cam answers two questions: **where does it live** (which world
+and which zone) and **how cool is it** (one to five stars, which sets its points — his
+own rule from the very first interview). It becomes a real creature immediately: findable
+in traps and under rocks, in his book, in his bucket.
+
+Animals added this way start with **no facts**, because nobody has written any. There's a
+**📝 Add a fact** button — Cam says it, you type it, and it sticks.
+
+Two things worth knowing:
+
+- A grown-up is at the keyboard doing the typing, which means an adult sees the photo on a
+  thumbnail before it ever enters the game. That's the review step that makes this safe.
+- Animals added in the game live in **that browser's save**. To make them permanent for
+  every device, press **💾 Save these to a file** and run the downloaded file through
+  `tools/add-batch.js` (it's written in exactly that format). Then they're in the catalog
+  for good, with a proper photo in `images/` and facts anyone can read.
+
+Search results are filtered to things whose Wikipedia description sounds like a living
+thing, so "praying mantis" doesn't offer the rock band or the 1988 naval operation.
 
 ## Adding creatures
 

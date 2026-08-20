@@ -108,6 +108,10 @@ are blind, pale, and strange, which is a good pairing with the island idea.
       and inside the bucket they are ALIVE — swimming and crawling around in a tank he can
       tap. Two commons trade for a Giant Trap (so duplicates stop being a letdown), five
       bucket bonuses to fill, and tipping it into the book banks a big score.
+- [x] **Add animals from inside the game.** ➕ Add button: search Wikipedia live, pick from
+      photo thumbnails, then Cam chooses which world, which zone, and how many stars it's
+      worth. It's a real creature straight away, and he writes its facts himself. Export
+      to a file to promote them into the permanent catalog.
 - [ ] **His brother Reece as a character.** Recommended: a companion who follows Cam,
       points at rare things, and has his own favourite kind of creature that pays a bonus
       when Cam catches one. Let Reece pick the favourite himself.
