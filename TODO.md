@@ -131,6 +131,10 @@ him powers. Anything we build should feed one of those three.
       roaming giant still), 🧲 Super Magnet (yanks three traps to him), 🥸 X-Ray Goggles
       (see the rarity inside everything — and the pick honours what it showed him).
 - [ ] More variety per session, so no two trips feel the same
+- [ ] **The Wild Trap** — catches a real animal that isn't in the game, with no facts
+      written, and Cam writes the facts himself. Full spec in `WILD-TRAP.md`, including
+      why the live-Wikipedia version was tested and rejected (12 seconds a pull, and it
+      served up specimen-drawer molluscs).
 
 ---
 
