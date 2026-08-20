@@ -1,0 +1,4 @@
+# the single-file shareable build gets rebuilt on demand; no need to store it
+share/
+.build-thumbs/
+.DS_Store

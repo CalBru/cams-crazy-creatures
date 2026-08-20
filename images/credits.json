@@ -1,0 +1,762 @@
+{
+  "crab": {
+    "file": "crab.jpg",
+    "title": "Crab",
+    "url": "https://en.wikipedia.org/wiki/Crab"
+  },
+  "starfish": {
+    "file": "starfish.jpg",
+    "title": "Pisaster ochraceus",
+    "url": "https://en.wikipedia.org/wiki/Pisaster_ochraceus"
+  },
+  "urchin": {
+    "file": "urchin.jpg",
+    "title": "Sea urchin",
+    "url": "https://en.wikipedia.org/wiki/Sea_urchin"
+  },
+  "clownfish": {
+    "file": "clownfish.jpg",
+    "title": "Clownfish",
+    "url": "https://en.wikipedia.org/wiki/Clownfish"
+  },
+  "jellyfish": {
+    "file": "jellyfish.jpg",
+    "title": "Jellyfish",
+    "url": "https://en.wikipedia.org/wiki/Jellyfish"
+  },
+  "pufferfish": {
+    "file": "pufferfish.jpg",
+    "title": "Long-spine porcupinefish",
+    "url": "https://en.wikipedia.org/wiki/Long-spine_porcupinefish"
+  },
+  "seahorse": {
+    "file": "seahorse.jpg",
+    "title": "Seahorse",
+    "url": "https://en.wikipedia.org/wiki/Seahorse"
+  },
+  "turtle": {
+    "file": "turtle.jpg",
+    "title": "Sea turtle",
+    "url": "https://en.wikipedia.org/wiki/Sea_turtle"
+  },
+  "octopus": {
+    "file": "octopus.jpg",
+    "title": "Octopus",
+    "url": "https://en.wikipedia.org/wiki/Octopus"
+  },
+  "dolphin": {
+    "file": "dolphin.jpg",
+    "title": "Bottlenose dolphin",
+    "url": "https://en.wikipedia.org/wiki/Bottlenose_dolphin"
+  },
+  "barracuda": {
+    "file": "barracuda.jpg",
+    "title": "Barracuda",
+    "url": "https://en.wikipedia.org/wiki/Barracuda"
+  },
+  "marlin": {
+    "file": "marlin.jpg",
+    "title": "Marlin",
+    "url": "https://en.wikipedia.org/wiki/Marlin"
+  },
+  "mantaray": {
+    "file": "mantaray.jpg",
+    "title": "Manta ray",
+    "url": "https://en.wikipedia.org/wiki/Manta_ray"
+  },
+  "hammerhead": {
+    "file": "hammerhead.jpg",
+    "title": "Hammerhead shark",
+    "url": "https://en.wikipedia.org/wiki/Hammerhead_shark"
+  },
+  "greatwhite": {
+    "file": "greatwhite.jpg",
+    "title": "Great white shark",
+    "url": "https://en.wikipedia.org/wiki/Great_white_shark"
+  },
+  "sunfish": {
+    "file": "sunfish.jpg",
+    "title": "Ocean sunfish",
+    "url": "https://en.wikipedia.org/wiki/Ocean_sunfish"
+  },
+  "nautilus": {
+    "file": "nautilus.jpg",
+    "title": "Nautilus",
+    "url": "https://en.wikipedia.org/wiki/Nautilus"
+  },
+  "mantisshrimp": {
+    "file": "mantisshrimp.jpg",
+    "title": "Mantis shrimp",
+    "url": "https://en.wikipedia.org/wiki/Mantis_shrimp"
+  },
+  "leafyseadragon": {
+    "file": "leafyseadragon.jpg",
+    "title": "Leafy seadragon",
+    "url": "https://en.wikipedia.org/wiki/Leafy_seadragon"
+  },
+  "bluedragon": {
+    "file": "bluedragon.jpg",
+    "title": "Glaucus atlanticus",
+    "url": "https://en.wikipedia.org/wiki/Glaucus_atlanticus"
+  },
+  "anglerfish": {
+    "file": "anglerfish.jpg",
+    "title": "Humpback anglerfish",
+    "url": "https://en.wikipedia.org/wiki/Humpback_anglerfish"
+  },
+  "viperfish": {
+    "file": "viperfish.jpg",
+    "title": "Sloane's viperfish",
+    "url": "https://en.wikipedia.org/wiki/Sloane's_viperfish"
+  },
+  "lanternfish": {
+    "file": "lanternfish.jpg",
+    "title": "Lanternfish",
+    "url": "https://en.wikipedia.org/wiki/Lanternfish"
+  },
+  "vampiresquid": {
+    "file": "vampiresquid.jpg",
+    "title": "Vampire squid",
+    "url": "https://en.wikipedia.org/wiki/Vampire_squid"
+  },
+  "dumbo": {
+    "file": "dumbo.jpg",
+    "title": "Grimpoteuthis",
+    "url": "https://en.wikipedia.org/wiki/Grimpoteuthis"
+  },
+  "giantisopod": {
+    "file": "giantisopod.jpg",
+    "title": "Bathynomus giganteus",
+    "url": "https://en.wikipedia.org/wiki/Bathynomus_giganteus"
+  },
+  "gulpereel": {
+    "file": "gulpereel.jpg",
+    "title": "Pelican eel",
+    "url": "https://en.wikipedia.org/wiki/Pelican_eel"
+  },
+  "frilledshark": {
+    "file": "frilledshark.jpg",
+    "title": "Frilled shark",
+    "url": "https://en.wikipedia.org/wiki/Frilled_shark"
+  },
+  "goblinshark": {
+    "file": "goblinshark.jpg",
+    "title": "Goblin shark",
+    "url": "https://en.wikipedia.org/wiki/Goblin_shark"
+  },
+  "narwhal": {
+    "file": "narwhal.jpg",
+    "title": "Narwhal",
+    "url": "https://en.wikipedia.org/wiki/Narwhal"
+  },
+  "blobfish": {
+    "file": "blobfish.jpg",
+    "title": "Psychrolutes marcidus",
+    "url": "https://en.wikipedia.org/wiki/Psychrolutes_marcidus"
+  },
+  "yeticrab": {
+    "file": "yeticrab.jpg",
+    "title": "Kiwa hirsuta",
+    "url": "https://en.wikipedia.org/wiki/Kiwa_hirsuta"
+  },
+  "coelacanth": {
+    "file": "coelacanth.jpg",
+    "title": "Coelacanth",
+    "url": "https://en.wikipedia.org/wiki/Coelacanth"
+  },
+  "oarfish": {
+    "file": "oarfish.jpg",
+    "title": "Giant oarfish",
+    "url": "https://en.wikipedia.org/wiki/Giant_oarfish"
+  },
+  "immortaljelly": {
+    "file": "immortaljelly.jpg",
+    "title": "Turritopsis dohrnii",
+    "url": "https://en.wikipedia.org/wiki/Turritopsis_dohrnii"
+  },
+  "spermwhale": {
+    "file": "spermwhale.jpg",
+    "title": "Sperm whale",
+    "url": "https://en.wikipedia.org/wiki/Sperm_whale"
+  },
+  "giantsquid": {
+    "file": "giantsquid.jpg",
+    "title": "Giant squid",
+    "url": "https://en.wikipedia.org/wiki/Giant_squid"
+  },
+  "colossalsquid": {
+    "file": "colossalsquid.jpg",
+    "title": "Colossal squid",
+    "url": "https://en.wikipedia.org/wiki/Colossal_squid"
+  },
+  "megamouth": {
+    "file": "megamouth.jpg",
+    "title": "Megamouth shark",
+    "url": "https://en.wikipedia.org/wiki/Megamouth_shark"
+  },
+  "greenlandshark": {
+    "file": "greenlandshark.jpg",
+    "title": "Greenland shark",
+    "url": "https://en.wikipedia.org/wiki/Greenland_shark"
+  },
+  "whaleshark": {
+    "file": "whaleshark.jpg",
+    "title": "Whale shark",
+    "url": "https://en.wikipedia.org/wiki/Whale_shark"
+  },
+  "orca": {
+    "file": "orca.jpg",
+    "title": "Orca",
+    "url": "https://en.wikipedia.org/wiki/Orca"
+  },
+  "humpback": {
+    "file": "humpback.jpg",
+    "title": "Humpback whale",
+    "url": "https://en.wikipedia.org/wiki/Humpback_whale"
+  },
+  "bluewhale": {
+    "file": "bluewhale.jpg",
+    "title": "Blue whale",
+    "url": "https://en.wikipedia.org/wiki/Blue_whale"
+  },
+  "sponge": {
+    "file": "sponge.jpg",
+    "title": "Giant barrel sponge",
+    "url": "https://en.wikipedia.org/wiki/Giant_barrel_sponge"
+  },
+  "rolypoly": {
+    "file": "rolypoly.jpg",
+    "title": "Armadillidiidae",
+    "url": "https://en.wikipedia.org/wiki/Armadillidiidae"
+  },
+  "earthworm": {
+    "file": "earthworm.jpg",
+    "title": "Earthworm",
+    "url": "https://en.wikipedia.org/wiki/Earthworm"
+  },
+  "ant": {
+    "file": "ant.jpg",
+    "title": "Ant",
+    "url": "https://en.wikipedia.org/wiki/Ant"
+  },
+  "snail": {
+    "file": "snail.jpg",
+    "title": "Land snail",
+    "url": "https://en.wikipedia.org/wiki/Land_snail"
+  },
+  "bee": {
+    "file": "bee.jpg",
+    "title": "Honey bee",
+    "url": "https://en.wikipedia.org/wiki/Honey_bee"
+  },
+  "cricket": {
+    "file": "cricket.jpg",
+    "title": "Gryllus campestris",
+    "url": "https://en.wikipedia.org/wiki/Gryllus_campestris"
+  },
+  "grasshopper": {
+    "file": "grasshopper.jpg",
+    "title": "Grasshopper",
+    "url": "https://en.wikipedia.org/wiki/Grasshopper"
+  },
+  "beetle": {
+    "file": "beetle.jpg",
+    "title": "Chrysochroa fulgidissima",
+    "url": "https://en.wikipedia.org/wiki/Chrysochroa_fulgidissima"
+  },
+  "spider": {
+    "file": "spider.jpg",
+    "title": "Jumping spider",
+    "url": "https://en.wikipedia.org/wiki/Jumping_spider"
+  },
+  "frog": {
+    "file": "frog.jpg",
+    "title": "Agalychnis callidryas",
+    "url": "https://en.wikipedia.org/wiki/Agalychnis_callidryas"
+  },
+  "gecko": {
+    "file": "gecko.jpg",
+    "title": "Gecko",
+    "url": "https://en.wikipedia.org/wiki/Gecko"
+  },
+  "hornet": {
+    "file": "hornet.jpg",
+    "title": "Hornet",
+    "url": "https://en.wikipedia.org/wiki/Hornet"
+  },
+  "mantis": {
+    "file": "mantis.jpg",
+    "title": "Mantis",
+    "url": "https://en.wikipedia.org/wiki/Mantis"
+  },
+  "blackwidow": {
+    "file": "blackwidow.jpg",
+    "title": "Latrodectus",
+    "url": "https://en.wikipedia.org/wiki/Latrodectus"
+  },
+  "tarantula": {
+    "file": "tarantula.jpg",
+    "title": "Brachypelma hamorii",
+    "url": "https://en.wikipedia.org/wiki/Brachypelma_hamorii"
+  },
+  "millipede": {
+    "file": "millipede.jpg",
+    "title": "Archispirostreptus gigas",
+    "url": "https://en.wikipedia.org/wiki/Archispirostreptus_gigas"
+  },
+  "stagbeetle": {
+    "file": "stagbeetle.jpg",
+    "title": "Stag beetle",
+    "url": "https://en.wikipedia.org/wiki/Stag_beetle"
+  },
+  "rhinobeetle": {
+    "file": "rhinobeetle.jpg",
+    "title": "Hercules beetle",
+    "url": "https://en.wikipedia.org/wiki/Hercules_beetle"
+  },
+  "atlasmoth": {
+    "file": "atlasmoth.jpg",
+    "title": "Attacus atlas",
+    "url": "https://en.wikipedia.org/wiki/Attacus_atlas"
+  },
+  "walkingstick": {
+    "file": "walkingstick.jpg",
+    "title": "Phasmatodea",
+    "url": "https://en.wikipedia.org/wiki/Phasmatodea"
+  },
+  "orchidmantis": {
+    "file": "orchidmantis.jpg",
+    "title": "Hymenopus coronatus",
+    "url": "https://en.wikipedia.org/wiki/Hymenopus_coronatus"
+  },
+  "poisondartfrog": {
+    "file": "poisondartfrog.jpg",
+    "title": "Poison dart frog",
+    "url": "https://en.wikipedia.org/wiki/Poison_dart_frog"
+  },
+  "glassfrog": {
+    "file": "glassfrog.jpg",
+    "title": "Glass frog",
+    "url": "https://en.wikipedia.org/wiki/Glass_frog"
+  },
+  "goliathbirdeater": {
+    "file": "goliathbirdeater.jpg",
+    "title": "Goliath birdeater",
+    "url": "https://en.wikipedia.org/wiki/Goliath_birdeater"
+  },
+  "hedgehog": {
+    "file": "hedgehog.jpg",
+    "title": "Hedgehog",
+    "url": "https://en.wikipedia.org/wiki/Hedgehog"
+  },
+  "viper": {
+    "file": "viper.jpg",
+    "title": "Gaboon viper",
+    "url": "https://en.wikipedia.org/wiki/Gaboon_viper"
+  },
+  "chameleon": {
+    "file": "chameleon.jpg",
+    "title": "Chameleon",
+    "url": "https://en.wikipedia.org/wiki/Chameleon"
+  },
+  "pangolin": {
+    "file": "pangolin.jpg",
+    "title": "Ground pangolin",
+    "url": "https://en.wikipedia.org/wiki/Ground_pangolin"
+  },
+  "titanbeetle": {
+    "file": "titanbeetle.jpg",
+    "title": "Titan beetle",
+    "url": "https://en.wikipedia.org/wiki/Titan_beetle"
+  },
+  "scorpion": {
+    "file": "scorpion.jpg",
+    "title": "Scorpion",
+    "url": "https://en.wikipedia.org/wiki/Scorpion"
+  },
+  "sidewinder": {
+    "file": "sidewinder.jpg",
+    "title": "Crotalus cerastes",
+    "url": "https://en.wikipedia.org/wiki/Crotalus_cerastes"
+  },
+  "gilamonster": {
+    "file": "gilamonster.jpg",
+    "title": "Gila monster",
+    "url": "https://en.wikipedia.org/wiki/Gila_monster"
+  },
+  "thornydevil": {
+    "file": "thornydevil.jpg",
+    "title": "Thorny devil",
+    "url": "https://en.wikipedia.org/wiki/Thorny_devil"
+  },
+  "fennecfox": {
+    "file": "fennecfox.jpg",
+    "title": "Fennec fox",
+    "url": "https://en.wikipedia.org/wiki/Fennec_fox"
+  },
+  "jerboa": {
+    "file": "jerboa.jpg",
+    "title": "Jerboa",
+    "url": "https://en.wikipedia.org/wiki/Jerboa"
+  },
+  "camelspider": {
+    "file": "camelspider.jpg",
+    "title": "Solifugae",
+    "url": "https://en.wikipedia.org/wiki/Solifugae"
+  },
+  "tarantulahawk": {
+    "file": "tarantulahawk.jpg",
+    "title": "Tarantula hawk",
+    "url": "https://en.wikipedia.org/wiki/Tarantula_hawk"
+  },
+  "hornedlizard": {
+    "file": "hornedlizard.jpg",
+    "title": "Horned lizard",
+    "url": "https://en.wikipedia.org/wiki/Horned_lizard"
+  },
+  "deserttortoise": {
+    "file": "deserttortoise.jpg",
+    "title": "Desert tortoise",
+    "url": "https://en.wikipedia.org/wiki/Desert_tortoise"
+  },
+  "kingcobra": {
+    "file": "kingcobra.jpg",
+    "title": "King cobra",
+    "url": "https://en.wikipedia.org/wiki/King_cobra"
+  },
+  "komodo": {
+    "file": "komodo.jpg",
+    "title": "Komodo dragon",
+    "url": "https://en.wikipedia.org/wiki/Komodo_dragon"
+  },
+  "cheetah": {
+    "file": "cheetah.jpg",
+    "title": "Cheetah",
+    "url": "https://en.wikipedia.org/wiki/Cheetah"
+  },
+  "galapagostortoise": {
+    "file": "galapagostortoise.jpg",
+    "title": "Galápagos tortoise",
+    "url": "https://en.wikipedia.org/wiki/Gal%C3%A1pagos_tortoise"
+  },
+  "hatchetfish": {
+    "file": "hatchetfish.jpg",
+    "title": "Marine hatchetfish",
+    "url": "https://en.wikipedia.org/wiki/Marine_hatchetfish"
+  },
+  "giantamphipod": {
+    "file": "giantamphipod.jpg",
+    "title": "Alicella",
+    "url": "https://en.wikipedia.org/wiki/Alicella"
+  },
+  "seapig": {
+    "file": "seapig.jpg",
+    "title": "Scotoplanes",
+    "url": "https://en.wikipedia.org/wiki/Scotoplanes"
+  },
+  "glasssquid": {
+    "file": "glasssquid.jpg",
+    "title": "Cranchiidae",
+    "url": "https://en.wikipedia.org/wiki/Cranchiidae"
+  },
+  "barreleye": {
+    "file": "barreleye.jpg",
+    "title": "Barreleye",
+    "url": "https://en.wikipedia.org/wiki/Barreleye"
+  },
+  "dragonfish": {
+    "file": "dragonfish.jpg",
+    "title": "Stomiidae",
+    "url": "https://en.wikipedia.org/wiki/Stomiidae"
+  },
+  "ghostshark": {
+    "file": "ghostshark.jpg",
+    "title": "Chimaera",
+    "url": "https://en.wikipedia.org/wiki/Chimaera"
+  },
+  "combjelly": {
+    "file": "combjelly.jpg",
+    "title": "Ctenophora",
+    "url": "https://en.wikipedia.org/wiki/Ctenophora"
+  },
+  "hadalsnailfish": {
+    "file": "hadalsnailfish.jpg",
+    "title": "Pseudoliparis swirei",
+    "url": "https://en.wikipedia.org/wiki/Pseudoliparis_swirei"
+  },
+  "zombieworm": {
+    "file": "zombieworm.jpg",
+    "title": "Osedax",
+    "url": "https://en.wikipedia.org/wiki/Osedax"
+  },
+  "ventshrimp": {
+    "file": "ventshrimp.jpg",
+    "title": "Rimicaris exoculata",
+    "url": "https://en.wikipedia.org/wiki/Rimicaris_exoculata"
+  },
+  "tubeworm": {
+    "file": "tubeworm.jpg",
+    "title": "Riftia",
+    "url": "https://en.wikipedia.org/wiki/Riftia"
+  },
+  "pompeiiworm": {
+    "file": "pompeiiworm.jpg",
+    "title": "Alvinella pompejana",
+    "url": "https://en.wikipedia.org/wiki/Alvinella_pompejana"
+  },
+  "deepseaoctopus": {
+    "file": "deepseaoctopus.jpg",
+    "title": "Graneledone boreopacifica",
+    "url": "https://en.wikipedia.org/wiki/Graneledone_boreopacifica"
+  },
+  "scalyfootsnail": {
+    "file": "scalyfootsnail.jpg",
+    "title": "Scaly-foot gastropod",
+    "url": "https://en.wikipedia.org/wiki/Scaly-foot_gastropod"
+  },
+  "theoldone": {
+    "file": "theoldone.jpg",
+    "title": "Greenland shark",
+    "url": "https://en.wikipedia.org/wiki/Greenland_shark"
+  },
+  "theghost": {
+    "file": "theghost.jpg",
+    "title": "Bigfin squid",
+    "url": "https://en.wikipedia.org/wiki/Bigfin_squid"
+  },
+  "thekraken": {
+    "file": "thekraken.jpg",
+    "title": "Colossal squid",
+    "url": "https://en.wikipedia.org/wiki/Colossal_squid"
+  },
+  "ironclad": {
+    "file": "ironclad.jpg",
+    "title": "Scaly-foot gastropod",
+    "url": "https://en.wikipedia.org/wiki/Scaly-foot_gastropod"
+  },
+  "theancient": {
+    "file": "theancient.jpg",
+    "title": "Galápagos tortoise",
+    "url": "https://en.wikipedia.org/wiki/Gal%C3%A1pagos_tortoise"
+  },
+  "darwinsfinch": {
+    "file": "darwinsfinch.jpg",
+    "title": "Medium ground finch",
+    "url": "https://en.wikipedia.org/wiki/Medium_ground_finch"
+  },
+  "marineiguana": {
+    "file": "marineiguana.jpg",
+    "title": "Marine iguana",
+    "url": "https://en.wikipedia.org/wiki/Marine_iguana"
+  },
+  "bluefootedbooby": {
+    "file": "bluefootedbooby.jpg",
+    "title": "Blue-footed booby",
+    "url": "https://en.wikipedia.org/wiki/Blue-footed_booby"
+  },
+  "flightlesscormorant": {
+    "file": "flightlesscormorant.jpg",
+    "title": "Flightless cormorant",
+    "url": "https://en.wikipedia.org/wiki/Flightless_cormorant"
+  },
+  "galapagospenguin": {
+    "file": "galapagospenguin.jpg",
+    "title": "Galapagos penguin",
+    "url": "https://en.wikipedia.org/wiki/Galapagos_penguin"
+  },
+  "ringtailedlemur": {
+    "file": "ringtailedlemur.jpg",
+    "title": "Ring-tailed lemur",
+    "url": "https://en.wikipedia.org/wiki/Ring-tailed_lemur"
+  },
+  "pantherchameleon": {
+    "file": "pantherchameleon.jpg",
+    "title": "Panther chameleon",
+    "url": "https://en.wikipedia.org/wiki/Panther_chameleon"
+  },
+  "tomatofrog": {
+    "file": "tomatofrog.jpg",
+    "title": "Dyscophus antongilii",
+    "url": "https://en.wikipedia.org/wiki/Dyscophus_antongilii"
+  },
+  "giraffeweevil": {
+    "file": "giraffeweevil.jpg",
+    "title": "Giraffe weevil",
+    "url": "https://en.wikipedia.org/wiki/Giraffe_weevil"
+  },
+  "ayeaye": {
+    "file": "ayeaye.jpg",
+    "title": "Aye-aye",
+    "url": "https://en.wikipedia.org/wiki/Aye-aye"
+  },
+  "fossa": {
+    "file": "fossa.jpg",
+    "title": "Fossa (animal)",
+    "url": "https://en.wikipedia.org/wiki/Fossa_(animal)"
+  },
+  "babirusa": {
+    "file": "babirusa.jpg",
+    "title": "Babirusa",
+    "url": "https://en.wikipedia.org/wiki/Babirusa"
+  },
+  "maleo": {
+    "file": "maleo.jpg",
+    "title": "Maleo",
+    "url": "https://en.wikipedia.org/wiki/Maleo"
+  },
+  "spectraltarsier": {
+    "file": "spectraltarsier.jpg",
+    "title": "Gursky's spectral tarsier",
+    "url": "https://en.wikipedia.org/wiki/Gursky's_spectral_tarsier"
+  },
+  "bearcuscus": {
+    "file": "bearcuscus.jpg",
+    "title": "Sulawesi bear cuscus",
+    "url": "https://en.wikipedia.org/wiki/Sulawesi_bear_cuscus"
+  },
+  "kea": {
+    "file": "kea.jpg",
+    "title": "Kea",
+    "url": "https://en.wikipedia.org/wiki/Kea"
+  },
+  "kiwi": {
+    "file": "kiwi.jpg",
+    "title": "Kiwi (bird)",
+    "url": "https://en.wikipedia.org/wiki/Kiwi_(bird)"
+  },
+  "giantweta": {
+    "file": "giantweta.jpg",
+    "title": "Giant wētā",
+    "url": "https://en.wikipedia.org/wiki/Giant_w%C4%93t%C4%81"
+  },
+  "tuatara": {
+    "file": "tuatara.jpg",
+    "title": "Tuatara",
+    "url": "https://en.wikipedia.org/wiki/Tuatara"
+  },
+  "kakapo": {
+    "file": "kakapo.jpg",
+    "title": "Kākāpō",
+    "url": "https://en.wikipedia.org/wiki/K%C4%81k%C4%81p%C5%8D"
+  },
+  "lonesomegeorge": {
+    "file": "lonesomegeorge.jpg",
+    "title": "Lonesome George",
+    "url": "https://en.wikipedia.org/wiki/Lonesome_George"
+  },
+  "springtail": {
+    "file": "springtail.jpg",
+    "title": "Springtail",
+    "url": "https://en.wikipedia.org/wiki/Springtail"
+  },
+  "grub": {
+    "file": "grub.jpg",
+    "title": "Larva",
+    "url": "https://en.wikipedia.org/wiki/Larva"
+  },
+  "soilcentipede": {
+    "file": "soilcentipede.jpg",
+    "title": "Geophilomorpha",
+    "url": "https://en.wikipedia.org/wiki/Geophilomorpha"
+  },
+  "cicadanymph": {
+    "file": "cicadanymph.jpg",
+    "title": "Periodical cicadas",
+    "url": "https://en.wikipedia.org/wiki/Periodical_cicadas"
+  },
+  "mole": {
+    "file": "mole.jpg",
+    "title": "Mole (animal)",
+    "url": "https://en.wikipedia.org/wiki/Mole_(animal)"
+  },
+  "antqueen": {
+    "file": "antqueen.jpg",
+    "title": "Black garden ant",
+    "url": "https://en.wikipedia.org/wiki/Black_garden_ant"
+  },
+  "cavecricket": {
+    "file": "cavecricket.jpg",
+    "title": "Rhaphidophoridae",
+    "url": "https://en.wikipedia.org/wiki/Rhaphidophoridae"
+  },
+  "pseudoscorpion": {
+    "file": "pseudoscorpion.jpg",
+    "title": "Pseudoscorpion",
+    "url": "https://en.wikipedia.org/wiki/Pseudoscorpion"
+  },
+  "bat": {
+    "file": "bat.jpg",
+    "title": "Mexican free-tailed bat",
+    "url": "https://en.wikipedia.org/wiki/Mexican_free-tailed_bat"
+  },
+  "cavespider": {
+    "file": "cavespider.jpg",
+    "title": "Meta menardi",
+    "url": "https://en.wikipedia.org/wiki/Meta_menardi"
+  },
+  "glowworm": {
+    "file": "glowworm.jpg",
+    "title": "Arachnocampa luminosa",
+    "url": "https://en.wikipedia.org/wiki/Arachnocampa_luminosa"
+  },
+  "cavecrayfish": {
+    "file": "cavecrayfish.jpg",
+    "title": "Cambarus",
+    "url": "https://en.wikipedia.org/wiki/Cambarus"
+  },
+  "blindcavefish": {
+    "file": "blindcavefish.jpg",
+    "title": "Mexican tetra",
+    "url": "https://en.wikipedia.org/wiki/Mexican_tetra"
+  },
+  "starnosedmole": {
+    "file": "starnosedmole.jpg",
+    "title": "Star-nosed mole",
+    "url": "https://en.wikipedia.org/wiki/Star-nosed_mole"
+  },
+  "nakedmolerat": {
+    "file": "nakedmolerat.jpg",
+    "title": "Naked mole-rat",
+    "url": "https://en.wikipedia.org/wiki/Naked_mole-rat"
+  },
+  "texasblindsalamander": {
+    "file": "texasblindsalamander.jpg",
+    "title": "Texas blind salamander",
+    "url": "https://en.wikipedia.org/wiki/Texas_blind_salamander"
+  },
+  "olm": {
+    "file": "olm.jpg",
+    "title": "Olm",
+    "url": "https://en.wikipedia.org/wiki/Olm"
+  },
+  "caverobberfly": {
+    "file": "caverobberfly.jpg",
+    "title": "Asilidae",
+    "url": "https://en.wikipedia.org/wiki/Asilidae"
+  },
+  "caveshrimp": {
+    "file": "caveshrimp.jpg",
+    "title": "Kentucky cave shrimp",
+    "url": "https://en.wikipedia.org/wiki/Kentucky_cave_shrimp"
+  },
+  "illacme": {
+    "file": "illacme.jpg",
+    "title": "Illacme plenipes",
+    "url": "https://en.wikipedia.org/wiki/Illacme_plenipes"
+  },
+  "movilecentipede": {
+    "file": "movilecentipede.jpg",
+    "title": "Cryptops speleorex",
+    "url": "https://en.wikipedia.org/wiki/Cryptops_speleorex"
+  },
+  "thesleeper": {
+    "file": "thesleeper.jpg",
+    "title": "Olm",
+    "url": "https://en.wikipedia.org/wiki/Olm"
+  },
+  "theempress": {
+    "file": "theempress.jpg",
+    "title": "Black garden ant",
+    "url": "https://en.wikipedia.org/wiki/Black_garden_ant"
+  }
+}

@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cam's Crazy Creatures</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", "Chalkboard SE", "Marker Felt", sans-serif;
+    background: #10203a; color: #fff; overflow: hidden;
+  }
+
+  /* ---------- top bar ---------- */
+  #topbar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 12px; background: #0b1729;
+    border-bottom: 4px solid #ffcc00; flex-wrap: wrap;
+  }
+  #gameTitle { font-size: 19px; color: #ffcc00; margin-right: auto; }
+  .chip {
+    background: #1d3557; border: 3px solid #4a7ab5; border-radius: 999px;
+    padding: 4px 12px; font-size: 16px; white-space: nowrap;
+  }
+  .chip.score { border-color: #ffcc00; color: #ffe680; }
+  .chip.magic { border-color: #c77dff; color: #e6c3ff; }
+
+  button { font-family: inherit; cursor: pointer; border: none; }
+  .btn {
+    background: #2a9d8f; color: #fff; border: 4px solid #1d7268;
+    border-radius: 14px; padding: 7px 14px; font-size: 17px;
+    box-shadow: 0 5px 0 #145049;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #145049; }
+  .btn.purple { background: #9d4edd; border-color: #7b2cbf; box-shadow: 0 5px 0 #5a189a; }
+  .btn.purple:active { box-shadow: 0 1px 0 #5a189a; }
+  .btn.gray { background: #55627a; border-color: #3c4557; box-shadow: 0 5px 0 #2b3241; }
+  .btn.gray:active { box-shadow: 0 1px 0 #2b3241; }
+  .btn.gold { background: #ffb703; border-color: #d68f00; box-shadow: 0 5px 0 #9c6800; color: #2b2000; }
+  .btn.gold:active { box-shadow: 0 1px 0 #9c6800; }
+  .btn.small { font-size: 15px; padding: 6px 12px; }
+  .btn:disabled { filter: grayscale(1) brightness(.7); cursor: default; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+  #home, #book, #shop { height: calc(100vh - 58px); overflow-y: auto; }
+
+  /* ---------- home ---------- */
+  #home { text-align: center; padding: 20px 20px 60px; }
+  #home h2 { font-size: 27px; margin: 4px 0; }
+  #home p.sub { font-size: 18px; color: #9fd3ff; margin: 0 0 18px; }
+  .placePicker { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+  .placeCard {
+    width: 262px; height: 196px; border-radius: 26px; border: 8px solid #ffcc00;
+    font-family: inherit; font-size: 30px; color: #fff;
+    text-shadow: 0 3px 6px rgba(0,0,0,.6);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    transition: transform .15s;
+  }
+  .placeCard:hover { transform: scale(1.05) rotate(-1deg); }
+  .placeCard:active { transform: scale(.97); }
+  .placeCard .big { font-size: 70px; }
+  .placeCard .hint { font-size: 14px; opacity: .95; padding: 0 10px; line-height: 1.35; }
+  #landCard        { background: linear-gradient(#7dd87d, #b98d4a); }
+  #oceanCard       { background: linear-gradient(#4fc3f7, #010c16); }
+  #undergroundCard { background: linear-gradient(#a9784a, #2a1016); }
+  #islandCard      { background: linear-gradient(#37c6f4, #2f7d52); }
+  .placeCard.locked { filter: grayscale(.7) brightness(.75); }
+  .placeCard.locked .hint { color: #ffd0e0; }
+  .howto {
+    max-width: 680px; margin: 20px auto 0; background: rgba(0,0,0,.3);
+    border-radius: 14px; padding: 12px; font-size: 16px; line-height: 1.6;
+  }
+
+  /* ---------- explore ---------- */
+  #explore { position: relative; }
+  #game { display: block; width: 100%; }
+  #controls { position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+  #hint {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,.6); border-radius: 14px; padding: 7px 16px;
+    font-size: 17px; text-align: center; max-width: 92vw; pointer-events: none;
+  }
+  #hint.magicOn { background: #5a189a; border: 3px solid #e0aaff; }
+  #hint.alert { background: #7a1030; border: 3px solid #ff5c8a; }
+  #zoneBanner {
+    position: absolute; top: 46%; left: 50%; transform: translate(-50%,-50%);
+    font-size: 42px; font-weight: bold; text-shadow: 0 4px 14px #000;
+    pointer-events: none; opacity: 0; transition: opacity .5s; text-align: center;
+  }
+  #zoneBanner.show { opacity: 1; }
+  #flash {
+    position: absolute; inset: 0; background: #fff; opacity: 0;
+    pointer-events: none; transition: opacity .45s;
+  }
+  #flash.on { opacity: .85; transition: opacity .05s; }
+
+  /* ---------- discovery card ---------- */
+  #overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75);
+    align-items: center; justify-content: center; padding: 12px; z-index: 50;
+  }
+  #overlay.show { display: flex; }
+  #card {
+    background: #fffbe8; color: #23324a; border: 10px solid #ffcc00;
+    border-radius: 26px; max-width: 520px; width: 100%; padding: 16px;
+    text-align: center; max-height: 94vh; overflow-y: auto; animation: pop .3s;
+  }
+  #card.mythic { border-color: #ff5ec7; box-shadow: 0 0 60px #ff5ec7; }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } }
+  #cardPhoto {
+    width: 100%; height: 220px; object-fit: cover;
+    border-radius: 18px; border: 5px solid #6fb3e0; background: #dceaf5; display: block;
+  }
+  #cardEmoji { font-size: 92px; line-height: 1.1; }
+  #cardName { font-size: 28px; margin: 6px 0 2px; }
+  #cardTier {
+    display: inline-block; font-size: 17px; font-weight: bold;
+    padding: 3px 14px; border-radius: 999px; color: #10203a; margin-bottom: 4px;
+  }
+  #cardStars { font-size: 24px; letter-spacing: 3px; }
+  #cardPoints { font-size: 21px; color: #b06a00; margin: 2px 0 6px; }
+  #cardWhere { font-size: 16px; color: #4a5f7a; margin-bottom: 8px; }
+  .factBox {
+    background: #e7f4ff; border: 4px solid #6fb3e0; border-radius: 18px;
+    padding: 10px 14px; text-align: left; font-size: 17px; line-height: 1.45; margin-bottom: 8px;
+  }
+  .factBox h4 { margin: 0 0 6px; font-size: 18px; color: #14568a; }
+  .factBox li { margin-bottom: 5px; }
+  #cardCredit { font-size: 12px; color: #7a8798; margin: 4px 0 10px; }
+  #cardCredit a { color: #7a8798; }
+
+  /* ---------- shop ---------- */
+  #shop { padding: 16px; text-align: center; }
+  #shop h2 { font-size: 27px; margin: 4px 0; }
+  #shopPoints { font-size: 19px; color: #ffe680; margin-bottom: 4px; }
+  #shopNote { font-size: 15px; color: #80ed99; min-height: 22px; margin-bottom: 10px; }
+  .shopGrid { max-width: 1040px; margin: 0 auto; }
+  .shopRow {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    gap: 12px; margin-bottom: 6px;
+  }
+  .shopPlace {
+    text-align: left; font-size: 20px; margin: 20px 0 8px;
+    color: #9fd3ff; border-bottom: 3px solid #29405e; padding-bottom: 5px;
+  }
+  .shopPlace.current { color: #ffcc00; border-color: #6b5410; }
+  .shopItem {
+    background: #1d3557; border: 4px solid #4a7ab5; border-radius: 20px;
+    padding: 12px; text-align: center;
+  }
+  .shopItem.owned { border-color: #80ed99; opacity: .75; }
+  .shopItem.locked { opacity: .55; }
+  .shopItem .ic { font-size: 44px; }
+  .shopItem .nm { font-size: 19px; margin: 2px 0; }
+  .shopItem .bl { font-size: 14px; color: #b9d4ee; line-height: 1.35; margin-bottom: 8px; min-height: 56px; }
+  .shopItem .pr { font-size: 17px; color: #ffe680; margin-bottom: 8px; }
+
+  /* ---------- book ---------- */
+  #book { padding: 16px; }
+  #book h2 { text-align: center; font-size: 26px; margin: 4px 0; }
+  #bookCount { text-align: center; font-size: 18px; color: #9fd3ff; margin-bottom: 6px; }
+  #bookTools { text-align: center; margin-bottom: 10px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  #saveNote { text-align: center; font-size: 14px; color: #80ed99; min-height: 20px; margin-bottom: 8px; }
+  .bookGrid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px; max-width: 1050px; margin: 0 auto 22px;
+  }
+  .bookCell {
+    background: #1d3557; border: 4px solid #4a7ab5; border-radius: 16px;
+    padding: 6px 4px 8px; color: #fff; font-family: inherit; overflow: hidden;
+    position: relative;
+  }
+  .bookCell .count {
+    position: absolute; top: 4px; right: 4px;
+    background: rgba(0,0,0,.7); color: #ffe680;
+    font-size: 12px; font-weight: bold;
+    padding: 1px 6px; border-radius: 999px;
+  }
+  .bookCell img { width: 100%; height: 66px; object-fit: cover; border-radius: 10px; display: block; }
+  .bookCell .ph { height: 66px; font-size: 40px; display: flex; align-items: center; justify-content: center; }
+  .bookCell .nm { display: block; font-size: 12px; margin-top: 5px; line-height: 1.25; }
+  .bookCell.locked { opacity: .35; }
+  .bookSection { max-width: 1050px; margin: 0 auto; }
+  .bookSection h3 { font-size: 21px; margin: 14px 0 6px; }
+  .zoneLabel { font-size: 15px; color: #9fd3ff; margin: 10px 0 4px; }
+  .islandNote {
+    font-size: 14px; color: #caffbf; line-height: 1.5;
+    background: rgba(47,125,82,.25); border-left: 4px solid #49a86e;
+    border-radius: 8px; padding: 8px 12px; margin: 4px 0 8px;
+  }
+  .mythicShrine {
+    background: linear-gradient(#3a0b2c, #1a0a20); border: 4px solid #ff5ec7;
+    border-radius: 20px; padding: 10px 12px; margin-bottom: 16px;
+  }
+
+  /* the way out of the shop and the book */
+  .big-back {
+    font-size: 20px; padding: 10px 22px;
+    background: #ef476f; border-color: #c22f54; box-shadow: 0 5px 0 #8f1f3c;
+    position: absolute; top: 12px; left: 14px; z-index: 5;
+  }
+  .big-back:active { box-shadow: 0 1px 0 #8f1f3c; }
+  .big-back.bottom { position: static; display: inline-block; margin: 6px auto 30px; }
+  #shop, #book { position: relative; padding-top: 62px; }
+
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div id="gameTitle">🌟 Cam's Crazy Creatures 🌟</div>
+  <div class="chip score">⭐ <span id="scoreNum">0</span></div>
+  <div class="chip magic">🪄 <span id="magicNum">0</span></div>
+  <button class="btn gold small" onclick="showShop()">🛒 Shop</button>
+  <button class="btn gray small" onclick="showBook()">📖 Book</button>
+  <button class="btn gray small" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- ============ HOME ============ -->
+<div id="home" class="screen active">
+  <h2>Where do you want to explore?</h2>
+  <p class="sub">The deeper you go, the weirder the creatures get.</p>
+  <div class="placePicker">
+    <button class="placeCard" id="landCard" onclick="tryStart('land')">
+      <span class="big">🌳</span>
+      LAND
+      <span class="hint">Backyard → Forest → Desert</span>
+    </button>
+    <button class="placeCard" id="oceanCard" onclick="tryStart('ocean')">
+      <span class="big">🌊</span>
+      OCEAN
+      <span class="hint">6 layers down, to the VOLCANO VENTS</span>
+    </button>
+    <button class="placeCard" id="undergroundCard" onclick="tryStart('underground')">
+      <span class="big">⛏️</span>
+      UNDERGROUND
+      <span class="hint">Dig down to THE DEEP DARK</span>
+    </button>
+    <button class="placeCard" id="islandCard" onclick="tryStart('island')">
+      <span class="big">⛵</span>
+      THE ISLANDS
+      <span class="hint" id="islandHint">Animals found nowhere else</span>
+    </button>
+  </div>
+  <div class="howto" id="homeHowto"></div>
+</div>
+
+<!-- ============ EXPLORE ============ -->
+<div id="explore" class="screen">
+  <canvas id="game"></canvas>
+  <div id="controls">
+    <button class="btn purple" id="magicBtn" onclick="armMagic()">🪄 Magic</button>
+  </div>
+  <div id="zoneBanner"></div>
+  <div id="flash"></div>
+  <div id="hint"></div>
+</div>
+
+<!-- ============ SHOP ============ -->
+<div id="shop" class="screen">
+  <button class="btn big-back" id="shopBack" onclick="backFromMenu()">⬅️ Back</button>
+  <h2>🛒 The Explorer Shop</h2>
+  <div id="shopPoints"></div>
+  <div id="shopNote"></div>
+  <div class="shopGrid" id="shopGrid"></div>
+  <button class="btn big-back bottom" onclick="backFromMenu()">⬅️ Back</button>
+</div>
+
+<!-- ============ BOOK ============ -->
+<div id="book" class="screen">
+  <button class="btn big-back" id="bookBack" onclick="backFromMenu()">⬅️ Back</button>
+  <h2>📖 My Creature Book</h2>
+  <div id="bookCount"></div>
+  <div id="bookTools">
+    <button class="btn small" onclick="exportSave()">💾 Save a backup file</button>
+    <button class="btn small gray" onclick="document.getElementById('importFile').click()">📂 Load a backup</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importSave(this)">
+  </div>
+  <div id="saveNote">Your book saves by itself. It stays even when the game gets updated.</div>
+  <div class="bookSection" id="bookBody"></div>
+  <div style="text-align:center;margin:10px 0 30px">
+    <button class="btn big-back bottom" onclick="backFromMenu()">⬅️ Back</button>
+  </div>
+</div>
+
+<!-- ============ DISCOVERY CARD ============ -->
+<div id="overlay">
+  <div id="card">
+    <img id="cardPhoto" alt="">
+    <div id="cardEmoji"></div>
+    <h2 id="cardName"></h2>
+    <div><span id="cardTier"></span></div>
+    <div id="cardStars"></div>
+    <div id="cardPoints"></div>
+    <div id="cardWhere"></div>
+    <div class="factBox">
+      <h4>Cool things about me:</h4>
+      <ul id="cardFacts"></ul>
+    </div>
+    <div id="cardCredit"></div>
+    <button class="btn" onclick="closeCard()">Keep exploring! ➡️</button>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script src="photos.js"></script>
+<script src="creatures.js"></script>
+<script>
+/* ============================================================
+   CAM'S CRAZY CREATURES — a game by Cam (age 6) and Dad
+   ============================================================ */
+
+if (typeof PHOTOS === "undefined") { window.PHOTOS = {}; }
+
+/* ============================================================
+   SAVING — this must never lose Cam's book.
+   One key that never changes; loading MERGES every save it can
+   find, including ones from older versions of the game.
+   ============================================================ */
+const SAVE_KEY = "camsCrazyCreatures";
+const DEFAULT_GEAR = {
+  suit: 1, light: 1, fins: 1, radar: 0, sonar: 0, chum: 0,      /* ocean */
+  boots: 1, hammer: 0, binocs: 0, bugjar: 0,                     /* land */
+  boat: 0, snorkel: 0, notebook: 0,                              /* islands */
+  dig: 1, headlamp: 1, ladder: 0                                 /* underground */
+};
+let state = { score: 0, magic: 1, found: [], counts: {}, gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
+
+function mergeInto(target, data) {
+  if (!data || typeof data !== "object") return target;
+  target.score = Math.max(target.score || 0, Number(data.score) || 0);
+  target.magic = Math.max(target.magic || 0, Number(data.magic) || 0);
+  target.deepest = Math.max(target.deepest || 0, Number(data.deepest) || 0);
+  const set = new Set(target.found || []);
+  (Array.isArray(data.found) ? data.found : []).forEach(id => set.add(id));
+  target.found = [...set];
+
+  /* how many times he's caught each one — keep the bigger number */
+  target.counts = target.counts || {};
+  const incoming = (data.counts && typeof data.counts === "object") ? data.counts : {};
+  Object.keys(incoming).forEach(id => {
+    target.counts[id] = Math.max(target.counts[id] || 0, Number(incoming[id]) || 0);
+  });
+  /* an older save with no counts still means he found each one at least once */
+  target.found.forEach(id => { if (!target.counts[id]) target.counts[id] = 1; });
+  target.gear = target.gear || Object.assign({}, DEFAULT_GEAR);
+  Object.keys(DEFAULT_GEAR).forEach(k => {
+    target.gear[k] = Math.max(target.gear[k] || DEFAULT_GEAR[k], (data.gear && Number(data.gear[k])) || 0);
+  });
+  return target;
+}
+
+function load() {
+  const merged = { score: 0, magic: 1, found: [], counts: {}, gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k || k.toLowerCase().indexOf("camscrazycreatures") !== 0) continue;
+    try { mergeInto(merged, JSON.parse(localStorage.getItem(k))); } catch (e) {}
+  }
+  state = merged;
+  save();
+}
+
+function save() {
+  try {
+    const json = JSON.stringify(state);
+    localStorage.setItem(SAVE_KEY, json);
+    localStorage.setItem(SAVE_KEY + ".backup", json);
+  } catch (e) {}
+}
+
+function exportSave() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "cams-creature-book.json";
+  a.click();
+  note("Saved a backup file to your Downloads! 💾");
+}
+
+function importSave(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const before = state.found.length;
+      mergeInto(state, JSON.parse(reader.result));
+      save(); refresh(); showBook();
+      note("Loaded! You went from " + before + " to " + state.found.length + " creatures. 📖");
+    } catch (e) { note("Hmm, that file didn't work. 🤔"); }
+  };
+  reader.readAsText(file);
+  input.value = "";
+}
+
+function note(msg) {
+  const el = document.getElementById("saveNote");
+  el.textContent = msg;
+  clearTimeout(note._t);
+  note._t = setTimeout(() => {
+    el.textContent = "Your book saves by itself. It stays even when the game gets updated.";
+  }, 5000);
+}
+
+/* ---------- sounds ---------- */
+let audio;
+function beep(freq, ms, type, vol) {
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audio.createOscillator(), gain = audio.createGain();
+    osc.type = type || "sine";
+    osc.frequency.value = freq;
+    gain.gain.value = vol || 0.1;
+    osc.connect(gain).connect(audio.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + ms / 1000);
+    osc.stop(audio.currentTime + ms / 1000);
+  } catch (e) {}
+}
+
+/* a long low note that slides — sounds like a whale */
+function whaleSong() {
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audio.createOscillator(), gain = audio.createGain();
+    osc.type = "sine";
+    const t = audio.currentTime;
+    osc.frequency.setValueAtTime(150, t);
+    osc.frequency.exponentialRampToValueAtTime(70, t + 1.4);
+    osc.frequency.exponentialRampToValueAtTime(110, t + 2.6);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.09, t + 0.4);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 2.8);
+    osc.connect(gain).connect(audio.destination);
+    osc.start(t); osc.stop(t + 3);
+  } catch (e) {}
+}
+function caveDrip() {
+  const f = 900 + Math.random() * 700;
+  beep(f, 60, "sine", .05);
+  setTimeout(() => beep(f * .55, 220, "sine", .035), 70);
+}
+function clicks() { for (let i = 0; i < 5; i++) setTimeout(() => beep(1400 + i * 120, 25, "square", .03), i * 90); }
+
+function playFanfare() {
+  [523, 659, 784, 1047, 1319, 1568].forEach((n, i) => setTimeout(() => beep(n, 300, "triangle", .12), i * 110));
+}
+function playMythicFanfare() {
+  [523, 659, 784, 1047, 1319, 1568, 2093].forEach((n, i) => setTimeout(() => beep(n, 420, "triangle", .13), i * 130));
+  setTimeout(() => { beep(1047, 900, "sine", .12); beep(1568, 900, "sine", .1); }, 1000);
+}
+function playBreak() { beep(180, 300, "sawtooth"); setTimeout(() => beep(90, 400, "sawtooth"), 180); }
+function playBuy() { [660, 880, 1170].forEach((n, i) => setTimeout(() => beep(n, 140, "triangle", .1), i * 80)); }
+function playZoneSound() { beep(392, 200, "sine", .07); setTimeout(() => beep(587, 300, "sine", .07), 180); }
+
+/* ---------- canvas ---------- */
+const cv = document.getElementById("game");
+const g = cv.getContext("2d");
+let CW = 0, CH = 0;
+function fitCanvas() {
+  const bar = document.getElementById("topbar").offsetHeight;
+  CW = window.innerWidth;
+  CH = Math.max(300, window.innerHeight - bar);
+  cv.width = CW; cv.height = CH;
+}
+window.addEventListener("resize", () => { fitCanvas(); if (world) clampCamera(); });
+
+/* ---------- helpers ---------- */
+function rand(a, b) { return a + Math.random() * (b - a); }
+function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
+function photoOf(id) { return PHOTOS[id] ? "images/" + PHOTOS[id].file : null; }
+
+/* ---------- gear ---------- */
+/* Ocean and underground go DOWN. Land and islands go ACROSS. */
+function isVertical(kind) { return kind === "ocean" || kind === "underground"; }
+
+/* A zone can need a piece of gear (a diving suit, a shovel). This finds the
+   deepest zone his gear currently lets him into. */
+function maxZoneAllowed(kind) {
+  const list = ZONES[kind];
+  let allowed = 1;
+  for (let i = 0; i < list.length; i++) {
+    const need = list[i].needs;
+    if (!need || (state.gear[need.gear] || 1) >= need.level) allowed = i + 1;
+    else break;
+  }
+  return allowed;
+}
+
+/* The item he needs to buy to get past where he is now */
+function nextGateItem(kind) {
+  const list = ZONES[kind];
+  const next = list[maxZoneAllowed(kind)];
+  return next && next.needs ? next.needs.item : null;
+}
+
+function moveSpeed() {
+  if (!world) return 0.9;
+  if (isVertical(world.kind)) return 0.9 * (1 + 0.32 * (state.gear.fins - 1));
+  return 0.9 * (1 + 0.30 * (state.gear.boots - 1));
+}
+function jumpPower() { return 12 + (state.gear.boots - 1) * 3.5; }
+function lightRadius() {
+  const level = world && world.kind === "underground" ? state.gear.headlamp : state.gear.light;
+  return 250 * level;
+}
+function canReach(kind) { return kind !== "island" || state.gear.boat >= 1; }
+
+/* ---------- the world ---------- */
+let world = null;
+let magicArmed = false;
+
+function startWorld(kind) {
+  show("explore");
+  fitCanvas();
+  magicArmed = false;
+
+  const vert = isVertical(kind);
+  const zoneCount = ZONES[kind].length;
+  const W = vert ? 2600 : (kind === "island" ? 5600 : 5200);
+  const H = vert ? (kind === "ocean" ? 6600 : 4600) : CH;
+
+  world = {
+    kind: kind,
+    w: W, h: H,
+    vertical: vert,
+    surface: kind === "underground" ? 150 : 110,
+    ground: H - (vert ? 90 : 110),
+    zoneCount: zoneCount,
+    cam: { x: 0, y: 0 },
+    t: 0,
+    zone: 1, lastZone: 0,
+    spots: [], deco: [], fish: [], bubbles: [], pops: [], sparks: [], shadows: [],
+    reveal: null, wanderer: null, nextWander: 420,
+    blocked: 0,
+    player: { x: 300, y: vert ? (kind === "underground" ? 200 : 220) : H - 172, vx: 0, vy: 0, face: 1, kick: 0, onGround: false },
+    target: null
+  };
+
+  ZONES[kind].forEach(z => {
+    let perZone = vert ? 6 : 7;
+    /* the snorkel adds tide pools, so there's more to search on every island */
+    if (kind === "island" && state.gear.snorkel) perZone += 3;
+    for (let i = 0; i < perZone; i++) world.spots.push(makeSpot(z.n));
+  });
+
+  const DECO = {
+    ocean:       ["weed", "coral", "rock", "weed"],
+    land:        ["tree", "bush", "grass", "grass", "flower", "cactus"],
+    island:      ["palm", "palm", "bush", "grass", "flower", "fern"],
+    underground: ["root", "pebble", "crystal", "root", "mushroom"]
+  };
+  for (let i = 0; i < 110; i++) {
+    world.deco.push({
+      x: rand(0, W),
+      y: vert ? rand(world.surface + 200, world.ground) : 0,
+      onFloor: !vert || Math.random() < .5,
+      kind: pick(DECO[kind]),
+      s: rand(.7, 1.6),
+      depth: rand(.35, .8)
+    });
+  }
+
+  const AMBIENT = {
+    ocean:       ["#ffd166", "#ef476f", "#06d6a0", "#f78c6b", "#c8e7ff"],
+    land:        ["#ffe066", "#ff8fab", "#b8f2e6"],
+    island:      ["#ff8fab", "#ffe066", "#9bf6ff", "#caffbf"],
+    underground: ["#c9b8a8", "#9fb3c8"]
+  };
+  const ambientCount = kind === "underground" ? 12 : 26;
+  for (let i = 0; i < ambientCount; i++) {
+    world.fish.push({
+      x: rand(0, W),
+      y: vert ? rand(world.surface + 40, world.ground - 40) : rand(60, H - 240),
+      s: rand(.5, 1.3),
+      dir: Math.random() < .5 ? -1 : 1,
+      sp: rand(.3, 1.1),
+      c: pick(AMBIENT[kind]),
+      wob: rand(0, 6.28)
+    });
+  }
+
+  if (vert) {
+    /* glowing specks: bioluminescence in the sea, crystal glints underground */
+    const sparkColors = kind === "underground"
+      ? ["#a5f3ff", "#ffd6f6", "#d7c7ff", "#fff3a8"]
+      : ["#7ee8fa", "#9dffb0", "#ffd6f6", "#ffe680"];
+    for (let i = 0; i < 200; i++) {
+      world.sparks.push({ x: rand(0, W), y: rand(H * .35, H), r: rand(1, 3), ph: rand(0, 6.28),
+                          c: pick(sparkColors) });
+    }
+    /* huge shapes drifting in the dark, just for atmosphere */
+    if (kind === "ocean") {
+      for (let i = 0; i < 7; i++) {
+        world.shadows.push({ x: rand(0, W), y: rand(H * .45, H * .95), s: rand(1.4, 3.4),
+                             dir: Math.random() < .5 ? -1 : 1, sp: rand(.15, .4) });
+      }
+    }
+  }
+
+  clampCamera();
+  refresh();
+}
+
+function makeSpot(zoneNum) {
+  const s = { zone: zoneNum, opened: false, timer: 0, wob: rand(0, 6.28), shake: 0 };
+  /* what the binoculars can see: a hint of how good this one is */
+  s.hint = Math.random();
+  placeSpot(s);
+  return s;
+}
+
+function placeSpot(s) {
+  s.hint = Math.random();
+  if (world.vertical) {
+    const band = (world.ground - world.surface) / world.zoneCount;
+    s.x = rand(140, world.w - 140);
+    s.y = world.surface + band * (s.zone - 1) + rand(band * .2, band * .85);
+  } else {
+    const band = world.w / world.zoneCount;
+    s.x = band * (s.zone - 1) + rand(band * .1, band * .9);
+    s.y = world.ground - 26;
+  }
+}
+
+/* ---------- zones and depth ---------- */
+function zoneAt(y, x) {
+  const list = ZONES[world.kind];
+  let idx;
+  if (world.vertical) {
+    const f = (y - world.surface) / (world.ground - world.surface);
+    idx = Math.floor(f * list.length);
+  } else {
+    idx = Math.floor((x / world.w) * list.length);
+  }
+  return list[Math.min(list.length - 1, Math.max(0, idx))];
+}
+function currentZone() { return world ? zoneAt(world.player.y, world.player.x) : ZONES.ocean[0]; }
+
+/* how deep his suit lets him go */
+function depthLimitY() {
+  if (!world.vertical) return world.ground;
+  const band = (world.ground - world.surface) / world.zoneCount;
+  return world.surface + band * maxZoneAllowed(world.kind);
+}
+
+/* On land and the islands his gear gates how far he can walk. */
+function distanceLimitX() {
+  if (world.vertical) return world.w;
+  const band = world.w / world.zoneCount;
+  return band * maxZoneAllowed(world.kind);
+}
+
+function depthFeet(y) {
+  const f = (y - world.surface) / (world.ground - world.surface);
+  return Math.max(0, Math.round(f * 20000 / 10) * 10);
+}
+
+/* ---------- controls ---------- */
+const keys = {};
+addEventListener("keydown", e => {
+  if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)) e.preventDefault();
+  keys[e.key.toLowerCase()] = true;
+  if (e.key === " ") { if (overlayOpen()) closeCard(); else pressSpace(); }
+  if (e.key === "Escape") {
+    if (overlayOpen()) closeCard();
+    else if (document.getElementById("shop").classList.contains("active") ||
+             document.getElementById("book").classList.contains("active")) backFromMenu();
+  }
+  if (e.key.toLowerCase() === "m") armMagic();
+  if (e.key.toLowerCase() === "r") climbOut();
+});
+addEventListener("keyup", e => { keys[e.key.toLowerCase()] = false; });
+
+cv.addEventListener("pointerdown", e => {
+  if (!world || frozen()) return;
+  const r = cv.getBoundingClientRect();
+  const wx = e.clientX - r.left + world.cam.x;
+  const wy = e.clientY - r.top + world.cam.y;
+
+  if (world.wanderer && Math.hypot(wx - world.wanderer.x, wy - world.wanderer.y) < 150) { pressSpace(); return; }
+  const s = nearestSpot();
+  if (s && Math.hypot(wx - s.x, wy - s.y) < 80) { pressSpace(); return; }
+  world.target = { x: wx, y: wy };
+});
+
+function overlayOpen() { return document.getElementById("overlay").classList.contains("show"); }
+function frozen() { return overlayOpen() || (world && world.reveal); }
+
+/* ---------- update ---------- */
+function update() {
+  if (!world) return;
+  world.t++;
+  const p = world.player, vert = world.vertical;
+  const isFrozen = frozen();
+
+  /* Everything below only moves Cam. While a card or a reveal is up he
+     stays exactly where he is — no drifting down. */
+  if (!isFrozen) {
+    let ax = 0, ay = 0;
+    if (keys.arrowleft  || keys.a) { ax -= 1; world.target = null; }
+    if (keys.arrowright || keys.d) { ax += 1; world.target = null; }
+    if (keys.arrowup    || keys.w) { ay -= 1; world.target = null; }
+    if (keys.arrowdown  || keys.s) { ay += 1; world.target = null; }
+    if (world.target) {
+      const dx = world.target.x - p.x, dy = world.target.y - p.y;
+      if (Math.hypot(dx, dy) < 26) world.target = null;
+      else {
+        ax = Math.max(-1, Math.min(1, dx / 60));
+        ay = Math.max(-1, Math.min(1, dy / 60));
+      }
+    }
+
+    const sp = moveSpeed();
+    if (vert) {
+      p.vx += ax * sp; p.vy += ay * sp;
+      p.vx *= .90; p.vy *= .90;
+      p.vy += .06;
+      p.x += p.vx; p.y += p.vy;
+
+      const limit = depthLimitY();
+      if (p.y > limit - 62) {
+        p.y = limit - 62;
+        if (p.vy > 0) { p.vy = 0; if (ay > 0) world.blocked = 90; }
+      }
+      p.y = Math.max(world.surface + 40, p.y);
+      if (Math.abs(p.vx) + Math.abs(p.vy) > .6) p.kick += .28;
+      if (world.kind === "ocean" && world.t % 8 === 0) world.bubbles.push({ x: p.x - p.face * 14, y: p.y - 16, r: rand(2, 6), vy: rand(-1.6, -.7), life: 110 });
+
+      const ft = depthFeet(p.y);
+      if (world.kind === "ocean" && ft > state.deepest) { state.deepest = ft; if (ft % 500 < 20) save(); }
+    } else {
+      p.vx += ax * sp * 1.15; p.vx *= .84; p.x += p.vx;
+      if ((keys.arrowup || keys.w || (world.target && ay < -.4)) && p.onGround) { p.vy = -jumpPower(); p.onGround = false; }
+      p.vy += .6; p.y += p.vy;
+      const floor = world.ground - 62;
+      if (p.y >= floor) { p.y = floor; p.vy = 0; p.onGround = true; }
+      if (Math.abs(p.vx) > .4) p.kick += .3;
+    }
+
+    if (!vert) {
+      const limitX = distanceLimitX();
+      if (p.x > limitX - 40) { p.x = limitX - 40; if (p.vx > 0) { p.vx = 0; world.blocked = 90; } }
+    }
+    p.x = Math.max(30, Math.min(world.w - 30, p.x));
+    if (Math.abs(p.vx) > .25) p.face = p.vx > 0 ? 1 : -1;
+  }
+
+  if (world.blocked > 0) world.blocked--;
+
+  /* zone change */
+  const z = currentZone();
+  world.zone = z.n;
+  if (z.n !== world.lastZone) { world.lastZone = z.n; showZoneBanner(z); }
+
+  /* the slow reveal */
+  if (world.reveal) tickReveal();
+
+  /* something big out there */
+  updateWanderer();
+
+  /* deep-sea ambience */
+  if (world.kind === "ocean" && world.zone >= 3 && world.t % 60 === 0 && Math.random() < .10) {
+    Math.random() < .5 ? whaleSong() : clicks();
+  }
+  if (world.kind === "underground" && world.t % 60 === 0 && Math.random() < .12) caveDrip();
+
+  world.spots.forEach(s => {
+    if (s.shake > 0) s.shake--;
+    if (s.opened) {
+      s.timer -= state.gear.hammer ? 8 : 1;      /* the rock hammer skips the wait */
+      if (s.timer <= 0) { s.opened = false; placeSpot(s); }
+    }
+  });
+
+  world.bubbles.forEach(b => { b.y += b.vy; b.x += Math.sin(b.y / 18) * .5; b.life--; });
+  world.bubbles = world.bubbles.filter(b => b.life > 0 && b.y > world.surface);
+
+  world.pops.forEach(o => { o.y -= 1.1; o.life--; });
+  world.pops = world.pops.filter(o => o.life > 0);
+
+  world.fish.forEach(f => {
+    f.x += f.sp * f.dir; f.wob += .05;
+    if (f.x < -80) f.x = world.w + 60;
+    if (f.x > world.w + 80) f.x = -60;
+  });
+
+  world.shadows.forEach(s => {
+    s.x += s.sp * s.dir;
+    if (s.x < -400) s.x = world.w + 300;
+    if (s.x > world.w + 400) s.x = -300;
+  });
+
+  clampCamera();
+  updateHint();
+}
+
+function clampCamera() {
+  if (!world) return;
+  const p = world.player;
+  world.cam.x = Math.max(0, Math.min(world.w - CW, p.x - CW / 2));
+  world.cam.y = world.vertical
+    ? Math.max(0, Math.min(world.h - CH, p.y - CH / 2))
+    : Math.max(0, world.h - CH);
+}
+
+function showZoneBanner(z) {
+  const el = document.getElementById("zoneBanner");
+  const locked = z.suit > state.gear.suit;
+  el.innerHTML = PLACES[world.kind].emoji + " " + z.name +
+    (world.vertical ? '<br><span style="font-size:22px">' +
+      depthFeet(world.player.y).toLocaleString() + " feet down</span>" : "");
+  el.style.color = z.n >= 5 ? "#ff5ec7" : (z.n >= 3 ? "#ffcc00" : "#fff");
+  if (world.kind === "island") el.style.color = z.n >= 3 ? "#ffcc00" : "#caffbf";
+  el.classList.add("show");
+  playZoneSound();
+  clearTimeout(showZoneBanner._t);
+  showZoneBanner._t = setTimeout(() => el.classList.remove("show"), 1900);
+}
+
+/* ---------- nearest rock / trap ---------- */
+function nearestSpot() {
+  if (!world) return null;
+  const p = world.player;
+  let best = null, bestD = 1e9;
+  world.spots.forEach(s => {
+    if (s.opened) return;
+    const d = Math.hypot(s.x - p.x, s.y - p.y);
+    if (d < bestD) { bestD = d; best = s; }
+  });
+  return (best && bestD < 100) ? best : null;
+}
+function anySpot() {
+  if (!world) return null;
+  const p = world.player;
+  let best = null, bestD = 1e9;
+  world.spots.forEach(s => {
+    if (s.opened) return;
+    const d = Math.hypot(s.x - p.x, s.y - p.y);
+    if (d < bestD) { bestD = d; best = s; }
+  });
+  return best;
+}
+
+/* ============================================================
+   PRESSING SPACE — either grab the wanderer or open a trap
+   ============================================================ */
+function pressSpace() {
+  if (!world || frozen()) return;
+
+  const wd = world.wanderer;
+  if (wd && Math.hypot(wd.x - world.player.x, wd.y - world.player.y) < 160) {
+    if (wd.c.magicOnly && !(magicArmed && state.magic > 0)) {
+      flashHint("It's way too big for a normal trap! Turn on 🪄 Magic and try again!");
+      beep(160, 240, "sawtooth", .08);
+      return;
+    }
+    const usingMagic = wd.c.magicOnly || (magicArmed && state.magic > 0);
+    if (usingMagic && state.magic > 0 && magicArmed) { state.magic--; magicArmed = false; }
+    world.wanderer = null;
+    startReveal({ x: wd.x, y: wd.y }, wd.c, usingMagic, zoneAt(wd.y, wd.x), true);
+    return;
+  }
+
+  const s = nearestSpot();
+  if (!s) return;
+  const usingMagic = magicArmed && state.magic > 0;
+  if (usingMagic) { state.magic--; magicArmed = false; }
+  const zone = ZONES[world.kind][s.zone - 1];
+  let c = pickCreature(world.kind, zone, usingMagic);
+
+  /* the bug jar catches whichever of two was rarer */
+  if (state.gear.bugjar && !world.vertical) {
+    const other = pickCreature(world.kind, zone, usingMagic);
+    if (other && TIERS[other.tier].points > TIERS[c.tier].points) c = other;
+  }
+  s.opened = true;
+  s.timer = 220;
+  startReveal(s, c, usingMagic, zone, false);
+}
+
+/* Pick a creature that lives in this zone. Mythics stay findable forever —
+   they're just very, very rare, and the game counts how many times you've met one. */
+function pickCreature(where, zone, useMagic) {
+  let pool = CREATURES.filter(c =>
+    c.where === where &&
+    c.zones.indexOf(zone.n) !== -1 &&
+    (useMagic ? c.magicOnly : !c.magicOnly));
+
+  if (!pool.length) {
+    pool = CREATURES.filter(c => c.where === where && (useMagic ? c.magicOnly : !c.magicOnly));
+  }
+  if (!pool.length) pool = CREATURES.filter(c => c.where === where);
+
+  let total = 0;
+  const weighted = pool.map(c => {
+    const w = zone.weights[c.tier] != null ? zone.weights[c.tier] : 1;
+    total += w;
+    return { c: c, upTo: total };
+  });
+  if (total <= 0) return pick(pool);
+  const roll = Math.random() * total;
+  for (const e of weighted) if (roll <= e.upTo) return e.c;
+  return pool[pool.length - 1];
+}
+
+/* The rope ladder: pop straight back to the surface. */
+function climbOut() {
+  if (!world || frozen()) return;
+  if (!state.gear.ladder || world.kind !== "underground") return;
+  world.player.y = world.surface + 60;
+  world.player.vy = 0;
+  clampCamera();
+  flashHint("🪜 You climbed all the way back up!");
+  [523, 659, 784].forEach((n, i) => setTimeout(() => beep(n, 130, "triangle", .08), i * 70));
+}
+
+function armMagic() {
+  if (state.magic < 1) return;
+  magicArmed = !magicArmed;
+  refresh();
+}
+
+/* ============================================================
+   THE SLOW REVEAL — the best part is the waiting
+   ============================================================ */
+function startReveal(spot, creature, usedMagic, zone, fromWanderer) {
+  const stars = TIERS[creature.tier].stars;
+  const dur = creature.tier === "mythic" ? 190 : (stars >= 5 ? 150 : (stars >= 4 ? 125 : (stars >= 3 ? 100 : 70)));
+  world.reveal = {
+    x: spot.x, y: spot.y, c: creature, t: 0, dur: dur,
+    usedMagic: usedMagic, zone: zone, fromWanderer: !!fromWanderer, nextBeep: 0
+  };
+  if (spot.shake !== undefined) spot.shake = dur;
+}
+
+function tickReveal() {
+  const r = world.reveal;
+  r.t++;
+
+  /* drum roll that speeds up as it gets close */
+  const prog = r.t / r.dur;
+  const gap = Math.max(3, Math.round(14 - prog * 11));
+  if (r.t >= r.nextBeep) {
+    r.nextBeep = r.t + gap;
+    beep(320 + prog * 520, 55, "square", .05);
+  }
+
+  if (r.t >= r.dur) {
+    const c = r.c;
+    world.pops.push({ x: r.x, y: r.y - 20, emoji: c.emoji, life: 130 });
+    world.reveal = null;
+    discover(c, r.usedMagic, r.zone);
+  }
+}
+
+/* ============================================================
+   SOMETHING BIG IS OUT THERE (roaming legendaries)
+   ============================================================ */
+function updateWanderer() {
+  if (world.kind !== "ocean") return;
+
+  if (world.wanderer) {
+    const wd = world.wanderer;
+    wd.x += wd.vx;
+    wd.y += Math.sin(world.t / 40) * .6;
+    wd.life--;
+    if (wd.life <= 0 || wd.x < -500 || wd.x > world.w + 500) {
+      world.wanderer = null;
+      flashHint("It got away... 😮 Keep looking!");
+      beep(200, 400, "sine", .06);
+    }
+    return;
+  }
+
+  if (world.zone < 3) return;
+  world.nextWander--;
+  if (world.nextWander > 0) return;
+  world.nextWander = Math.round(rand(600, 1200) / (state.gear.chum ? 3 : 1));
+  if (Math.random() > (state.gear.chum ? .9 : .55)) return;
+
+  const zone = currentZone();
+  const pool = CREATURES.filter(c => c.where === "ocean" &&
+    c.zones.indexOf(zone.n) !== -1 &&
+    ["rare", "epic", "legendary", "mythic"].indexOf(c.tier) !== -1);
+  if (!pool.length) return;
+
+  /* rarer things are rarer here too */
+  const bag = [];
+  pool.forEach(c => {
+    const n = { rare: 8, epic: 4, legendary: 2, mythic: 1 }[c.tier] || 1;
+    for (let i = 0; i < n; i++) bag.push(c);
+  });
+  const c = pick(bag);
+  const fromLeft = Math.random() < .5;
+  world.wanderer = {
+    c: c,
+    x: fromLeft ? world.player.x - CW * .7 : world.player.x + CW * .7,
+    y: Math.max(world.surface + 120, Math.min(world.ground - 120, world.player.y + rand(-140, 140))),
+    vx: (fromLeft ? 1 : -1) * rand(.7, 1.5),
+    life: 1500,
+    size: TIERS[c.tier].stars >= 5 ? 2.6 : 1.9
+  };
+  flashHint("👀 Something BIG is out there! Chase it and press SPACE!");
+  whaleSong();
+}
+
+function flashHint(msg) {
+  const h = document.getElementById("hint");
+  h.textContent = msg;
+  h.classList.add("alert");
+  clearTimeout(flashHint._t);
+  flashHint._t = setTimeout(() => { h.classList.remove("alert"); flashHint._m = null; }, 3200);
+  flashHint._m = msg;
+}
+
+/* ============================================================
+   DRAWING
+   ============================================================ */
+function render() {
+  if (!world) return;
+  const cam = world.cam, vert = world.vertical;
+
+  if (world.kind === "ocean") drawOceanBg(cam);
+  else if (world.kind === "underground") drawUndergroundBg(cam);
+  else drawLandBg(cam);
+
+  world.deco.filter(d => d.depth < .6).forEach(d => drawDeco(d, cam, .5));
+  if (world.kind === "ocean") world.shadows.forEach(s => drawShadow(s, cam));
+  world.fish.forEach(f => drawCritter(f, cam));
+  drawGround(cam);
+  world.deco.filter(d => d.depth >= .6).forEach(d => drawDeco(d, cam, 1));
+
+  if (vert) drawDepthGate(cam); else drawDistanceGate(cam);
+
+  const near = nearestSpot();
+  world.spots.forEach(s => drawSpot(s, cam, s === near));
+
+  if (world.kind === "ocean") {
+    g.strokeStyle = "rgba(255,255,255,.6)";
+    world.bubbles.forEach(b => { g.beginPath(); g.arc(b.x - cam.x, b.y - cam.y, b.r, 0, 6.3); g.stroke(); });
+  }
+
+  if (world.wanderer) drawWanderer(cam);
+
+  world.pops.forEach(o => {
+    g.save();
+    g.globalAlpha = Math.min(1, o.life / 50);
+    g.font = "54px serif"; g.textAlign = "center";
+    g.fillText(o.emoji, o.x - cam.x, o.y - cam.y);
+    g.restore();
+  });
+
+  drawCam(world.player, cam, vert && world.kind === "ocean");
+
+  if (world.reveal) drawReveal(cam);
+  if (vert) drawDeepDark(cam);
+  if (state.gear.radar) drawRadar(cam);
+  drawZoneHud();
+}
+
+function drawOceanBg(cam) {
+  const grad = g.createLinearGradient(0, -cam.y, 0, world.h - cam.y);
+  grad.addColorStop(0, "#a5ecff");
+  grad.addColorStop(.07, "#4fc0ec");
+  grad.addColorStop(.20, "#1a86c4");
+  grad.addColorStop(.38, "#0a4d7a");
+  grad.addColorStop(.58, "#052a45");
+  grad.addColorStop(.78, "#01121f");
+  grad.addColorStop(1, "#12020c");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, CW, CH);
+
+  if (cam.y < world.h * .3) {
+    g.save();
+    g.globalAlpha = .12 * (1 - cam.y / (world.h * .3));
+    g.fillStyle = "#fff";
+    for (let i = 0; i < 7; i++) {
+      const x = ((i * 420 + Math.sin(world.t / 200 + i) * 40) - cam.x * .6) % (CW + 500) - 100;
+      g.beginPath();
+      g.moveTo(x, -cam.y); g.lineTo(x + 70, -cam.y);
+      g.lineTo(x + 260, CH); g.lineTo(x - 40, CH);
+      g.closePath(); g.fill();
+    }
+    g.restore();
+  }
+
+  /* the volcano vents glow red from below */
+  const ventTop = world.surface + (world.ground - world.surface) * (5 / 6);
+  if (cam.y + CH > ventTop) {
+    const y = ventTop - cam.y;
+    const r = g.createLinearGradient(0, y, 0, CH);
+    r.addColorStop(0, "rgba(255,80,0,0)");
+    r.addColorStop(1, "rgba(255,90,10,.28)");
+    g.fillStyle = r;
+    g.fillRect(0, Math.max(0, y), CW, CH);
+  }
+
+  g.save();
+  world.sparks.forEach(s => {
+    const x = s.x - cam.x * .9, y = s.y - cam.y * .9;
+    if (x < -20 || x > CW + 20 || y < -20 || y > CH + 20) return;
+    g.globalAlpha = .35 + Math.sin(world.t / 30 + s.ph) * .35;
+    g.fillStyle = s.c;
+    g.beginPath(); g.arc(x, y, s.r, 0, 6.3); g.fill();
+  });
+  g.restore();
+}
+
+function drawShadow(s, cam) {
+  const x = s.x - cam.x * .95, y = s.y - cam.y * .95;
+  if (x < -500 || x > CW + 500) return;
+  g.save();
+  g.globalAlpha = .22;
+  g.fillStyle = "#000";
+  g.translate(x, y);
+  g.scale(s.dir * s.s, s.s);
+  g.beginPath(); g.ellipse(0, 0, 110, 30, 0, 0, 6.3); g.fill();
+  g.beginPath(); g.moveTo(-100, 0); g.lineTo(-155, -34); g.lineTo(-150, 34); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(-10, -22); g.lineTo(14, -62); g.lineTo(40, -20); g.closePath(); g.fill();
+  g.restore();
+}
+
+function drawDeepDark(cam) {
+  const f = (world.player.y - world.surface) / (world.ground - world.surface);
+  const cave = world.kind === "underground";
+
+  /* underground is rock, not deep water — it goes dark sooner but not as absolutely */
+  const dark = cave
+    ? Math.max(0, Math.min(.72, (f - .05) * 1.15))
+    : Math.max(0, Math.min(.78, (f - .25) * 1.25));
+  if (dark <= 0) return;
+
+  g.fillStyle = cave ? "rgba(6,3,10," + dark + ")" : "rgba(0,6,18," + dark + ")";
+  g.fillRect(0, 0, CW, CH);
+
+  if (dark > .12) {
+    const px = world.player.x - cam.x, py = world.player.y - cam.y;
+    const rad = lightRadius() * (cave ? .8 : 1);
+
+    /* "lighter" makes the lamp add light instead of painting grey over everything */
+    g.save();
+    g.globalCompositeOperation = "lighter";
+    const r = g.createRadialGradient(px, py, 8, px, py, rad);
+    if (cave) {
+      r.addColorStop(0, "rgba(255,214,130,.55)");
+      r.addColorStop(.45, "rgba(255,180,90,.20)");
+      r.addColorStop(1, "rgba(255,160,60,0)");
+    } else {
+      r.addColorStop(0, "rgba(210,240,255,.42)");
+      r.addColorStop(.6, "rgba(180,225,255,.14)");
+      r.addColorStop(1, "rgba(180,225,255,0)");
+    }
+    g.fillStyle = r;
+    g.beginPath(); g.arc(px, py, rad, 0, 6.3); g.fill();
+
+    /* crystals keep twinkling through the dark */
+    if (cave) {
+      world.sparks.forEach(sp => {
+        const x = sp.x - cam.x * .9, y = sp.y - cam.y * .9;
+        if (x < -10 || x > CW + 10 || y < -10 || y > CH + 10) return;
+        g.globalAlpha = .5 + Math.sin(world.t / 20 + sp.ph) * .4;
+        g.fillStyle = sp.c;
+        g.beginPath(); g.arc(x, y, sp.r + .6, 0, 6.3); g.fill();
+      });
+    }
+    g.restore();
+  }
+}
+
+/* the line where his suit gives out */
+function drawDepthGate(cam) {
+  if (maxZoneAllowed(world.kind) >= world.zoneCount) return;
+  const y = depthLimitY() - cam.y;
+  if (y < -40 || y > CH + 40) return;
+  g.save();
+  g.strokeStyle = world.blocked > 0 ? "#ff5c8a" : "rgba(255,120,160,.55)";
+  g.lineWidth = 4;
+  g.setLineDash([18, 14]);
+  g.beginPath(); g.moveTo(0, y); g.lineTo(CW, y); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle = world.blocked > 0 ? "#ff5c8a" : "rgba(255,120,160,.75)";
+  g.font = "bold 16px sans-serif"; g.textAlign = "center";
+  g.fillText("🔒 You need the " + (nextGateItem(world.kind) || "next gear") +
+             " to get past here — it's in the 🛒 shop!", CW / 2, y + 24);
+  g.restore();
+}
+
+/* the same idea, but for walking worlds */
+function drawDistanceGate(cam) {
+  if (maxZoneAllowed(world.kind) >= world.zoneCount) return;
+  const x = distanceLimitX() - cam.x;
+  if (x < -40 || x > CW + 40) return;
+  g.save();
+  g.strokeStyle = world.blocked > 0 ? "#ff5c8a" : "rgba(255,120,160,.55)";
+  g.lineWidth = 4;
+  g.setLineDash([18, 14]);
+  g.beginPath(); g.moveTo(x, 0); g.lineTo(x, CH); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle = world.blocked > 0 ? "#ff5c8a" : "rgba(255,120,160,.8)";
+  g.font = "bold 15px sans-serif"; g.textAlign = "center";
+  g.fillText("🔒 " + (nextGateItem(world.kind) || "New gear") + " needed", x, 40);
+  g.restore();
+}
+
+/* Dirt, then cave, then crystal, then the deep dark with a red glow below. */
+function drawUndergroundBg(cam) {
+  const grad = g.createLinearGradient(0, -cam.y, 0, world.h - cam.y);
+  grad.addColorStop(0, "#8ec7ef");      /* a sliver of sky at the very top */
+  grad.addColorStop(.028, "#7b5a3a");   /* topsoil */
+  grad.addColorStop(.24, "#5c4028");
+  grad.addColorStop(.45, "#3b3038");    /* caves */
+  grad.addColorStop(.68, "#2d2a44");    /* crystal */
+  grad.addColorStop(.86, "#1a1426");
+  grad.addColorStop(1, "#1c0a10");      /* the deep dark */
+  g.fillStyle = grad;
+  g.fillRect(0, 0, CW, CH);
+
+  /* the hot red glow from far below */
+  const deepTop = world.surface + (world.ground - world.surface) * (3 / 4);
+  if (cam.y + CH > deepTop) {
+    const y = deepTop - cam.y;
+    const r = g.createLinearGradient(0, y, 0, CH);
+    r.addColorStop(0, "rgba(255,60,0,0)");
+    r.addColorStop(1, "rgba(255,70,20,.25)");
+    g.fillStyle = r;
+    g.fillRect(0, Math.max(0, y), CW, CH);
+  }
+
+  /* bands of rock so it reads as layers you dug through */
+  g.save();
+  g.globalAlpha = .16;
+  for (let i = 0; i < 40; i++) {
+    const wy = world.surface + i * 115 - cam.y;
+    if (wy < -30 || wy > CH + 30) continue;
+    g.fillStyle = i % 2 ? "#000" : "#fff";
+    g.fillRect(0, wy, CW, 5 + (i % 3) * 3);
+  }
+  g.restore();
+
+  /* crystal glints */
+  g.save();
+  world.sparks.forEach(sp => {
+    const x = sp.x - cam.x * .9, y = sp.y - cam.y * .9;
+    if (x < -20 || x > CW + 20 || y < -20 || y > CH + 20) return;
+    g.globalAlpha = .3 + Math.sin(world.t / 26 + sp.ph) * .3;
+    g.fillStyle = sp.c;
+    g.beginPath(); g.arc(x, y, sp.r, 0, 6.3); g.fill();
+  });
+  g.restore();
+}
+
+function drawLandBg(cam) {
+  const island = world.kind === "island";
+  const f = Math.min(1, world.player.x / world.w);
+  const sky = g.createLinearGradient(0, 0, 0, CH);
+  if (island) {
+    sky.addColorStop(0, "#37c6f4");
+    sky.addColorStop(.72, "#bff2ff");
+  } else {
+    sky.addColorStop(0, f < .6 ? "#7fd4ff" : "#8fd0ef");
+    sky.addColorStop(.7, f < .6 ? "#cdeeff" : "#ffe7bd");
+  }
+  g.fillStyle = sky;
+  g.fillRect(0, 0, CW, CH);
+
+  g.fillStyle = "#fff3a8";
+  g.beginPath(); g.arc(CW - 110, 90, 52, 0, 6.3); g.fill();
+  g.globalAlpha = .35;
+  g.beginPath(); g.arc(CW - 110, 90, 78, 0, 6.3); g.fill();
+  g.globalAlpha = 1;
+
+  /* islands get volcano cones and a bright sea behind them */
+  if (island) {
+    const sea = g.createLinearGradient(0, world.ground - cam.y - 150, 0, CH);
+    sea.addColorStop(0, "#1e9bd7");
+    sea.addColorStop(1, "#0b6fa4");
+    g.fillStyle = sea;
+    g.fillRect(0, world.ground - cam.y - 150, CW, CH);
+    const off = -cam.x * .3;
+    for (let i = -1; i < 16; i++) {
+      const cx2 = off + i * 520, base = world.ground - cam.y - 120;
+      g.fillStyle = "#2f6b4f";
+      g.beginPath();
+      g.moveTo(cx2 - 190, base); g.lineTo(cx2, base - 210); g.lineTo(cx2 + 190, base);
+      g.closePath(); g.fill();
+      g.fillStyle = "rgba(255,255,255,.22)";
+      g.beginPath();
+      g.moveTo(cx2 - 46, base - 160); g.lineTo(cx2, base - 210); g.lineTo(cx2 + 46, base - 160);
+      g.closePath(); g.fill();
+    }
+  }
+
+  const hill1 = island ? "#49a86e" : (f < .5 ? "#7bbf7b" : "#cbb079");
+  const hill2 = island ? "#2f7d52" : (f < .5 ? "#5aa85f" : "#b89a63");
+  const off = -cam.x * .35;
+  g.fillStyle = hill1;
+  for (let i = -1; i < 14; i++) { g.beginPath(); g.arc(off + i * 400, world.ground - cam.y - 40, 230, Math.PI, 0); g.fill(); }
+  g.fillStyle = hill2;
+  for (let i = -1; i < 16; i++) { g.beginPath(); g.arc(off * 1.5 + i * 330 + 120, world.ground - cam.y - 10, 170, Math.PI, 0); g.fill(); }
+}
+
+function drawGround(cam) {
+  const gy = world.ground - cam.y;
+  if (gy > CH + 60) return;
+
+  if (world.kind === "underground") {
+    /* the very bottom: hot cracked rock */
+    g.fillStyle = "#2a1016";
+    g.fillRect(0, gy, CW, CH - gy);
+    for (let i = 0; i < 10; i++) {
+      const x = (i * 300 - cam.x) % (CW + 400) - 100;
+      g.fillStyle = "rgba(255,90,20," + (.35 + Math.sin(world.t / 22 + i) * .2) + ")";
+      g.beginPath(); g.ellipse(x, gy + 16, 44, 9, 0, 0, 6.3); g.fill();
+    }
+    return;
+  }
+
+  if (world.kind === "island") {
+    g.fillStyle = "#f2e2b8";                       /* sand */
+    g.fillRect(0, gy, CW, CH - gy);
+    g.fillStyle = "#dccb9d";
+    for (let i = 0; i < 34; i++) {
+      const x = (i * 191 - cam.x) % (CW + 300) - 100;
+      g.beginPath(); g.ellipse(x, gy + 34 + (i % 4) * 20, 20, 5, 0, 0, 6.3); g.fill();
+    }
+    return;
+  }
+
+  if (world.kind === "ocean") {
+    g.fillStyle = "#5b4636";
+    g.beginPath();
+    g.moveTo(0, gy + 20);
+    for (let x = 0; x <= CW; x += 40) g.lineTo(x, gy + Math.sin((x + cam.x) / 130) * 12);
+    g.lineTo(CW, CH); g.lineTo(0, CH);
+    g.fill();
+    /* glowing volcano chimneys on the bottom */
+    for (let i = 0; i < 8; i++) {
+      const x = (i * 340 - cam.x * 1) % (CW + 400) - 100;
+      g.fillStyle = "#3b2a22";
+      g.beginPath();
+      g.moveTo(x - 26, gy + 20); g.lineTo(x - 12, gy - 70); g.lineTo(x + 12, gy - 70); g.lineTo(x + 26, gy + 20);
+      g.closePath(); g.fill();
+      g.fillStyle = "rgba(255,120,20," + (.45 + Math.sin(world.t / 20 + i) * .25) + ")";
+      g.beginPath(); g.ellipse(x, gy - 72, 13, 7, 0, 0, 6.3); g.fill();
+    }
+  } else {
+    const f = Math.min(1, world.player.x / world.w);
+    g.fillStyle = f < .5 ? "#4e9b52" : (f < .72 ? "#8d9a54" : "#d8bb7a");
+    g.fillRect(0, gy, CW, CH - gy);
+    g.fillStyle = f < .5 ? "#7ec97f" : (f < .72 ? "#b3b96a" : "#eeda9e");
+    g.fillRect(0, gy, CW, 14);
+  }
+}
+
+function drawDeco(d, cam, par) {
+  const x = d.x - cam.x * par;
+  if (x < -170 || x > CW + 170) return;
+  const y = (world.vertical && !d.onFloor ? d.y : world.ground) - cam.y;
+  if (y < -200 || y > CH + 200) return;
+
+  g.save();
+  g.translate(x, y);
+  g.scale(d.s, d.s);
+  const sway = Math.sin(world.t / 40 + d.x) * 6;
+
+  if (d.kind === "weed") {
+    g.strokeStyle = "#2f8f4f"; g.lineWidth = 7; g.lineCap = "round";
+    for (let i = -1; i <= 1; i++) {
+      g.beginPath(); g.moveTo(i * 12, 0);
+      g.quadraticCurveTo(i * 12 + sway, -50, i * 12 + sway * 1.6, -100); g.stroke();
+    }
+  } else if (d.kind === "coral") {
+    g.fillStyle = stableColor(d, ["#ff7b9c", "#ffb35c", "#c77dff"]);
+    g.beginPath(); g.arc(0, -18, 20, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(-18, -6, 13, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(18, -8, 15, 0, 6.3); g.fill();
+  } else if (d.kind === "rock") {
+    g.fillStyle = "#8a8f9a";
+    g.beginPath(); g.ellipse(0, -12, 26, 18, 0, 0, 6.3); g.fill();
+  } else if (d.kind === "tree") {
+    g.fillStyle = "#7a5230"; g.fillRect(-9, -110, 18, 110);
+    g.fillStyle = "#3f9e4d";
+    g.beginPath(); g.arc(0, -130, 46, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(-34, -108, 32, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(34, -108, 32, 0, 6.3); g.fill();
+  } else if (d.kind === "cactus") {
+    g.fillStyle = "#3f8f57";
+    roundRect(-11, -96, 22, 96, 10); g.fill();
+    roundRect(-38, -70, 16, 46, 8); g.fill();
+    roundRect(-38, -70, 60, 14, 7); g.fill();
+  } else if (d.kind === "bush") {
+    g.fillStyle = "#3f9e4d";
+    g.beginPath(); g.arc(0, -18, 24, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(-20, -10, 17, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(20, -10, 17, 0, 6.3); g.fill();
+  } else if (d.kind === "flower") {
+    g.strokeStyle = "#3f9e4d"; g.lineWidth = 3;
+    g.beginPath(); g.moveTo(0, 0); g.lineTo(sway * .3, -26); g.stroke();
+    g.fillStyle = stableColor(d, ["#ff6b9d", "#ffd166", "#c77dff", "#fff"]);
+    for (let i = 0; i < 5; i++) {
+      g.beginPath();
+      g.arc(sway * .3 + Math.cos(i * 1.26) * 7, -26 + Math.sin(i * 1.26) * 7, 5, 0, 6.3);
+      g.fill();
+    }
+  } else if (d.kind === "palm") {
+    g.strokeStyle = "#8a6238"; g.lineWidth = 11; g.lineCap = "round";
+    g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(sway * .5, -70, sway * 1.4 + 10, -128); g.stroke();
+    g.fillStyle = "#3f9e4d";
+    for (let i = 0; i < 6; i++) {
+      const a = -Math.PI / 2 + (i - 2.5) * .55;
+      g.save();
+      g.translate(sway * 1.4 + 10, -128); g.rotate(a);
+      g.beginPath(); g.ellipse(46, 0, 48, 12, 0, 0, 6.3); g.fill();
+      g.restore();
+    }
+    g.fillStyle = "#8a5a2b";
+    g.beginPath(); g.arc(sway * 1.4 + 4, -118, 7, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(sway * 1.4 + 20, -114, 7, 0, 6.3); g.fill();
+  } else if (d.kind === "fern") {
+    g.strokeStyle = "#2f8f4f"; g.lineWidth = 5; g.lineCap = "round";
+    for (let i = -2; i <= 2; i++) {
+      g.beginPath(); g.moveTo(0, 0);
+      g.quadraticCurveTo(i * 20 + sway * .3, -34, i * 34 + sway * .6, -54); g.stroke();
+    }
+  } else if (d.kind === "root") {
+    g.strokeStyle = "#6b4a2a"; g.lineWidth = 6; g.lineCap = "round";
+    g.beginPath(); g.moveTo(-30, -6); g.quadraticCurveTo(0, 10, 34, -10); g.stroke();
+    g.lineWidth = 3;
+    g.beginPath(); g.moveTo(4, 2); g.lineTo(14, 22); g.stroke();
+    g.beginPath(); g.moveTo(-14, 0); g.lineTo(-22, 20); g.stroke();
+  } else if (d.kind === "pebble") {
+    g.fillStyle = "#7d7268";
+    g.beginPath(); g.ellipse(0, -6, 15, 11, .3, 0, 6.3); g.fill();
+    g.fillStyle = "#948880";
+    g.beginPath(); g.ellipse(16, 0, 8, 6, -.2, 0, 6.3); g.fill();
+  } else if (d.kind === "crystal") {
+    const col = stableColor(d, ["#9fd8ff", "#e2b6ff", "#b8ffe4", "#fff0a8"]);
+    g.fillStyle = col;
+    g.globalAlpha = .85;
+    g.beginPath(); g.moveTo(0, -46); g.lineTo(11, -8); g.lineTo(-11, -8); g.closePath(); g.fill();
+    g.beginPath(); g.moveTo(17, -30); g.lineTo(25, -4); g.lineTo(9, -4); g.closePath(); g.fill();
+    g.globalAlpha = .35;
+    g.fillStyle = "#fff";
+    g.beginPath(); g.moveTo(-3, -44); g.lineTo(2, -10); g.lineTo(-6, -10); g.closePath(); g.fill();
+  } else if (d.kind === "mushroom") {
+    g.fillStyle = "#efe6d8";
+    g.fillRect(-3, -22, 6, 22);
+    g.fillStyle = stableColor(d, ["#d96a6a", "#c58bd6", "#e0a94f"]);
+    g.beginPath(); g.ellipse(0, -22, 15, 10, 0, Math.PI, 0); g.fill();
+  } else {
+    g.strokeStyle = "#66bd6a"; g.lineWidth = 4; g.lineCap = "round";
+    for (let i = -1; i <= 1; i++) {
+      g.beginPath(); g.moveTo(i * 7, 0);
+      g.quadraticCurveTo(i * 7 + sway * .4, -16, i * 9 + sway * .8, -30); g.stroke();
+    }
+  }
+  g.restore();
+}
+
+function stableColor(d, colors) {
+  if (!d._c) d._c = colors[Math.floor(Math.abs(Math.sin(d.x)) * colors.length) % colors.length];
+  return d._c;
+}
+
+function drawCritter(f, cam) {
+  const x = f.x - cam.x * .8, y = f.y - cam.y * .8 + Math.sin(f.wob) * 8;
+  if (x < -80 || x > CW + 80 || y < -60 || y > CH + 60) return;
+  g.save();
+  g.translate(x, y);
+  g.scale(f.dir * f.s, f.s);
+  g.globalAlpha = .85;
+  g.fillStyle = f.c;
+  if (world.kind === "ocean") {
+    g.beginPath(); g.ellipse(0, 0, 20, 11, 0, 0, 6.3); g.fill();
+    g.beginPath(); g.moveTo(-18, 0); g.lineTo(-32, -10); g.lineTo(-32, 10); g.fill();
+    g.fillStyle = "#12303f";
+    g.beginPath(); g.arc(9, -3, 2.6, 0, 6.3); g.fill();
+  } else if (world.kind === "underground") {
+    /* little bugs scuttling through the dark */
+    g.beginPath(); g.ellipse(0, 0, 7, 4, 0, 0, 6.3); g.fill();
+    g.strokeStyle = f.c; g.lineWidth = 1.4;
+    for (let i = -1; i <= 1; i++) {
+      g.beginPath(); g.moveTo(i * 3, 0);
+      g.lineTo(i * 3 + Math.sin(f.wob * 4 + i) * 4, 6); g.stroke();
+    }
+  } else {
+    const flap = Math.abs(Math.sin(f.wob * 3)) * 10 + 5;
+    g.beginPath(); g.ellipse(-7, 0, 9, flap, .4, 0, 6.3); g.fill();
+    g.beginPath(); g.ellipse(7, 0, 9, flap, -.4, 0, 6.3); g.fill();
+    g.fillStyle = "#5a3d2b"; g.fillRect(-2, -8, 4, 16);
+  }
+  g.restore();
+}
+
+function drawSpot(s, cam, isNear) {
+  let x = s.x - cam.x, y = s.y - cam.y;
+  if (x < -140 || x > CW + 140 || y < -180 || y > CH + 180) return;
+  if (s.shake > 0) { x += rand(-5, 5); y += rand(-5, 5); }
+
+  g.save();
+  g.translate(x, y);
+  if (s.opened && s.shake <= 0) g.globalAlpha = .25;
+
+  if (isNear && !s.opened) {
+    g.save();
+    g.globalAlpha = .55 + Math.sin(world.t / 8) * .25;
+    g.fillStyle = magicArmed ? "#e0aaff" : "#ffe680";
+    g.beginPath(); g.arc(0, 6, 54, 0, 6.3); g.fill();
+    g.restore();
+  }
+
+  /* binoculars (on land) hint that something good is under this one */
+  if (state.gear.binocs && !world.vertical && !s.opened && s.hint > .82) {
+    g.save();
+    g.globalAlpha = .35 + Math.sin(world.t / 12 + s.wob) * .2;
+    g.fillStyle = s.hint > .95 ? "#ffcc00" : "#4cc9f0";
+    g.beginPath(); g.arc(0, 0, 40, 0, 6.3); g.fill();
+    g.restore();
+  }
+
+  /* sonar keeps every nearby trap visible in the dark */
+  if (state.gear.sonar && world.vertical && !s.opened && !isNear) {
+    g.save();
+    g.globalAlpha = .5;
+    g.strokeStyle = "#4cc9f0"; g.lineWidth = 2.5;
+    g.beginPath(); g.arc(0, 0, 34 + Math.sin(world.t / 14 + s.wob) * 5, 0, 6.3); g.stroke();
+    g.restore();
+  }
+
+  if (world.kind === "underground") {
+    /* a burrow: a dark hole with loose dirt around it */
+    g.fillStyle = "#6b4a2a";
+    g.beginPath(); g.ellipse(0, 10, 36, 20, 0, 0, 6.3); g.fill();
+    g.fillStyle = "#160f0c";
+    g.beginPath(); g.ellipse(0, 6, 22, 13, 0, 0, 6.3); g.fill();
+    g.fillStyle = "#8a6238";
+    [[-30, 22], [26, 20], [-14, 26], [16, 27]].forEach(pt => {
+      g.beginPath(); g.arc(pt[0], pt[1], 4.5, 0, 6.3); g.fill();
+    });
+  } else if (world.kind === "island") {
+    /* a nest tucked in a bush */
+    g.fillStyle = "#2f7d52";
+    g.beginPath(); g.arc(0, 2, 26, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(-20, 12, 17, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(20, 12, 17, 0, 6.3); g.fill();
+    g.fillStyle = "#9c7b4a";
+    g.beginPath(); g.ellipse(0, -6, 20, 10, 0, 0, 6.3); g.fill();
+    g.fillStyle = "#fff6e0";
+    g.beginPath(); g.arc(-7, -9, 6, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(6, -10, 6, 0, 6.3); g.fill();
+  } else if (world.kind === "ocean") {
+    g.strokeStyle = "rgba(255,255,255,.45)"; g.lineWidth = 2;
+    g.beginPath(); g.moveTo(0, -20); g.lineTo(Math.sin(world.t / 60 + s.wob) * 14, -90); g.stroke();
+    g.fillStyle = "#b5722f";
+    g.beginPath();
+    g.moveTo(-30, 24); g.lineTo(30, 24); g.lineTo(24, -20); g.lineTo(-24, -20);
+    g.closePath(); g.fill();
+    g.strokeStyle = "#7d4a17"; g.lineWidth = 3;
+    for (let i = -2; i <= 2; i++) { g.beginPath(); g.moveTo(i * 11, -20); g.lineTo(i * 13, 24); g.stroke(); }
+    for (let j = -1; j <= 1; j++) { g.beginPath(); g.moveTo(-27, j * 14 + 4); g.lineTo(27, j * 14 + 4); g.stroke(); }
+  } else {
+    g.fillStyle = magicArmed && isNear ? "#b98cd9" : "#96a0ad";
+    g.beginPath();
+    g.moveTo(-34, 24); g.lineTo(-24, -10); g.lineTo(2, -24); g.lineTo(28, -8); g.lineTo(34, 24);
+    g.closePath(); g.fill();
+    g.fillStyle = "rgba(255,255,255,.28)";
+    g.beginPath(); g.moveTo(-22, -8); g.lineTo(0, -20); g.lineTo(8, -6); g.closePath(); g.fill();
+  }
+
+  if (isNear && !s.opened && !world.reveal) {
+    g.globalAlpha = 1;
+    /* sit the bubble above his name tag, which is higher in the walking worlds */
+    const bubbleY = world.vertical ? -152 : -200;
+    g.fillStyle = "rgba(0,0,0,.72)";
+    roundRect(-78, bubbleY, 156, 34, 12); g.fill();
+    g.fillStyle = "#fff";
+    g.font = "bold 17px sans-serif"; g.textAlign = "center";
+    g.fillText(magicArmed ? "SPACE = MAGIC! 🪄" : "Press SPACE!", 0, bubbleY + 23);
+  }
+  g.restore();
+}
+
+/* the shaking, glowing build-up */
+function drawReveal(cam) {
+  const r = world.reveal;
+  const prog = r.t / r.dur;
+  const x = r.x - cam.x, y = r.y - cam.y;
+  const tier = TIERS[r.c.tier];
+
+  /* the color only gives the secret away right at the end */
+  const color = prog < .55 ? "#ffffff" : (prog < .78 ? "#9fe8ff" : tier.color);
+  const radius = 40 + prog * 150 + Math.sin(world.t / 3) * 8;
+
+  g.save();
+  g.globalAlpha = .25 + prog * .5;
+  const grd = g.createRadialGradient(x, y, 5, x, y, radius);
+  grd.addColorStop(0, color);
+  grd.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grd;
+  g.beginPath(); g.arc(x, y, radius, 0, 6.3); g.fill();
+
+  g.globalAlpha = .8;
+  g.strokeStyle = color; g.lineWidth = 3 + prog * 5;
+  g.beginPath(); g.arc(x, y, radius * .55, 0, 6.3); g.stroke();
+  g.restore();
+
+  /* little sparks flying out as it builds */
+  if (world.t % 3 === 0) {
+    const a = rand(0, 6.28), d = radius * .6;
+    world.pops.push({ x: r.x + Math.cos(a) * d, y: r.y + Math.sin(a) * d, emoji: "✨", life: 26 });
+  }
+
+  g.save();
+  g.fillStyle = "rgba(0,0,0,.7)";
+  roundRect(x - 96, y - 168, 192, 38, 12); g.fill();
+  g.fillStyle = "#fff";
+  g.font = "bold 20px sans-serif"; g.textAlign = "center";
+  const dots = ".".repeat(1 + Math.floor(world.t / 9) % 3);
+  g.fillText(r.fromWanderer ? "GOT IT" + dots : "Something's in there" + dots, x, y - 142);
+  g.restore();
+}
+
+function drawWanderer(cam) {
+  const wd = world.wanderer;
+  const x = wd.x - cam.x, y = wd.y - cam.y;
+  const dist = Math.hypot(wd.x - world.player.x, wd.y - world.player.y);
+  const close = dist < 160;
+
+  g.save();
+  g.translate(x, y);
+  g.scale((wd.vx > 0 ? 1 : -1) * wd.size, wd.size);
+  g.globalAlpha = close ? .85 : .55;
+  g.fillStyle = close ? "#0b1a2a" : "#050d16";
+  g.beginPath(); g.ellipse(0, 0, 62, 20, 0, 0, 6.3); g.fill();
+  g.beginPath(); g.moveTo(-55, 0); g.lineTo(-92, -24); g.lineTo(-88, 24); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(-6, -14); g.lineTo(10, -44); g.lineTo(28, -12); g.closePath(); g.fill();
+  /* the glowing eye */
+  g.globalAlpha = 1;
+  g.fillStyle = close ? "#ffe680" : "#7ee8fa";
+  g.beginPath(); g.arc(40, -5, 4.5 + Math.sin(world.t / 10) * 1.2, 0, 6.3); g.fill();
+  g.restore();
+
+  g.save();
+  g.fillStyle = close ? "rgba(255,230,128,.95)" : "rgba(255,255,255,.75)";
+  g.font = "bold 17px sans-serif"; g.textAlign = "center";
+  g.fillText(close ? "PRESS SPACE!" : "?????", x, y - 46 * wd.size);
+  g.restore();
+
+  /* an arrow at the edge of the screen if it's off-screen */
+  if (x < 0 || x > CW || y < 0 || y > CH) {
+    const ax = Math.max(30, Math.min(CW - 30, x));
+    const ay = Math.max(30, Math.min(CH - 30, y));
+    g.save();
+    g.translate(ax, ay);
+    g.rotate(Math.atan2(y - ay, x - ax));
+    g.fillStyle = "#ffe680";
+    g.beginPath(); g.moveTo(16, 0); g.lineTo(-10, -11); g.lineTo(-10, 11); g.closePath(); g.fill();
+    g.restore();
+  }
+}
+
+function drawRadar(cam) {
+  const s = anySpot();
+  if (!s) return;
+  const p = world.player;
+  const a = Math.atan2(s.y - p.y, s.x - p.x);
+  const px = p.x - cam.x, py = p.y - cam.y;
+  const d = Math.round(Math.hypot(s.x - p.x, s.y - p.y));
+  g.save();
+  g.translate(px + Math.cos(a) * 74, py + Math.sin(a) * 74);
+  g.rotate(a);
+  g.globalAlpha = .85;
+  g.fillStyle = "#4cc9f0";
+  g.beginPath(); g.moveTo(16, 0); g.lineTo(-10, -10); g.lineTo(-10, 10); g.closePath(); g.fill();
+  g.restore();
+  g.save();
+  g.fillStyle = "rgba(76,201,240,.9)";
+  g.font = "bold 12px sans-serif"; g.textAlign = "center";
+  g.fillText(d + "m", px + Math.cos(a) * 96, py + Math.sin(a) * 96 + 4);
+  g.restore();
+}
+
+function roundRect(x, y, w, h, r) {
+  g.beginPath();
+  g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r);
+  g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r);
+  g.arcTo(x, y, x + w, y, r);
+  g.closePath();
+}
+
+/* ============================================================
+   THIS IS CAM
+   ============================================================ */
+function drawCam(p, cam, ocean) {
+  const x = p.x - cam.x, y = p.y - cam.y;
+  const kick = Math.sin(p.kick) * (ocean ? 18 : 26);
+  const bob = ocean ? Math.sin(world.t / 26) * 3 : 0;
+  const SKIN = "#f6cfae", SKIN_D = "#e3ac86";
+  const HAIR = "#8b5a2b", HAIR_L = "#a8703a";
+  const SUIT = state.gear.suit >= 3 ? "#5a2233" : (state.gear.suit >= 2 ? "#22405e" : "#1f2f4d");
+  const SUIT_L = state.gear.suit >= 3 ? "#7d3548" : "#31456b";
+
+  g.save();
+  g.translate(x, y + bob);
+  g.scale(p.face * 1.5, 1.5);
+
+  g.strokeStyle = SUIT; g.lineWidth = 9; g.lineCap = "round";
+  g.beginPath(); g.moveTo(-5, 14); g.lineTo(-8 - kick * .25, 36 + Math.abs(kick) * .1); g.stroke();
+  g.beginPath(); g.moveTo(5, 14);  g.lineTo(8 + kick * .25, 36 - Math.abs(kick) * .1);  g.stroke();
+
+  if (ocean) {
+    g.fillStyle = state.gear.fins >= 3 ? "#ff7b3d" : (state.gear.fins >= 2 ? "#5ce1e6" : "#3fd0c9");
+    g.beginPath(); g.ellipse(-10 - kick * .3, 44, 13, 7, -.4, 0, 6.3); g.fill();
+    g.beginPath(); g.ellipse(10 + kick * .3, 44, 13, 7, .4, 0, 6.3); g.fill();
+  } else {
+    g.fillStyle = "#e63946";
+    g.beginPath(); g.ellipse(-9 - kick * .2, 41, 10, 6, 0, 0, 6.3); g.fill();
+    g.beginPath(); g.ellipse(9 + kick * .2, 41, 10, 6, 0, 0, 6.3); g.fill();
+  }
+
+  g.fillStyle = SUIT;
+  roundRect(-15, -12, 30, 32, 10); g.fill();
+  g.fillStyle = SUIT_L;
+  g.beginPath(); g.moveTo(-9, -12); g.lineTo(0, -2); g.lineTo(9, -12); g.closePath(); g.fill();
+  g.fillStyle = "#d9c07a";
+  g.beginPath(); g.arc(0, 4, 2.4, 0, 6.3); g.fill();
+
+  g.strokeStyle = SKIN; g.lineWidth = 8;
+  const armSwing = Math.sin(p.kick + (ocean ? 1 : 0)) * (ocean ? 16 : 14);
+  g.beginPath(); g.moveTo(-13, -4); g.lineTo(-24, 6 + armSwing * .4); g.stroke();
+  g.beginPath(); g.moveTo(13, -4);  g.lineTo(24, 6 - armSwing * .4);  g.stroke();
+
+  g.fillStyle = SKIN_D; g.fillRect(-4, -18, 8, 8);
+  g.fillStyle = SKIN;
+  g.beginPath(); g.ellipse(0, -30, 15, 16, 0, 0, 6.3); g.fill();
+  g.beginPath(); g.arc(-15, -29, 4.5, 0, 6.3); g.fill();
+  g.beginPath(); g.arc(15, -29, 4.5, 0, 6.3); g.fill();
+
+  g.fillStyle = HAIR;
+  g.beginPath();
+  g.moveTo(-15, -32);
+  g.quadraticCurveTo(-16, -48, 0, -47);
+  g.quadraticCurveTo(16, -48, 15, -32);
+  g.quadraticCurveTo(10, -41, 0, -40);
+  g.quadraticCurveTo(-10, -41, -15, -32);
+  g.closePath(); g.fill();
+  g.fillStyle = HAIR_L;
+  g.beginPath();
+  g.moveTo(-4, -43);
+  g.quadraticCurveTo(4, -52, 15, -46);
+  g.quadraticCurveTo(6, -44, 1, -40);
+  g.closePath(); g.fill();
+
+  g.fillStyle = "#fff";
+  g.beginPath(); g.ellipse(-6, -31, 4.4, 4.8, 0, 0, 6.3); g.fill();
+  g.beginPath(); g.ellipse(6, -31, 4.4, 4.8, 0, 0, 6.3); g.fill();
+  g.fillStyle = "#5aa9dd";
+  g.beginPath(); g.arc(-5.4, -31, 2.7, 0, 6.3); g.fill();
+  g.beginPath(); g.arc(6.6, -31, 2.7, 0, 6.3); g.fill();
+  g.fillStyle = "#12202f";
+  g.beginPath(); g.arc(-5.4, -31, 1.3, 0, 6.3); g.fill();
+  g.beginPath(); g.arc(6.6, -31, 1.3, 0, 6.3); g.fill();
+  g.fillStyle = "#fff";
+  g.beginPath(); g.arc(-4.2, -32.4, .9, 0, 6.3); g.fill();
+  g.beginPath(); g.arc(7.8, -32.4, .9, 0, 6.3); g.fill();
+
+  g.strokeStyle = HAIR; g.lineWidth = 2;
+  g.beginPath(); g.moveTo(-10, -37); g.lineTo(-2, -38); g.stroke();
+  g.beginPath(); g.moveTo(2, -38); g.lineTo(10, -37); g.stroke();
+
+  g.fillStyle = "rgba(190,120,80,.75)";
+  [[-6,-25],[-3,-23.5],[3,-23.5],[6,-25],[0,-24.5]].forEach(f => {
+    g.beginPath(); g.arc(f[0], f[1], .9, 0, 6.3); g.fill();
+  });
+
+  g.fillStyle = "#8c3b4a";
+  g.beginPath(); g.moveTo(-7, -21); g.quadraticCurveTo(0, -14, 7, -21); g.closePath(); g.fill();
+  g.fillStyle = "#fff";
+  g.beginPath(); g.moveTo(-6, -21); g.quadraticCurveTo(0, -18.5, 6, -21); g.closePath(); g.fill();
+
+  if (ocean) {
+    g.strokeStyle = state.gear.suit >= 2 ? "#ffcc00" : "rgba(255,255,255,.85)";
+    g.lineWidth = state.gear.suit >= 2 ? 3.5 : 2.5;
+    g.beginPath(); g.ellipse(0, -31, 13, 9, 0, 0, 6.3); g.stroke();
+    g.fillStyle = "rgba(180,235,255,.25)";
+    g.beginPath(); g.ellipse(0, -31, 13, 9, 0, 0, 6.3); g.fill();
+    g.strokeStyle = "#ffcc00"; g.lineWidth = 3;
+    g.beginPath(); g.moveTo(13, -34); g.lineTo(19, -50); g.stroke();
+    g.fillStyle = "#c0c8d4";
+    roundRect(-24, -8, 10, 22, 5); g.fill();
+    /* headlamp */
+    if (state.gear.light >= 2) {
+      g.fillStyle = "#ffe680";
+      g.beginPath(); g.arc(0, -45, 4, 0, 6.3); g.fill();
+    }
+  }
+  g.restore();
+
+  g.save();
+  g.translate(x, y + bob);
+  g.fillStyle = "rgba(0,0,0,.55)";
+  roundRect(-30, -104, 60, 24, 10); g.fill();
+  g.fillStyle = "#ffe680";
+  g.font = "bold 16px sans-serif"; g.textAlign = "center";
+  g.fillText("CAM", 0, -87);
+  g.restore();
+}
+
+/* ---------- zone / depth HUD ---------- */
+function drawZoneHud() {
+  const list = ZONES[world.kind];
+  const z = list[world.zone - 1];
+
+  g.save();
+  g.fillStyle = "rgba(0,0,0,.5)";
+  roundRect(CW / 2 - 175, 10, 350, world.vertical ? 52 : 34, 12); g.fill();
+  g.fillStyle = z.n >= 5 ? "#ff5ec7" : (z.n >= 3 ? "#ffcc00" : "#fff");
+  g.font = "bold 19px sans-serif"; g.textAlign = "center";
+  g.fillText(PLACES[world.kind].emoji + " " + z.name + "   (x" + z.bonus + " points)", CW / 2, 33);
+  if (world.vertical) {
+    g.fillStyle = "#bfe6ff";
+    g.font = "bold 15px sans-serif";
+    const line = world.kind === "ocean"
+      ? depthFeet(world.player.y).toLocaleString() + " ft down   •   deepest ever " + state.deepest.toLocaleString() + " ft"
+      : depthFeet(world.player.y).toLocaleString() + " ft underground";
+    g.fillText(line, CW / 2, 53);
+  }
+  g.restore();
+
+  /* the field notebook keeps a running count of what's still missing here */
+  if (state.gear.notebook) {
+    const here = CREATURES.filter(c => c.where === world.kind);
+    const got = here.filter(c => state.found.includes(c.id)).length;
+    g.save();
+    g.fillStyle = "rgba(0,0,0,.5)";
+    roundRect(CW / 2 - 110, world.vertical ? 66 : 48, 220, 26, 9); g.fill();
+    g.fillStyle = "#caffbf";
+    g.font = "bold 14px sans-serif"; g.textAlign = "center";
+    g.fillText("📓 " + got + " of " + here.length + " found here — " +
+               (here.length - got) + " to go", CW / 2, (world.vertical ? 66 : 48) + 18);
+    g.restore();
+  }
+
+  const w = 16, h = Math.min(360, CH - 140), x = CW - 44, y = 78;
+  g.save();
+  g.fillStyle = "rgba(0,0,0,.45)";
+  roundRect(x - 6, y - 6, w + 12, h + 12, 9); g.fill();
+
+  const METER = {
+    ocean:       ["rgba(120,210,255,.8)", "rgba(60,140,200,.8)", "rgba(30,60,110,.85)",
+                  "rgba(10,18,45,.9)", "rgba(30,6,40,.92)", "rgba(90,20,10,.95)"],
+    land:        ["rgba(126,201,127,.85)", "rgba(141,154,84,.85)", "rgba(216,187,122,.9)"],
+    island:      ["rgba(120,210,180,.85)", "rgba(90,180,140,.85)", "rgba(200,160,90,.9)",
+                  "rgba(120,120,200,.9)"],
+    underground: ["rgba(123,90,58,.9)", "rgba(59,48,56,.9)", "rgba(45,42,68,.92)", "rgba(60,14,22,.95)"]
+  };
+  const colors = METER[world.kind] || METER.ocean;
+  const stops = list.length;
+  for (let i = 0; i < stops; i++) {
+    g.fillStyle = colors[i] || "rgba(255,255,255,.3)";
+    roundRect(x, y + (h / stops) * i, w, h / stops - 2, 5); g.fill();
+    /* a lock on the parts his suit can't reach */
+    if (i + 1 > maxZoneAllowed(world.kind)) {
+      g.fillStyle = "rgba(255,255,255,.8)";
+      g.font = "11px sans-serif"; g.textAlign = "center";
+      g.fillText("🔒", x + w / 2, y + (h / stops) * i + h / stops / 2 + 4);
+    }
+  }
+
+  const frac = world.vertical
+    ? (world.player.y - world.surface) / (world.ground - world.surface)
+    : world.player.x / world.w;
+  const py = y + Math.max(0, Math.min(1, frac)) * h;
+  g.fillStyle = "#ffcc00";
+  g.beginPath(); g.arc(x + w / 2, py, 8, 0, 6.3); g.fill();
+  g.fillStyle = "#10203a";
+  g.font = "bold 10px sans-serif"; g.textAlign = "center";
+  g.fillText(world.vertical ? "▼" : "▶", x + w / 2, py + 3.5);
+  g.restore();
+}
+
+/* ---------- loop ---------- */
+function loop() {
+  if (document.getElementById("explore").classList.contains("active")) { update(); render(); }
+  requestAnimationFrame(loop);
+}
+
+/* ============================================================
+   FINDING A CREATURE
+   ============================================================ */
+function discover(c, usedMagic, zone) {
+  const tier = TIERS[c.tier];
+  const isNew = !state.found.includes(c.id);
+  let points = tier.points * zone.bonus;
+  if (isNew) points *= 2;
+
+  if (c.breaksTrap) {
+    points = 0;
+    playBreak();
+  } else {
+    state.score += points;
+    if (c.tier === "mythic") { screenFlash(); playMythicFanfare(); confettiBurst(400); }
+    else if (tier.stars >= 5) { screenFlash(); playFanfare(); confettiBurst(240); }
+    else if (tier.stars >= 3) { playFanfare(); confettiBurst(90); }
+    else { [523, 659, 784].slice(0, tier.stars + 1).forEach((n, i) => setTimeout(() => beep(n, 170), i * 85)); }
+  }
+  if (isNew) state.found.push(c.id);
+  state.counts[c.id] = (state.counts[c.id] || 0) + 1;
+  if (c.givesMagic) state.magic++;
+
+  save();
+  refresh();
+  fillCard(c, { isNew: isNew, points: points, usedMagic: usedMagic, zone: zone });
+  document.getElementById("overlay").classList.add("show");
+}
+
+function screenFlash() {
+  const f = document.getElementById("flash");
+  f.classList.add("on");
+  setTimeout(() => f.classList.remove("on"), 90);
+}
+
+function fillCard(c, opts) {
+  opts = opts || {};
+  const tier = TIERS[c.tier];
+
+  document.getElementById("card").classList.toggle("mythic", c.tier === "mythic");
+
+  const img = document.getElementById("cardPhoto");
+  const em = document.getElementById("cardEmoji");
+  const src = photoOf(c.id);
+  if (src) {
+    img.style.display = "block";
+    em.style.display = "none";
+    img.onerror = () => { img.style.display = "none"; em.style.display = "block"; };
+    img.src = src;
+    img.alt = c.name;
+  } else {
+    img.style.display = "none";
+    em.style.display = "block";
+  }
+  em.textContent = c.emoji;
+
+  document.getElementById("cardName").textContent =
+    (c.mythic ? "✨ " : "") + (opts.isNew ? "NEW! " : (opts.points != null && (state.counts[c.id] || 0) > 1 ? "AGAIN! " : "")) + c.name;
+
+  const tg = document.getElementById("cardTier");
+  tg.textContent = tier.label;
+  tg.style.background = tier.color;
+
+  document.getElementById("cardStars").textContent =
+    c.tier === "mythic" ? "🌟🌟🌟🌟🌟" : "⭐".repeat(tier.stars) + "☆".repeat(5 - tier.stars);
+
+  const pts = document.getElementById("cardPoints");
+  if (c.breaksTrap) {
+    pts.textContent = "💥 Oh no! It was too big — your magic trap BROKE!";
+  } else if (opts.points != null) {
+    const WHY = {
+      ocean: "for going deep", underground: "for digging deep",
+      land: "for going way out", island: "for sailing this far"
+    };
+    pts.textContent = "+" + opts.points.toLocaleString() + " points" +
+      (opts.zone && opts.zone.bonus > 1
+        ? "  (x" + opts.zone.bonus + " " + (WHY[c.where] || "for going deep") + "!)" : "") +
+      (opts.isNew ? "  (doubled — brand new!)" : "");
+  } else {
+    pts.textContent = "Worth " + tier.points.toLocaleString() + " points";
+  }
+
+  const where = document.getElementById("cardWhere");
+  const zoneNames = c.zones.map(n => ZONES[c.where][n - 1].name).join(" • ");
+  let line = "Lives in: " + zoneNames;
+  if (c.endemicTo) {
+    line += '<br><span style="color:#0b7a5a"><b>I live on ' + c.endemicTo +
+            ' and NOWHERE else on Earth.</b></span>';
+  }
+  if (c.magicOnly) line += "  🪄 (needs the magic trap)";
+  if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
+  if (c.givesMagic) line += "<br>🪄 A crab! You earned a MAGIC TRAP!";
+  if (opts.usedMagic && !c.breaksTrap) line += "<br>The magic trap grew GIANT to catch it!";
+
+  /* meeting one again is something to brag about, not a repeat */
+  const times = state.counts[c.id] || 0;
+  if (times > 1) {
+    line += '<br><span style="color:#b06a00"><b>You have found this one ' + times + " times!</b>" +
+            (c.mythic ? " 🤯" : "") + "</span>";
+  }
+  where.innerHTML = line;
+
+  const ul = document.getElementById("cardFacts");
+  ul.innerHTML = "";
+  c.facts.forEach(f => {
+    const li = document.createElement("li");
+    li.textContent = f;
+    ul.appendChild(li);
+  });
+
+  document.getElementById("cardCredit").innerHTML = PHOTOS[c.id]
+    ? 'Photo from <a href="' + PHOTOS[c.id].url + '" target="_blank">Wikipedia</a>' : "";
+}
+
+function closeCard() { document.getElementById("overlay").classList.remove("show"); }
+
+/* ============================================================
+   THE SHOP
+   ============================================================ */
+function ownedLevel(itemId) {
+  const item = SHOP.find(i => i.id === itemId);
+  if (!item || item.repeat || !item.gear) return false;
+  return (state.gear[item.gear] || 0) >= item.level;
+}
+
+function buy(itemId) {
+  const item = SHOP.find(i => i.id === itemId);
+  if (!item) return;
+  if (ownedLevel(itemId)) return;
+  if (item.needs && !ownedLevel(item.needs)) { shopNote("You need the one before it first!"); return; }
+  if (state.score < item.cost) { shopNote("Not enough points yet — go find more creatures! ⭐"); return; }
+
+  state.score -= item.cost;
+  if (item.id === "magic") state.magic++;
+  else state.gear[item.gear] = Math.max(state.gear[item.gear] || 0, item.level);
+
+  save();
+  playBuy();
+  confettiBurst(70);
+  shopNote("YES! You got the " + item.name + "! " + item.emoji);
+
+  /* buying a snorkel mid-island should add the tide pools right away */
+  if (item.id === "snorkel" && world && world.kind === "island") {
+    ZONES.island.forEach(z => { for (let i = 0; i < 3; i++) world.spots.push(makeSpot(z.n)); });
+  }
+  showShop();
+  refresh();
+}
+
+function shopNote(msg) {
+  const el = document.getElementById("shopNote");
+  el.textContent = msg;
+  clearTimeout(shopNote._t);
+  shopNote._t = setTimeout(() => { el.textContent = ""; }, 4000);
+}
+
+function showShop() {
+  const grid = document.getElementById("shopGrid");
+  grid.innerHTML = "";
+  document.getElementById("scoreNum").textContent = state.score.toLocaleString();
+  document.getElementById("magicNum").textContent = state.magic;
+  document.getElementById("shopPoints").textContent =
+    "You have " + state.score.toLocaleString() + " points  ⭐";
+
+  /* the place he's exploring right now comes first */
+  const order = ["ocean", "land", "island", "underground", "any"];
+  const here = world ? world.kind : null;
+  if (here) order.splice(order.indexOf(here), 1), order.unshift(here);
+
+  order.forEach(place => {
+    const items = SHOP.filter(i => i.where === place);
+    if (!items.length) return;
+
+    const head = document.createElement("h3");
+    head.className = "shopPlace" + (place === here ? " current" : "");
+    head.textContent = PLACES[place].emoji + " " + PLACES[place].name +
+                       (place === "any" ? "" : " gear") +
+                       (place === here ? "  — where you are now" : "");
+    grid.appendChild(head);
+
+    const row = document.createElement("div");
+    row.className = "shopRow";
+    items.forEach(item => row.appendChild(shopCard(item)));
+    grid.appendChild(row);
+  });
+
+  labelBackButtons();
+  show("shop");
+}
+
+function shopCard(item) {
+  const owned = ownedLevel(item.id);
+  const locked = item.needs && !ownedLevel(item.needs);
+  const div = document.createElement("div");
+  div.className = "shopItem" + (owned ? " owned" : "") + (locked ? " locked" : "");
+  div.innerHTML =
+    '<div class="ic">' + item.emoji + "</div>" +
+    '<div class="nm">' + item.name + "</div>" +
+    '<div class="bl">' + item.blurb + "</div>" +
+    '<div class="pr">' + (owned ? "✅ You have it!" : item.cost.toLocaleString() + " points") + "</div>";
+
+  if (!owned) {
+    const b = document.createElement("button");
+    const afford = state.score >= item.cost;
+    b.className = "btn small " + (afford && !locked ? "gold" : "gray");
+    b.textContent = locked ? "🔒 Locked" : (afford ? "BUY IT!" : "Need more points");
+    b.disabled = locked || !afford;
+    b.onclick = () => buy(item.id);
+    div.appendChild(b);
+  }
+  return div;
+}
+
+/* You need the boat before the islands are anywhere you can go. */
+function tryStart(kind) {
+  if (!canReach(kind)) {
+    const boat = SHOP.find(i => i.id === "boat");
+    updateHomeText();
+    document.getElementById("islandHint").innerHTML =
+      "🔒 You need <b>The Boat</b> (" + boat.cost.toLocaleString() + " points) — it's in the 🛒 shop!";
+    beep(160, 240, "sawtooth", .08);
+    return;
+  }
+  startWorld(kind);
+}
+
+/* ---------- screens ---------- */
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+function goHome() { world = null; magicArmed = false; updateHomeText(); show("home"); }
+
+/* Leaving the shop or the book puts him back exactly where he was.
+   If he was in the middle of a dive, the dive is still going. */
+function backFromMenu() {
+  closeCard();
+  if (world) show("explore");
+  else { updateHomeText(); show("home"); }
+}
+
+/* the Back buttons say where they go */
+function labelBackButtons() {
+  const BACK = {
+    ocean: "⬅️ Back to my dive", land: "⬅️ Back to exploring",
+    island: "⬅️ Back to the island", underground: "⬅️ Back down the hole"
+  };
+  const label = world ? BACK[world.kind] : "⬅️ Back home";
+  document.querySelectorAll(".big-back").forEach(b => { b.textContent = label; });
+}
+
+function updateHomeText() {
+  const suits = ["", "just your snorkel", "the Deep Suit", "the VOLCANO SUIT"];
+  const digs  = ["", "your bare hands", "a Shovel", "a PICKAXE"];
+  document.getElementById("homeHowto").innerHTML =
+    "🎮 <b>Arrow keys</b> to move (or click where you want to go). Get close and press <b>SPACE</b>.<br>" +
+    "🤿 Diving with " + suits[state.gear.suit] + " — you can reach <b>" +
+      ZONES.ocean[maxZoneAllowed("ocean") - 1].name + "</b>.<br>" +
+    "⛏️ Digging with " + digs[state.gear.dig] + " — you can reach <b>" +
+      ZONES.underground[maxZoneAllowed("underground") - 1].name + "</b>.<br>" +
+    "🏆 Deepest dive ever: <b>" + state.deepest.toLocaleString() + " feet</b>";
+
+  /* the islands stay locked until he buys the boat */
+  const card = document.getElementById("islandCard");
+  const hint = document.getElementById("islandHint");
+  if (card && hint) {
+    const boat = SHOP.find(i => i.id === "boat");
+    card.classList.toggle("locked", !canReach("island"));
+    hint.innerHTML = canReach("island")
+      ? "Animals found nowhere else on Earth"
+      : "🔒 Needs <b>The Boat</b> — " + boat.cost.toLocaleString() + " points";
+  }
+}
+
+function refresh() {
+  document.getElementById("scoreNum").textContent = state.score.toLocaleString();
+  document.getElementById("magicNum").textContent = state.magic;
+  const btn = document.getElementById("magicBtn");
+  btn.disabled = state.magic < 1;
+  btn.textContent = magicArmed ? "🪄 MAGIC ON!" : "🪄 Magic";
+  updateHomeText();
+  updateHint();
+}
+
+function updateHint() {
+  const h = document.getElementById("hint");
+  if (!world || flashHint._m) return;
+  const near = nearestSpot();
+  h.classList.toggle("magicOn", magicArmed && !world.reveal);
+
+  const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow" };
+  const thing = THING[world.kind];
+  const OPEN = {
+    ocean: "open the trap!", land: "flip the rock!",
+    island: "look in the nest!", underground: "dig out the burrow!"
+  };
+  const GO = {
+    ocean: "🏊 Swim DOWN — the deeper you go, the weirder they get!",
+    land: "🚶 Walk RIGHT for rarer creatures! (up = jump)",
+    island: "⛵ Head RIGHT to the next island — each one has animals found nowhere else!",
+    underground: "⛏️ Dig DOWN — everything down there is blind and pale and strange."
+  };
+
+  if (world.reveal) {
+    h.textContent = "Ohhh what is it?!";
+  } else if (world.blocked > 0) {
+    h.textContent = "🔒 You need the " + (nextGateItem(world.kind) || "next gear") + " from the 🛒 shop to get past here.";
+  } else if (magicArmed) {
+    h.textContent = "🪄 Magic is ON! Open a " + thing + " to catch something HUGE!";
+  } else if (near) {
+    h.textContent = "Press SPACE to " + OPEN[world.kind];
+  } else {
+    h.textContent = GO[world.kind];
+  }
+}
+
+/* ---------- the book ---------- */
+function showBook() {
+  const body = document.getElementById("bookBody");
+  body.innerHTML = "";
+
+  /* the mythic shrine goes first */
+  const mythics = CREATURES.filter(c => c.tier === "mythic");
+  const shrine = document.createElement("div");
+  shrine.className = "mythicShrine";
+  const st = document.createElement("h3");
+  st.style.color = "#ff5ec7";
+  st.textContent = "★ MYTHIC — the rarest of all ★";
+  shrine.appendChild(st);
+  shrine.appendChild(buildGrid(mythics));
+  body.appendChild(shrine);
+
+  ["land", "ocean", "island", "underground"].forEach(where => {
+    const h3 = document.createElement("h3");
+    h3.textContent = PLACES[where].emoji + " " + PLACES[where].name;
+    body.appendChild(h3);
+
+    if (where === "island") {
+      const note = document.createElement("div");
+      note.className = "islandNote";
+      note.textContent = "Every animal on these islands lives there and nowhere else in the world. " +
+        "They were cut off by the sea for so long that they turned into something new.";
+      body.appendChild(note);
+    }
+
+    ZONES[where].forEach(zone => {
+      const inZone = CREATURES.filter(c => c.where === where && c.tier !== "mythic" && c.zones[0] === zone.n);
+      if (!inZone.length) return;
+      const found = inZone.filter(c => state.found.includes(c.id)).length;
+      const label = document.createElement("div");
+      label.className = "zoneLabel";
+      label.textContent = zone.name + " — " + found + " of " + inZone.length +
+        (zone.needs ? "   (needs the " + zone.needs.item + ")" : "");
+      body.appendChild(label);
+      body.appendChild(buildGrid(inZone));
+    });
+  });
+
+  document.getElementById("bookCount").textContent =
+    "You have discovered " + state.found.length + " of " + CREATURES.length + " creatures!";
+  labelBackButtons();
+  show("book");
+}
+
+function buildGrid(list) {
+  const grid = document.createElement("div");
+  grid.className = "bookGrid";
+  list.slice().sort((a, b) => TIERS[a.tier].points - TIERS[b.tier].points).forEach(c => {
+    const have = state.found.includes(c.id);
+    const cell = document.createElement("button");
+    cell.className = "bookCell" + (have ? "" : " locked");
+    cell.style.borderColor = have ? TIERS[c.tier].color : "#4a7ab5";
+
+    const src = photoOf(c.id);
+    if (have && src) {
+      const im = document.createElement("img");
+      im.src = src; im.alt = c.name;
+      im.onerror = () => { im.replaceWith(makePlaceholder(c.emoji)); };
+      cell.appendChild(im);
+    } else {
+      cell.appendChild(makePlaceholder(have ? c.emoji : "❓"));
+    }
+    const nm = document.createElement("span");
+    nm.className = "nm";
+    nm.textContent = have ? c.name : "???";
+    cell.appendChild(nm);
+
+    const times = state.counts[c.id] || 0;
+    if (times > 1) {
+      const badge = document.createElement("span");
+      badge.className = "count";
+      badge.textContent = "x" + times;
+      cell.appendChild(badge);
+    }
+    if (have) cell.onclick = () => { fillCard(c, {}); document.getElementById("overlay").classList.add("show"); };
+    grid.appendChild(cell);
+  });
+  return grid;
+}
+
+function makePlaceholder(txt) {
+  const d = document.createElement("div");
+  d.className = "ph";
+  d.textContent = txt;
+  return d;
+}
+
+/* ---------- confetti ---------- */
+const cvs = document.getElementById("confetti");
+const cx = cvs.getContext("2d");
+let bits = [];
+function sizeConfetti() { cvs.width = innerWidth; cvs.height = innerHeight; }
+addEventListener("resize", sizeConfetti);
+sizeConfetti();
+
+function confettiBurst(n) {
+  const colors = ["#ffcc00", "#ff4d6d", "#4cc9f0", "#80ed99", "#c77dff", "#ff5ec7"];
+  for (let i = 0; i < (n || 90); i++) {
+    bits.push({
+      x: innerWidth / 2, y: innerHeight / 2,
+      vx: (Math.random() - .5) * 20, vy: Math.random() * -16 - 3,
+      c: pick(colors), s: Math.random() * 9 + 4, life: 130
+    });
+  }
+}
+function confettiTick() {
+  cx.clearRect(0, 0, cvs.width, cvs.height);
+  bits = bits.filter(b => b.life-- > 0);
+  bits.forEach(b => {
+    b.x += b.vx; b.y += b.vy; b.vy += .45;
+    cx.fillStyle = b.c;
+    cx.fillRect(b.x, b.y, b.s, b.s);
+  });
+  requestAnimationFrame(confettiTick);
+}
+confettiTick();
+
+/* ---------- go! ---------- */
+load();
+fitCanvas();
+refresh();
+loop();
+</script>
+</body>
+</html>
