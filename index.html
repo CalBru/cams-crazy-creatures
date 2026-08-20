@@ -308,6 +308,24 @@
   .mineRow .who { flex: 1; font-size: 16px; line-height: 1.3; }
   .mineRow .who small { color: #9fd3ff; }
 
+  /* the who's-exploring screen */
+  .whoPicker {
+    display: flex; flex-wrap: wrap; gap: 18px; justify-content: center;
+    max-width: 960px; margin: 8px auto 0;
+  }
+  .whoCard {
+    background: #16283f; border: 5px solid #2f4a6b; border-radius: 22px;
+    padding: 14px 14px 18px; width: 250px; cursor: pointer; color: #eaf6ff;
+    font-family: inherit; text-align: center; transition: transform .08s, border-color .08s;
+  }
+  .whoCard:hover, .whoCard:focus { border-color: #ffcc00; transform: translateY(-4px); }
+  .whoCard.on { border-color: #80ed99; background: #1c3552; }
+  .whoCard canvas { display: block; margin: 0 auto; }
+  .whoCard .kidName { font-size: 28px; font-weight: bold; color: #ffe680; margin: 2px 0 8px; }
+  .whoCard .kidPerkTitle { font-size: 17px; font-weight: bold; color: #80ed99; }
+  .whoCard .kidPerk { font-size: 14px; line-height: 1.35; color: #cfe6ff; margin-top: 4px; }
+  .whoCard .youAre { font-size: 14px; color: #80ed99; margin-top: 8px; min-height: 18px; }
+
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
 </style>
 </head>
@@ -322,7 +340,15 @@
           onclick="showAdd()">➕ Add</button>
   <button class="btn gold small" onclick="showShop()">🛒 Shop</button>
   <button class="btn gray small" onclick="showBook()">📖 Book</button>
+  <button class="btn gray small" id="whoBtn" onclick="showWho()">🧒 Cam</button>
   <button class="btn gray small" onclick="goHome()">🏠 Home</button>
+</div>
+
+<!-- ============ WHO'S EXPLORING ============ -->
+<div id="who" class="screen">
+  <h2>Who is exploring today?</h2>
+  <p class="sub">Everybody shares the same creature book — swapping never loses anything you found.</p>
+  <div class="whoPicker" id="whoPicker"></div>
 </div>
 
 <!-- ============ HOME ============ -->
@@ -352,6 +378,7 @@
     </button>
   </div>
   <div class="howto" id="homeHowto"></div>
+  <button class="btn gray" onclick="showWho()">🧒 Pick a different kid</button>
 </div>
 
 <!-- ============ EXPLORE ============ -->
@@ -468,8 +495,52 @@ const DEFAULT_GEAR = {
   dig: 1, headlamp: 1, ladder: 0                                 /* underground */
 };
 const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
+
+/* ============================================================
+   WHO IS EXPLORING
+   Cam designed the game. Reece is his little brother and he loves
+   octopuses. Carter is drawn from his photo, wearing a bearded
+   dragon on his shirt, because his bearded dragon is called Jack.
+   Everybody shares one creature book — swapping who you play as
+   never touches what anybody has already found.
+   ============================================================ */
+const CHARACTERS = {
+  cam: {
+    id: "cam", name: "CAM", label: "Cam", scale: 1,
+    hair: "#8b5a2b", hairL: "#a8703a", hairStyle: "swoosh",
+    skin: "#f6cfae", skinD: "#e3ac86", eyes: "#5aa9dd",
+    shirt: "#2f7d52", shirtL: "#3f9c69", shorts: "#3a4a63", shoes: "#e63946",
+    freckles: true, shirtArt: null,
+    perkTitle: "🪄 MAGIC TRAP MASTER",
+    perk: "Every crab Cam finds hands him TWO magic traps instead of one.",
+    crabDouble: true, loves: null
+  },
+  reece: {
+    id: "reece", name: "REECE", label: "Reece", scale: .8,
+    hair: "#c8a05e", hairL: "#e0c088", hairStyle: "sweep",
+    skin: "#f9d6b8", skinD: "#eab595", eyes: "#7ec8f0",
+    shirt: "#ffffff", shirtL: "#e6ecf2", shorts: "#d8c49a", shoes: "#f2f2f2",
+    freckles: false, shirtArt: null, ring: true,
+    perkTitle: "🐙 OCTOPUS LOVER",
+    perk: "Reece's favourite animal is the octopus. Octopuses, squid, cuttlefish and nautiluses are worth DOUBLE points for him.",
+    loves: { re: /octopus|squid|cuttlefish|nautilus/i, label: "🐙 REECE'S FAVOURITE ANIMAL!", mult: 2 }
+  },
+  carter: {
+    id: "carter", name: "CARTER", label: "Carter", scale: 1.05,
+    hair: "#b98f52", hairL: "#d8b478", hairStyle: "crop",
+    skin: "#f7d3b2", skinD: "#e4b18e", eyes: "#79b7dd",
+    shirt: "#8fc0e0", shirtL: "#a9d3ee", shorts: "#e4dcc2", shoes: "#efe8dc",
+    freckles: false, shirtArt: "dragon",
+    perkTitle: "🦎 REPTILE KEEPER",
+    perk: "Carter keeps a real bearded dragon called Jack. Every reptile is worth DOUBLE points for him — and Jack only shows up when Carter is the one exploring.",
+    loves: { re: /lizard|snake|gecko|dragon|iguana|tortoise|turtle|croc|viper|cobra|python|skink|chameleon|tuatara|monitor|adder|mamba|anole|caiman|gharial|boa/i,
+             label: "🦎 CARTER'S KIND OF ANIMAL!", mult: 2 }
+  }
+};
+const CHAR_ORDER = ["cam", "reece", "carter"];
+function me() { return CHARACTERS[state.who] || CHARACTERS.cam; }
 let state = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
-              bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
+              bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0, who: null };
 
 function mergeInto(target, data) {
   if (!data || typeof data !== "object") return target;
@@ -507,6 +578,9 @@ function mergeInto(target, data) {
   if (incomingBucket.length > (target.bucket || []).length) target.bucket = incomingBucket.slice(0, BUCKET_SIZE);
   target.bucket = target.bucket || [];
 
+  /* whoever was picked last is who we start as next time */
+  if (data.who && CHARACTERS[data.who]) target.who = data.who;
+
   target.gear = target.gear || Object.assign({}, DEFAULT_GEAR);
   Object.keys(DEFAULT_GEAR).forEach(k => {
     target.gear[k] = Math.max(target.gear[k] || DEFAULT_GEAR[k], (data.gear && Number(data.gear[k])) || 0);
@@ -516,7 +590,7 @@ function mergeInto(target, data) {
 
 function load() {
   const merged = { score: 0, magic: 1, found: [], counts: {}, traps: Object.assign({}, DEFAULT_TRAPS),
-                   bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0 };
+                   bucket: [], mine: [], gear: Object.assign({}, DEFAULT_GEAR), deepest: 0, who: null };
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k || k.toLowerCase().indexOf("camscrazycreatures") !== 0) continue;
@@ -1225,11 +1299,11 @@ function catchWith(trap, where, zone, promised) {
     let pool = unseen(inZone(where, zone.n, false).concat(inZone(where, zone.n, true)));
     let from = null;
     if (!pool.length) {
-      pool = unseen(CREATURES.filter(c => c.where === where));
+      pool = unseen(CREATURES.filter(c => c.where === where && mineToFind(c)));
       from = "somewhere else in the " + PLACES[where].name.toLowerCase();
     }
     if (!pool.length) {
-      pool = unseen(CREATURES);
+      pool = unseen(CREATURES.filter(mineToFind));
       from = "the other side of the world";
     }
     if (!pool.length) {
@@ -1250,7 +1324,7 @@ function catchWith(trap, where, zone, promised) {
 
   if (trap === "mystery") {
     /* anywhere in the world, including places he can't reach yet */
-    const pool = CREATURES.filter(c => !c.breaksTrap);
+    const pool = CREATURES.filter(c => !c.breaksTrap && mineToFind(c));
     const c = pick(pool);
     const zoneName = ZONES[c.where][c.zones[0] - 1].name;
     return { c: c, trap: trap, from: PLACES[c.where].name + " — " + zoneName,
@@ -1271,8 +1345,12 @@ const RARE_HUNT_WEIGHTS = { common: 0, uncommon: 1, rare: 8, epic: 26, legendary
 
 function inZone(where, zoneNum, magicOnly) {
   return CREATURES.filter(c =>
-    c.where === where && c.zones.indexOf(zoneNum) !== -1 && (magicOnly ? c.magicOnly : !c.magicOnly));
+    c.where === where && c.zones.indexOf(zoneNum) !== -1 && (magicOnly ? c.magicOnly : !c.magicOnly) &&
+    mineToFind(c));
 }
+
+/* Jack is Carter's own bearded dragon, so he only turns up for Carter. */
+function mineToFind(c) { return !c.onlyFor || c.onlyFor === state.who; }
 
 /* Is there anything here that actually needs the magic trap? */
 function hasGiants(where, zoneNum) { return inZone(where, zoneNum, true).length > 0; }
@@ -2123,119 +2201,272 @@ function roundRect(x, y, w, h, r) {
 /* ============================================================
    THIS IS CAM
    ============================================================ */
+/* ============================================================
+   DRAWING A KID
+   The same drawing code draws Cam, Reece and Carter — only the
+   colours, the hair and what's on the shirt change. It can draw
+   onto the game canvas or onto a little canvas on the pick screen.
+   ============================================================ */
 function drawCam(p, cam, ocean) {
-  const x = p.x - cam.x, y = p.y - cam.y;
+  drawKid(g, p.x - cam.x, p.y - cam.y, p, ocean, me(), true);
+}
+
+function drawKid(ctx, x, y, p, ocean, ch, withName) {
   const kick = Math.sin(p.kick) * (ocean ? 18 : 26);
-  const bob = ocean ? Math.sin(world.t / 26) * 3 : 0;
-  const SKIN = "#f6cfae", SKIN_D = "#e3ac86";
-  const HAIR = "#8b5a2b", HAIR_L = "#a8703a";
-  const SUIT = state.gear.suit >= 3 ? "#5a2233" : (state.gear.suit >= 2 ? "#22405e" : "#1f2f4d");
-  const SUIT_L = state.gear.suit >= 3 ? "#7d3548" : "#31456b";
+  const bob = ocean ? Math.sin((p.t != null ? p.t : (world ? world.t : 0)) / 26) * 3 : 0;
+  const SKIN = ch.skin, SKIN_D = ch.skinD;
+  const HAIR = ch.hair, HAIR_L = ch.hairL;
+  const gear = state.gear;
+  const SUIT = ocean ? (gear.suit >= 3 ? "#5a2233" : (gear.suit >= 2 ? "#22405e" : "#1f2f4d")) : ch.shirt;
+  const SUIT_L = ocean ? (gear.suit >= 3 ? "#7d3548" : "#31456b") : ch.shirtL;
+  const LEG = ocean ? SUIT : ch.shorts;
 
-  g.save();
-  g.translate(x, y + bob);
-  g.scale(p.face * 1.5, 1.5);
+  ctx.save();
+  ctx.translate(x, y + bob);
+  ctx.scale(p.face * 1.5 * ch.scale, 1.5 * ch.scale);
 
-  g.strokeStyle = SUIT; g.lineWidth = 9; g.lineCap = "round";
-  g.beginPath(); g.moveTo(-5, 14); g.lineTo(-8 - kick * .25, 36 + Math.abs(kick) * .1); g.stroke();
-  g.beginPath(); g.moveTo(5, 14);  g.lineTo(8 + kick * .25, 36 - Math.abs(kick) * .1);  g.stroke();
+  /* legs */
+  ctx.strokeStyle = LEG; ctx.lineWidth = 9; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(-5, 14); ctx.lineTo(-8 - kick * .25, 36 + Math.abs(kick) * .1); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(5, 14);  ctx.lineTo(8 + kick * .25, 36 - Math.abs(kick) * .1);  ctx.stroke();
 
+  /* feet */
   if (ocean) {
-    g.fillStyle = state.gear.fins >= 3 ? "#ff7b3d" : (state.gear.fins >= 2 ? "#5ce1e6" : "#3fd0c9");
-    g.beginPath(); g.ellipse(-10 - kick * .3, 44, 13, 7, -.4, 0, 6.3); g.fill();
-    g.beginPath(); g.ellipse(10 + kick * .3, 44, 13, 7, .4, 0, 6.3); g.fill();
+    ctx.fillStyle = gear.fins >= 3 ? "#ff7b3d" : (gear.fins >= 2 ? "#5ce1e6" : "#3fd0c9");
+    ctx.beginPath(); ctx.ellipse(-10 - kick * .3, 44, 13, 7, -.4, 0, 6.3); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(10 + kick * .3, 44, 13, 7, .4, 0, 6.3); ctx.fill();
   } else {
-    g.fillStyle = "#e63946";
-    g.beginPath(); g.ellipse(-9 - kick * .2, 41, 10, 6, 0, 0, 6.3); g.fill();
-    g.beginPath(); g.ellipse(9 + kick * .2, 41, 10, 6, 0, 0, 6.3); g.fill();
+    ctx.fillStyle = ch.shoes;
+    ctx.beginPath(); ctx.ellipse(-9 - kick * .2, 41, 10, 6, 0, 0, 6.3); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(9 + kick * .2, 41, 10, 6, 0, 0, 6.3); ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,.25)"; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.ellipse(-9 - kick * .2, 41, 10, 6, 0, 0, 6.3); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(9 + kick * .2, 41, 10, 6, 0, 0, 6.3); ctx.stroke();
   }
 
-  g.fillStyle = SUIT;
-  roundRect(-15, -12, 30, 32, 10); g.fill();
-  g.fillStyle = SUIT_L;
-  g.beginPath(); g.moveTo(-9, -12); g.lineTo(0, -2); g.lineTo(9, -12); g.closePath(); g.fill();
-  g.fillStyle = "#d9c07a";
-  g.beginPath(); g.arc(0, 4, 2.4, 0, 6.3); g.fill();
+  /* body */
+  ctx.fillStyle = SUIT;
+  roundRectOn(ctx, -15, -12, 30, 32, 10); ctx.fill();
+  ctx.fillStyle = SUIT_L;
+  ctx.beginPath(); ctx.moveTo(-9, -12); ctx.lineTo(0, -2); ctx.lineTo(9, -12); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#d9c07a";
+  ctx.beginPath(); ctx.arc(0, 4, 2.4, 0, 6.3); ctx.fill();
 
-  g.strokeStyle = SKIN; g.lineWidth = 8;
+  /* what's printed on the shirt — Carter wears his bearded dragon */
+  if (!ocean && ch.shirtArt === "dragon") drawShirtDragon(ctx);
+
+  /* Reece is three, so in the water he wears his floaty ring */
+  if (ocean && ch.ring) {
+    ctx.strokeStyle = "#ff8a3d"; ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.ellipse(0, 6, 20, 8, 0, 0, 6.3); ctx.stroke();
+    ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.ellipse(0, 6, 20, 8, 0, 0, 3.1); ctx.stroke();
+  }
+
+  /* arms */
+  ctx.strokeStyle = SKIN; ctx.lineWidth = 8;
   const armSwing = Math.sin(p.kick + (ocean ? 1 : 0)) * (ocean ? 16 : 14);
-  g.beginPath(); g.moveTo(-13, -4); g.lineTo(-24, 6 + armSwing * .4); g.stroke();
-  g.beginPath(); g.moveTo(13, -4);  g.lineTo(24, 6 - armSwing * .4);  g.stroke();
+  ctx.beginPath(); ctx.moveTo(-13, -4); ctx.lineTo(-24, 6 + armSwing * .4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(13, -4);  ctx.lineTo(24, 6 - armSwing * .4);  ctx.stroke();
 
-  g.fillStyle = SKIN_D; g.fillRect(-4, -18, 8, 8);
-  g.fillStyle = SKIN;
-  g.beginPath(); g.ellipse(0, -30, 15, 16, 0, 0, 6.3); g.fill();
-  g.beginPath(); g.arc(-15, -29, 4.5, 0, 6.3); g.fill();
-  g.beginPath(); g.arc(15, -29, 4.5, 0, 6.3); g.fill();
+  /* neck, head, ears */
+  ctx.fillStyle = SKIN_D; ctx.fillRect(-4, -18, 8, 8);
+  ctx.fillStyle = SKIN;
+  ctx.beginPath(); ctx.ellipse(0, -30, 15, 16, 0, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(-15, -29, 4.5, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(15, -29, 4.5, 0, 6.3); ctx.fill();
 
-  g.fillStyle = HAIR;
-  g.beginPath();
-  g.moveTo(-15, -32);
-  g.quadraticCurveTo(-16, -48, 0, -47);
-  g.quadraticCurveTo(16, -48, 15, -32);
-  g.quadraticCurveTo(10, -41, 0, -40);
-  g.quadraticCurveTo(-10, -41, -15, -32);
-  g.closePath(); g.fill();
-  g.fillStyle = HAIR_L;
-  g.beginPath();
-  g.moveTo(-4, -43);
-  g.quadraticCurveTo(4, -52, 15, -46);
-  g.quadraticCurveTo(6, -44, 1, -40);
-  g.closePath(); g.fill();
+  /* hair — a different cut for each kid */
+  ctx.fillStyle = HAIR;
+  if (ch.hairStyle === "crop") {
+    /* Carter: short and flat across the front */
+    ctx.beginPath();
+    ctx.moveTo(-15, -31);
+    ctx.quadraticCurveTo(-17, -49, 0, -48);
+    ctx.quadraticCurveTo(17, -49, 15, -31);
+    ctx.lineTo(11, -37);
+    ctx.lineTo(-11, -37);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = HAIR_L;
+    ctx.beginPath();
+    ctx.moveTo(-11, -40); ctx.quadraticCurveTo(0, -46, 11, -40);
+    ctx.quadraticCurveTo(0, -42.5, -11, -40);
+    ctx.closePath(); ctx.fill();
+  } else if (ch.hairStyle === "sweep") {
+    /* Reece: swept right across his forehead */
+    ctx.beginPath();
+    ctx.moveTo(-15, -31);
+    ctx.quadraticCurveTo(-16, -48, 2, -47);
+    ctx.quadraticCurveTo(17, -46, 15, -30);
+    ctx.quadraticCurveTo(9, -38, -3, -39);
+    ctx.quadraticCurveTo(-11, -38, -15, -31);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = HAIR_L;
+    ctx.beginPath();
+    ctx.moveTo(-8, -41);
+    ctx.quadraticCurveTo(4, -50, 16, -41);
+    ctx.quadraticCurveTo(4, -43, -8, -38);
+    ctx.closePath(); ctx.fill();
+  } else {
+    /* Cam */
+    ctx.beginPath();
+    ctx.moveTo(-15, -32);
+    ctx.quadraticCurveTo(-16, -48, 0, -47);
+    ctx.quadraticCurveTo(16, -48, 15, -32);
+    ctx.quadraticCurveTo(10, -41, 0, -40);
+    ctx.quadraticCurveTo(-10, -41, -15, -32);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = HAIR_L;
+    ctx.beginPath();
+    ctx.moveTo(-4, -43);
+    ctx.quadraticCurveTo(4, -52, 15, -46);
+    ctx.quadraticCurveTo(6, -44, 1, -40);
+    ctx.closePath(); ctx.fill();
+  }
 
-  g.fillStyle = "#fff";
-  g.beginPath(); g.ellipse(-6, -31, 4.4, 4.8, 0, 0, 6.3); g.fill();
-  g.beginPath(); g.ellipse(6, -31, 4.4, 4.8, 0, 0, 6.3); g.fill();
-  g.fillStyle = "#5aa9dd";
-  g.beginPath(); g.arc(-5.4, -31, 2.7, 0, 6.3); g.fill();
-  g.beginPath(); g.arc(6.6, -31, 2.7, 0, 6.3); g.fill();
-  g.fillStyle = "#12202f";
-  g.beginPath(); g.arc(-5.4, -31, 1.3, 0, 6.3); g.fill();
-  g.beginPath(); g.arc(6.6, -31, 1.3, 0, 6.3); g.fill();
-  g.fillStyle = "#fff";
-  g.beginPath(); g.arc(-4.2, -32.4, .9, 0, 6.3); g.fill();
-  g.beginPath(); g.arc(7.8, -32.4, .9, 0, 6.3); g.fill();
+  /* eyes */
+  ctx.fillStyle = "#fff";
+  ctx.beginPath(); ctx.ellipse(-6, -31, 4.4, 4.8, 0, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(6, -31, 4.4, 4.8, 0, 0, 6.3); ctx.fill();
+  ctx.fillStyle = ch.eyes;
+  ctx.beginPath(); ctx.arc(-5.4, -31, 2.7, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(6.6, -31, 2.7, 0, 6.3); ctx.fill();
+  ctx.fillStyle = "#12202f";
+  ctx.beginPath(); ctx.arc(-5.4, -31, 1.3, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(6.6, -31, 1.3, 0, 6.3); ctx.fill();
+  ctx.fillStyle = "#fff";
+  ctx.beginPath(); ctx.arc(-4.2, -32.4, .9, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(7.8, -32.4, .9, 0, 6.3); ctx.fill();
 
-  g.strokeStyle = HAIR; g.lineWidth = 2;
-  g.beginPath(); g.moveTo(-10, -37); g.lineTo(-2, -38); g.stroke();
-  g.beginPath(); g.moveTo(2, -38); g.lineTo(10, -37); g.stroke();
+  /* eyebrows */
+  ctx.strokeStyle = HAIR; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(-10, -37); ctx.lineTo(-2, -38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(2, -38); ctx.lineTo(10, -37); ctx.stroke();
 
-  g.fillStyle = "rgba(190,120,80,.75)";
-  [[-6,-25],[-3,-23.5],[3,-23.5],[6,-25],[0,-24.5]].forEach(f => {
-    g.beginPath(); g.arc(f[0], f[1], .9, 0, 6.3); g.fill();
-  });
+  if (ch.freckles) {
+    ctx.fillStyle = "rgba(190,120,80,.75)";
+    [[-6,-25],[-3,-23.5],[3,-23.5],[6,-25],[0,-24.5]].forEach(f => {
+      ctx.beginPath(); ctx.arc(f[0], f[1], .9, 0, 6.3); ctx.fill();
+    });
+  }
 
-  g.fillStyle = "#8c3b4a";
-  g.beginPath(); g.moveTo(-7, -21); g.quadraticCurveTo(0, -14, 7, -21); g.closePath(); g.fill();
-  g.fillStyle = "#fff";
-  g.beginPath(); g.moveTo(-6, -21); g.quadraticCurveTo(0, -18.5, 6, -21); g.closePath(); g.fill();
+  /* big grin */
+  ctx.fillStyle = "#8c3b4a";
+  ctx.beginPath(); ctx.moveTo(-7, -21); ctx.quadraticCurveTo(0, -14, 7, -21); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#fff";
+  ctx.beginPath(); ctx.moveTo(-6, -21); ctx.quadraticCurveTo(0, -18.5, 6, -21); ctx.closePath(); ctx.fill();
 
+  /* diving kit */
   if (ocean) {
-    g.strokeStyle = state.gear.suit >= 2 ? "#ffcc00" : "rgba(255,255,255,.85)";
-    g.lineWidth = state.gear.suit >= 2 ? 3.5 : 2.5;
-    g.beginPath(); g.ellipse(0, -31, 13, 9, 0, 0, 6.3); g.stroke();
-    g.fillStyle = "rgba(180,235,255,.25)";
-    g.beginPath(); g.ellipse(0, -31, 13, 9, 0, 0, 6.3); g.fill();
-    g.strokeStyle = "#ffcc00"; g.lineWidth = 3;
-    g.beginPath(); g.moveTo(13, -34); g.lineTo(19, -50); g.stroke();
-    g.fillStyle = "#c0c8d4";
-    roundRect(-24, -8, 10, 22, 5); g.fill();
-    /* headlamp */
-    if (state.gear.light >= 2) {
-      g.fillStyle = "#ffe680";
-      g.beginPath(); g.arc(0, -45, 4, 0, 6.3); g.fill();
+    ctx.strokeStyle = gear.suit >= 2 ? "#ffcc00" : "rgba(255,255,255,.85)";
+    ctx.lineWidth = gear.suit >= 2 ? 3.5 : 2.5;
+    ctx.beginPath(); ctx.ellipse(0, -31, 13, 9, 0, 0, 6.3); ctx.stroke();
+    ctx.fillStyle = "rgba(180,235,255,.25)";
+    ctx.beginPath(); ctx.ellipse(0, -31, 13, 9, 0, 0, 6.3); ctx.fill();
+    ctx.strokeStyle = "#ffcc00"; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(13, -34); ctx.lineTo(19, -50); ctx.stroke();
+    ctx.fillStyle = "#c0c8d4";
+    roundRectOn(ctx, -24, -8, 10, 22, 5); ctx.fill();
+    if (gear.light >= 2) {
+      ctx.fillStyle = "#ffe680";
+      ctx.beginPath(); ctx.arc(0, -45, 4, 0, 6.3); ctx.fill();
     }
   }
-  g.restore();
+  ctx.restore();
 
-  g.save();
-  g.translate(x, y + bob);
-  g.fillStyle = "rgba(0,0,0,.55)";
-  roundRect(-30, -104, 60, 24, 10); g.fill();
-  g.fillStyle = "#ffe680";
-  g.font = "bold 16px sans-serif"; g.textAlign = "center";
-  g.fillText("CAM", 0, -87);
-  g.restore();
+  if (!withName) return;
+  ctx.save();
+  ctx.translate(x, y + bob);
+  ctx.fillStyle = "rgba(0,0,0,.55)";
+  roundRectOn(ctx, -34, -104, 68, 24, 10); ctx.fill();
+  ctx.fillStyle = "#ffe680";
+  ctx.font = "bold 16px sans-serif"; ctx.textAlign = "center";
+  ctx.fillText(ch.name, 0, -87);
+  ctx.restore();
+}
+
+/* Jack, printed on the front of Carter's shirt. Drawn from above, because
+   a lizard seen from above is unmistakably a lizard: flat wide head, spiky
+   beard, four splayed legs and a long tapering tail. */
+function drawShirtDragon(ctx) {
+  ctx.save();
+  ctx.translate(-1, 3);
+  ctx.rotate(-.12);
+  ctx.scale(.62, .62);
+
+  const BODY = "#cf8d3f", DARK = "#6d4419", SPIKE = "#f2ce8a";
+
+  /* tail — long, thick at the body, ending in a point */
+  ctx.strokeStyle = BODY; ctx.lineCap = "round";
+  ctx.lineWidth = 4.5;
+  ctx.beginPath(); ctx.moveTo(6, 0); ctx.quadraticCurveTo(13, 1, 16, 5); ctx.stroke();
+  ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.moveTo(15, 4); ctx.quadraticCurveTo(20, 8, 23, 7); ctx.stroke();
+
+  /* four legs, splayed out sideways with little toes */
+  ctx.lineWidth = 2.4;
+  [[-5,-3.5,-10,-9],[2,-3.5,7,-9],[-5,3.5,-10,9],[2,3.5,7,9]].forEach(l => {
+    ctx.beginPath(); ctx.moveTo(l[0], l[1]); ctx.lineTo(l[2], l[3]); ctx.stroke();
+    ctx.lineWidth = 1.3;
+    for (let i = -1; i <= 1; i++) {
+      ctx.beginPath(); ctx.moveTo(l[2], l[3]);
+      ctx.lineTo(l[2] + i * 2.4, l[3] + (l[3] > 0 ? 3 : -3));
+      ctx.stroke();
+    }
+    ctx.lineWidth = 2.4;
+  });
+
+  /* body */
+  ctx.fillStyle = BODY;
+  ctx.beginPath(); ctx.ellipse(-1, 0, 8, 6, 0, 0, 6.3); ctx.fill();
+
+  /* the spikes down both sides */
+  ctx.fillStyle = SPIKE;
+  for (let i = -7; i <= 5; i += 3) {
+    ctx.beginPath(); ctx.moveTo(i, -5.4); ctx.lineTo(i + 1.3, -8.2); ctx.lineTo(i + 2.6, -5.4); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(i, 5.4); ctx.lineTo(i + 1.3, 8.2); ctx.lineTo(i + 2.6, 5.4); ctx.closePath(); ctx.fill();
+  }
+
+  /* the beard: a spiky collar right behind the head */
+  ctx.fillStyle = SPIKE;
+  ctx.beginPath(); ctx.ellipse(-9.5, 0, 4, 6.6, 0, 0, 6.3); ctx.fill();
+  ctx.fillStyle = DARK;
+  for (let a = -2.2; a <= 2.2; a += .55) {
+    ctx.beginPath();
+    ctx.moveTo(-9.5 + Math.cos(a + 3.14) * 3.6, Math.sin(a) * 6);
+    ctx.lineTo(-9.5 + Math.cos(a + 3.14) * 6.4, Math.sin(a) * 8.4);
+    ctx.lineTo(-9.5 + Math.cos(a + 3.14) * 3.6, Math.sin(a) * 6 + 1.4);
+    ctx.closePath(); ctx.fill();
+  }
+
+  /* head — a wide flat triangle, the way a bearded dragon looks from above */
+  ctx.fillStyle = BODY;
+  ctx.beginPath();
+  ctx.moveTo(-11, -4.6);
+  ctx.quadraticCurveTo(-20, -2.2, -20, 0);
+  ctx.quadraticCurveTo(-20, 2.2, -11, 4.6);
+  ctx.closePath(); ctx.fill();
+
+  /* two eyes, one on each side of that flat head */
+  ctx.fillStyle = DARK;
+  ctx.beginPath(); ctx.arc(-14.5, -2.6, 1.5, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(-14.5, 2.6, 1.5, 0, 6.3); ctx.fill();
+  ctx.fillStyle = "#ffe9b8";
+  ctx.beginPath(); ctx.arc(-14.9, -2.9, .6, 0, 6.3); ctx.fill();
+  ctx.beginPath(); ctx.arc(-14.9, 2.3, .6, 0, 6.3); ctx.fill();
+
+  ctx.restore();
+}
+
+/* roundRect() draws on the game canvas; this one draws anywhere */
+function roundRectOn(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
 }
 
 /* ---------- zone / depth HUD ---------- */
@@ -2329,6 +2560,9 @@ function discover(c, zone, caught) {
   if (isNew) points *= 2;
   /* the shrink trap pays a big bonus, so hunting tiny things is worth doing */
   if (caught.tiny) points *= 5;
+  /* the animal this kid loves best is worth more to this kid */
+  const fav = favourite(c);
+  if (fav) points *= fav.mult;
 
   if (c.breaksTrap) {
     points = 0;
@@ -2342,7 +2576,7 @@ function discover(c, zone, caught) {
   }
   if (isNew) state.found.push(c.id);
   state.counts[c.id] = (state.counts[c.id] || 0) + 1;
-  if (c.givesMagic) state.magic++;
+  if (c.givesMagic) state.magic += me().crabDouble ? 2 : 1;
 
   /* everything he catches goes in the bucket, while there's room */
   let bucketFull = false;
@@ -2358,8 +2592,15 @@ function discover(c, zone, caught) {
 
   save();
   refresh();
-  fillCard(c, { isNew: isNew, points: points, zone: zone, caught: caught, bucketFull: bucketFull });
+  fillCard(c, { isNew: isNew, points: points, zone: zone, caught: caught, bucketFull: bucketFull, fav: fav });
   document.getElementById("overlay").classList.add("show");
+}
+
+/* Does the kid who is exploring right now love this kind of animal? */
+function favourite(c) {
+  const ch = me();
+  if (!ch.loves || c.breaksTrap) return null;
+  return ch.loves.re.test(c.name) || ch.loves.re.test(c.kind || "") ? ch.loves : null;
 }
 
 /* the second half of a double catch, shown after he closes the first card */
@@ -2418,6 +2659,7 @@ function fillCard(c, opts) {
       (opts.zone && opts.zone.bonus > 1
         ? "  (x" + opts.zone.bonus + " " + (WHY[c.where] || "for going deep") + "!)" : "") +
       ((opts.caught || {}).tiny ? "  (x5 TINY BONUS!)" : "") +
+      (opts.fav ? "  (x" + opts.fav.mult + " " + me().label + "'s favourite!)" : "") +
       (opts.isNew ? "  (doubled — brand new!)" : "");
   } else {
     pts.textContent = "Worth " + tier.points.toLocaleString() + " points";
@@ -2432,7 +2674,11 @@ function fillCard(c, opts) {
   }
   if (c.magicOnly) line += "  🪄 (needs the magic trap)";
   if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
-  if (c.givesMagic) line += "<br>🪄 A crab! You earned a MAGIC TRAP!";
+  if (c.givesMagic) line += me().crabDouble
+    ? "<br>🪄 A crab! Cam gets TWO magic traps!"
+    : "<br>🪄 A crab! You earned a MAGIC TRAP!";
+  if (opts.fav) line += '<br><span style="color:#b06a00"><b>' + opts.fav.label + "</b></span>";
+  if (c.isPet) line += "<br><b>🦎 This is a real pet. Carter feeds him.</b>";
   if (c.mine) {
     line += '<br><span style="color:#0b7a5a"><b>You added this one to the game' +
             (c.kind ? " — " + c.kind : "") + ".</b></span>";
@@ -2479,7 +2725,9 @@ function fillCard(c, opts) {
   });
 
   const credit = document.getElementById("cardCredit");
-  if (PHOTOS[c.id]) {
+  if (c.isPet) {
+    credit.innerHTML = '📷 A real photo of the real Jack, in his own tank.';
+  } else if (PHOTOS[c.id]) {
     credit.innerHTML = 'Photo from <a href="' + PHOTOS[c.id].url + '" target="_blank">Wikipedia</a>';
   } else if (c.mine) {
     credit.innerHTML = '🧑‍🔬 You put this animal in the game yourself.' +
@@ -2623,6 +2871,65 @@ function tryStart(kind) {
 }
 
 /* ---------- screens ---------- */
+/* ============================================================
+   PICKING WHO EXPLORES
+   Each card draws the real kid with the same code the game uses,
+   so the picture on the card is exactly who shows up in the water.
+   ============================================================ */
+function buildWhoPicker() {
+  const box = document.getElementById("whoPicker");
+  box.innerHTML = "";
+  CHAR_ORDER.forEach(id => {
+    const ch = CHARACTERS[id];
+    const card = document.createElement("button");
+    card.className = "whoCard" + (state.who === id ? " on" : "");
+    card.onclick = () => pickWho(id);
+
+    const cv = document.createElement("canvas");
+    const W = 180, H = 200, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = W * dpr; cv.height = H * dpr;
+    cv.style.width = W + "px"; cv.style.height = H + "px";
+    const ctx = cv.getContext("2d");
+    ctx.scale(dpr, dpr);
+    /* a pool of light to stand in, so the drawing reads on the dark card */
+    const glow = ctx.createRadialGradient(W / 2, H - 40, 8, W / 2, H - 40, 92);
+    glow.addColorStop(0, "rgba(120,190,255,.30)");
+    glow.addColorStop(1, "rgba(120,190,255,0)");
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+    /* stand him on the floor of the card: his feet reach 52 units below the middle */
+    drawKid(ctx, W / 2, H - 16 - 52 * 1.5 * ch.scale, { face: 1, kick: 0, t: 0 }, false, ch, false);
+    card.appendChild(cv);
+
+    const nm = document.createElement("div");
+    nm.className = "kidName"; nm.textContent = ch.label;
+    card.appendChild(nm);
+    const pt = document.createElement("div");
+    pt.className = "kidPerkTitle"; pt.textContent = ch.perkTitle;
+    card.appendChild(pt);
+    const pk = document.createElement("div");
+    pk.className = "kidPerk"; pk.textContent = ch.perk;
+    card.appendChild(pk);
+    const you = document.createElement("div");
+    you.className = "youAre";
+    you.textContent = state.who === id ? "✅ This is you right now" : "";
+    card.appendChild(you);
+
+    box.appendChild(card);
+  });
+}
+
+function showWho() { buildWhoPicker(); show("who"); }
+
+function pickWho(id) {
+  if (!CHARACTERS[id]) return;
+  state.who = id;
+  save();
+  playFanfare();
+  refresh();
+  goHome();
+  flashHint(CHARACTERS[id].label + " is exploring! " + CHARACTERS[id].perkTitle);
+}
+
 function show(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -2656,7 +2963,8 @@ function updateHomeText() {
       ZONES.ocean[maxZoneAllowed("ocean") - 1].name + "</b>.<br>" +
     "⛏️ Digging with " + digs[state.gear.dig] + " — you can reach <b>" +
       ZONES.underground[maxZoneAllowed("underground") - 1].name + "</b>.<br>" +
-    "🏆 Deepest dive ever: <b>" + state.deepest.toLocaleString() + " feet</b>";
+    "🏆 Deepest dive ever: <b>" + state.deepest.toLocaleString() + " feet</b><br>" +
+    "🧒 <b>" + me().label + "</b> is exploring — " + me().perkTitle;
 
   /* the islands stay locked until he buys the boat */
   const card = document.getElementById("islandCard");
@@ -2675,6 +2983,8 @@ function refresh() {
   document.getElementById("magicNum").textContent = totalTraps();
   const bucketNum = document.getElementById("bucketNum");
   if (bucketNum) bucketNum.textContent = state.bucket.length + "/" + BUCKET_SIZE;
+  const wb = document.getElementById("whoBtn");
+  if (wb) wb.textContent = (state.who === "reece" ? "🧒 " : state.who === "carter" ? "🧑 " : "🧒 ") + me().label;
   drawTrapTray();
   drawPowerTray();
   updateHomeText();
@@ -3525,6 +3835,8 @@ load();
 installMyAnimals();
 fitCanvas();
 refresh();
+/* the very first thing is choosing who goes */
+if (!state.who || !CHARACTERS[state.who]) { state.who = "cam"; showWho(); }
 loop();
 </script>
 </body>

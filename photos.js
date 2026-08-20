@@ -471,6 +471,11 @@ var PHOTOS = {
     "title": "Scaly-foot gastropod",
     "url": "https://en.wikipedia.org/wiki/Scaly-foot_gastropod"
   },
+  "jack": {
+    "file": "jack.jpg",
+    "title": "Jack the Bearded Dragon",
+    "url": "https://en.wikipedia.org/wiki/Central_bearded_dragon"
+  },
   "jellyfish": {
     "file": "jellyfish.jpg",
     "title": "Jellyfish",

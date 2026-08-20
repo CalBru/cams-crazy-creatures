@@ -112,9 +112,23 @@ are blind, pale, and strange, which is a good pairing with the island idea.
       photo thumbnails, then Cam chooses which world, which zone, and how many stars it's
       worth. It's a real creature straight away, and he writes its facts himself. Export
       to a file to promote them into the permanent catalog.
-- [ ] **His brother Reece as a character.** Recommended: a companion who follows Cam,
-      points at rare things, and has his own favourite kind of creature that pays a bonus
-      when Cam catches one. Let Reece pick the favourite himself.
+- [x] **Reece and Carter as playable characters.** A character-select screen is now the
+      first thing the game shows. Each kid is drawn with the same code the game draws Cam
+      with, so the picture on the card is exactly who turns up in the water:
+      - **Cam** — MAGIC TRAP MASTER. Every crab hands him two magic traps instead of one.
+      - **Reece** — OCTOPUS LOVER. His chalkboard said "I LOVE Octopus", so octopuses,
+        squid, cuttlefish and nautiluses are worth double for him. He wears his floaty
+        ring in the water, because he's little.
+      - **Carter** — REPTILE KEEPER. Every reptile is worth double for him, he wears his
+        bearded dragon on his shirt, and **Jack** — his real bearded dragon, with his real
+        photo in `images/jack.jpg` — only appears in the desert when Carter is exploring.
+
+      Everyone shares one creature book. Swapping who is exploring never touches anything
+      anybody has already found, and the game remembers who went last.
+
+- [ ] **More characters.** The roster is `CHARACTERS` in index.html — a name, a few
+      colours, a hair style, and a `loves` pattern is a whole new kid. Ages were dropped
+      on purpose: asking everybody their age added a step and told the game nothing.
 
 ## Dad's read on what Cam actually loves
 
