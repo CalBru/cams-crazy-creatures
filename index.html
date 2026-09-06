@@ -1335,6 +1335,12 @@ function catchWith(trap, where, zone, promised) {
   }
 
   if (trap === "giant") {
+    /* Some creatures are worth more as a moment than as a dice roll. The
+       first magic trap opened where one of those lives always finds it —
+       once per kid, because each kid has their own book. */
+    const gift = inZone(where, zone.n, true).find(c => c.firstFindGift && !state.found.includes(c.id));
+    if (gift) return { c: gift, trap: trap, usedMagic: true, firstEver: true };
+
     const c = pickCreature(where, zone, true);
     if (!c) return null;
     return { c: c, trap: trap, usedMagic: true, rareHunt: pickCreature.rareHunt };
@@ -2799,7 +2805,9 @@ function fillCard(c, opts) {
   }
 
   const got = opts.caught || {};
-  if (got.trap === "giant" && !c.breaksTrap) {
+  if (got.firstEver) {
+    line += "<br>🪄 <b>Your very first magic trap in the Deep Forest, and he was waiting.</b>";
+  } else if (got.trap === "giant" && !c.breaksTrap) {
     line += got.rareHunt
       ? "<br>🪄 Nothing giant lives here, so the trap hunted down the rarest thing instead!"
       : "<br>🪄 The trap grew GIANT to catch it!";

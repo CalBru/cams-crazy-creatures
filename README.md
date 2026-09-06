@@ -62,10 +62,14 @@ the islands go **across**.
 | THE VOLCANO VENTS x12 *(Volcano Suit)* | | | |
 
 **The Dragon is the exception.** Cam asked for a dragon in the Deep Forest, so there is
-one: a mythic, about one rock flip in a hundred, and the only creature in the book with no
-photo. Its card says so — *"Every other animal in this book is real. This one is Cam's."*
-It is deliberately not `magicOnly`: the Deep Forest has no other giants, so a magic trap
-there would land the dragon every single time.
+one — a mythic, and the only creature in the book with no photo. Its card says so:
+*"Every other animal in this book is real. This one is Cam's."*
+
+He is as long as a school bus, so he needs the **magic trap**, and he carries
+`firstFindGift`: the **first** magic trap opened in the Deep Forest finds him no matter
+what, once per kid, because meeting your own dragon shouldn't come down to the dice. After
+that he shares the forest with the king cobra — about one magic trap in sixteen. A plain
+rock flip never turns him up.
 
 **The islands are the evolution lesson.** Every island animal has an `endemicTo` field, and
 its card says plainly: *"I live on Madagascar and NOWHERE else on Earth."* Darwin's finches
