@@ -1,7 +1,7 @@
 # Cam's Crazy Creatures
 
 A creature-collecting exploration game designed by Cam (age 6). 199 real animals, each
-with a real photo and hand-written facts. Open `index.html` in a
+with a real photo and hand-written facts — plus one dragon. Open `index.html` in a
 browser — no installs, no server. The shared copy everyone plays is
 **https://calbru.github.io/cams-crazy-creatures/**, deployed from `main` by GitHub Pages.
 
@@ -60,6 +60,12 @@ the islands go **across**.
 | THE TRENCH x5 | THE DEEP DARK x10 *(Pickaxe)* | — | New Zealand x10 |
 | THE HADAL ZONE x8 *(Deep Suit)* | | | |
 | THE VOLCANO VENTS x12 *(Volcano Suit)* | | | |
+
+**The Dragon is the exception.** Cam asked for a dragon in the Deep Forest, so there is
+one: a mythic, about one rock flip in a hundred, and the only creature in the book with no
+photo. Its card says so — *"Every other animal in this book is real. This one is Cam's."*
+It is deliberately not `magicOnly`: the Deep Forest has no other giants, so a magic trap
+there would land the dragon every single time.
 
 **The islands are the evolution lesson.** Every island animal has an `endemicTo` field, and
 its card says plainly: *"I live on Madagascar and NOWHERE else on Earth."* Darwin's finches

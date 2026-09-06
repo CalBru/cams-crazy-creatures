@@ -2783,6 +2783,8 @@ function fillCard(c, opts) {
   }
   if (c.magicOnly) line += "  🪄 (needs the magic trap)";
   if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
+  if (c.imaginary) line += '<br><span style="color:#b06a00"><b>Every other animal in this book is real. ' +
+    "This one is Cam's.</b></span>";
   if (c.givesMagic) line += me().crabDouble
     ? "<br>🪄 A crab! Cam gets TWO magic traps!"
     : "<br>🪄 A crab! You earned a MAGIC TRAP!";
@@ -2834,7 +2836,9 @@ function fillCard(c, opts) {
   });
 
   const credit = document.getElementById("cardCredit");
-  if (c.isPet) {
+  if (c.imaginary) {
+    credit.innerHTML = "🐉 There is no photo of this one. Nobody has ever taken one.";
+  } else if (c.isPet) {
     credit.innerHTML = '📷 A real photo of the real Jack, in his own tank.';
   } else if (PHOTOS[c.id]) {
     credit.innerHTML = 'Photo from <a href="' + PHOTOS[c.id].url + '" target="_blank">Wikipedia</a>';

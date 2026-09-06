@@ -502,6 +502,15 @@ const CREATURES = [
   { id:"thesleeper", name:"The Sleeper", emoji:"🐉", where:"underground", zones:[3,4], tier:"mythic", mythic:true,
     facts:["I am an olm, and I am well over 100 years old.","I have not moved from this spot in seven years. I did not need to.","I have never once seen the sun, or anything at all.","I will still be here, in this same black pool, long after you are grown."] },
 
+  /* Cam asked for a dragon in the Deep Forest. Every other animal in this
+     game is real, so this one says so on its own card — it is the one
+     creature in the book that nobody has ever photographed. It is NOT
+     magicOnly: the Deep Forest has no other giants, so a magic trap there
+     would catch the dragon every single time. It's a plain mythic instead,
+     about one flip in two hundred. */
+  { id:"thedragon", name:"The Dragon", emoji:"🐉", where:"land", zones:[2], tier:"mythic", mythic:true, imaginary:true,
+    facts:["I live in the deepest, darkest part of the forest, where the trees grow too close together to walk through.","You can tell I have been here: the moss is warm, and there are scorch marks on the rocks.","I am the only creature in this whole book that nobody has ever taken a photo of.","I am as long as a school bus, and I can fold my wings up thin enough to slip between two trees.","Cam put me in this game. He is the one who knows I'm in there."] },
+
   { id:"theempress", name:"The Empress", emoji:"🐜", where:"land", zones:[2,3], tier:"mythic", mythic:true,
     facts:["I am a queen ant, and I started this whole colony by myself 30 years ago.","Every one of the millions of ants here is my child.","I have not left this room since the day I chewed my own wings off.","I am the oldest insect anybody has ever counted the years of."] },
   { id:"axolotl", name:"Axolotl", emoji:"🦎", where:"underground", zones:[3], tier:"legendary",
@@ -668,7 +677,9 @@ const ZONES = {
   ],
   land: [
     { n:1, name:"The Backyard",  bonus:1, needs:null, weights:{ common:60, uncommon:28, rare:10, epic:2,  legendary:0.3, mythic:0 } },
-    { n:2, name:"Deep Forest",   bonus:2, needs:null, weights:{ common:20, uncommon:32, rare:30, epic:15, legendary:3,   mythic:1 } },
+    /* mythic is 6 here, not 1: the Deep Forest is where the Dragon lives, and
+       at weight 1 he turned up once in 1,300 rock flips, which is never. */
+    { n:2, name:"Deep Forest",   bonus:2, needs:null, weights:{ common:20, uncommon:32, rare:30, epic:15, legendary:3,   mythic:6 } },
     { n:3, name:"The Desert",    bonus:3, needs:null, weights:{ common:8,  uncommon:20, rare:34, epic:29, legendary:9,   mythic:2 } }
   ],
   /* The islands: each one is a place where animals turned out different
