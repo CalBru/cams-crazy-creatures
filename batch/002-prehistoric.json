@@ -1,0 +1,122 @@
+[
+
+/* ================= ZONE 1 — THE TRIASSIC ================= */
+
+{ "id":"lystrosaurus", "name":"Lystrosaurus", "wiki":"Lystrosaurus", "emoji":"🐗", "where":"prehistoric", "zones":[1], "tier":"common", "livedWhen":"250 million years ago",
+  "facts":["Almost every other animal on Earth died, and somehow I didn't.","For a while there were more of me than anything else alive. I was EVERYWHERE.","I had two tusks and a beak like a turtle, all on the same face.","I dug burrows and hid in them, which might be exactly why I made it."] },
+
+{ "id":"coelophysis", "name":"Coelophysis", "wiki":"Coelophysis", "emoji":"🦖", "where":"prehistoric", "zones":[1], "tier":"uncommon", "livedWhen":"215 million years ago",
+  "facts":["I'm one of the very first dinosaurs, and I'm only as big as a big dog.","My bones are hollow, like a bird's, so I'm light and fast.","Hundreds of us were found buried together in one place in New Mexico.","I went to SPACE — a piece of my skull flew on the space shuttle."] },
+
+{ "id":"eoraptor", "name":"Eoraptor", "wiki":"Eoraptor", "emoji":"🦎", "where":"prehistoric", "zones":[1], "tier":"uncommon", "livedWhen":"230 million years ago",
+  "facts":["My name means DAWN THIEF, because I'm from the very beginning of the dinosaurs.","I'm about the size of a kid's bicycle.","I have sharp teeth in the front and leaf-shaped teeth in the back, so I ate a bit of everything.","When I was alive, dinosaurs were the small, rare animals. Nobody would have guessed what came next."] },
+
+{ "id":"morganucodon", "name":"Morganucodon", "wiki":"Morganucodon", "emoji":"🐭", "where":"prehistoric", "zones":[1,2], "tier":"rare", "tiny":true, "livedWhen":"205 million years ago",
+  "facts":["I'm one of the first mammals, and I'm smaller than a mouse.","I came out at night, because that's when the dinosaurs weren't looking.","Every mammal alive — every dog, every whale, every person — is related to something like me.","Two of the little bones inside YOUR ear started out as bones in my jaw."] },
+
+{ "id":"dimetrodon", "name":"Dimetrodon", "wiki":"Dimetrodon", "emoji":"🦕", "where":"prehistoric", "zones":[1], "tier":"rare", "livedWhen":"290 million years ago",
+  "facts":["Everybody calls me a dinosaur. I'm NOT one — I lived and died before the first dinosaur ever hatched.","I'm actually closer family to you than I am to a Tyrannosaurus.","The sail on my back is made of skin stretched over long bony spines.","I had two different shapes of teeth, which almost nothing did back then."] },
+
+{ "id":"plateosaurus", "name":"Plateosaurus", "wiki":"Plateosaurus", "emoji":"🦕", "where":"prehistoric", "zones":[1], "tier":"rare", "livedWhen":"215 million years ago",
+  "facts":["I'm the first really BIG dinosaur — as long as a car and a half.","I have a thumb claw the size of your hand for pulling branches down.","The giant long-necks that came later are my family.","More than a hundred of me have been dug up in Germany, so we know exactly what I looked like."] },
+
+{ "id":"postosuchus", "name":"Postosuchus", "wiki":"Postosuchus", "emoji":"🐊", "where":"prehistoric", "zones":[1], "tier":"rare", "livedWhen":"220 million years ago",
+  "facts":["I'm a crocodile relative, and back then WE were the scary ones, not the dinosaurs.","I'm 15 feet long with a head full of steak-knife teeth.","I could rear up and run on my back legs like a dinosaur, but I'm not one.","Then everything changed, my family shrank down to crocodiles, and the dinosaurs took over."] },
+
+{ "id":"herrerasaurus", "name":"Herrerasaurus", "wiki":"Herrerasaurus", "emoji":"🦖", "where":"prehistoric", "zones":[1], "tier":"epic", "livedWhen":"230 million years ago",
+  "facts":["I'm one of the oldest meat-eating dinosaurs anybody has ever found.","My jaw has a sliding hinge in it that helps me hold on to a wriggling dinner.","A goat farmer in Argentina found my bones in a canyon and the dinosaur is named after him.","Everything from me to Tyrannosaurus is one long family line, 165 million years long."] },
+
+/* ================= ZONE 2 — THE JURASSIC ================= */
+
+{ "id":"compsognathus", "name":"Compsognathus", "wiki":"Compsognathus", "emoji":"🦎", "where":"prehistoric", "zones":[2], "tier":"uncommon", "tiny":true, "livedWhen":"150 million years ago",
+  "facts":["I'm a dinosaur the size of a chicken, and for a long time I was the smallest one known.","One of my fossils has a whole lizard still inside my tummy. That was my last lunch.","I have two fingers on each hand instead of three.","I ran on two long skinny legs, very fast, through the ferns."] },
+
+{ "id":"archaeopteryx", "name":"Archaeopteryx", "wiki":"Archaeopteryx", "emoji":"🪶", "where":"prehistoric", "zones":[2], "tier":"rare", "livedWhen":"150 million years ago",
+  "facts":["I'm half dinosaur and half bird: real feathers, but also TEETH and a long bony tail.","I'm the fossil that showed people birds came from dinosaurs.","Every bird outside your window is my family. A pigeon is a dinosaur.","I was found in a German rock so smooth and fine that you can see every single feather."] },
+
+{ "id":"pterodactyl", "name":"Pterodactylus", "wiki":"Pterodactylus", "emoji":"🦅", "where":"prehistoric", "zones":[2], "tier":"rare", "livedWhen":"150 million years ago",
+  "facts":["I'm NOT a dinosaur and I'm not a bird. I'm a pterosaur — the first animal with a backbone that really flew.","My whole wing is skin stretched from my ankle to ONE gigantic finger.","My bones are hollow and thin as paper, so I weigh almost nothing.","I was the first flying fossil anybody ever found, back in 1784."] },
+
+{ "id":"stegosaurus", "name":"Stegosaurus", "wiki":"Stegosaurus", "emoji":"🦕", "where":"prehistoric", "zones":[2], "tier":"epic", "livedWhen":"150 million years ago",
+  "facts":["I have two rows of plates down my back, each one as big as a road sign.","The spikes on my tail have a real nickname: the THAGOMIZER. Scientists actually call it that.","My brain is about the size of a lime, in a body as long as a bus.","I swung that tail hard enough to punch holes in an Allosaurus. We have the bones to prove it."] },
+
+{ "id":"allosaurus", "name":"Allosaurus", "wiki":"Allosaurus", "emoji":"🦖", "where":"prehistoric", "zones":[2], "tier":"epic", "livedWhen":"150 million years ago",
+  "facts":["I'm the top hunter of the Jurassic, 30 feet long with horns over my eyes.","My mouth opens WIDER than a Tyrannosaurus — I hit like a hatchet instead of crunching.","Almost every Allosaurus skeleton has broken and healed bones. We had rough lives.","One quarry in Utah held the bones of 46 of us in a single pile."] },
+
+{ "id":"diplodocus", "name":"Diplodocus", "wiki":"Diplodocus", "emoji":"🦕", "where":"prehistoric", "zones":[2], "tier":"epic", "magicOnly":true, "livedWhen":"150 million years ago",
+  "facts":["I'm 90 feet long — longer than two school buses parked end to end.","My tail is a whip, and the tip may have cracked like a bullwhip.","My teeth are little pegs at the very front, like a rake, and I strip leaves with them.","I swallow stones on purpose to grind food up inside me, because I never chew."] },
+
+{ "id":"brachiosaurus", "name":"Brachiosaurus", "wiki":"Brachiosaurus", "emoji":"🦕", "where":"prehistoric", "zones":[2], "tier":"legendary", "magicOnly":true, "livedWhen":"154 million years ago",
+  "facts":["My front legs are longer than my back legs, so I stand tilted UP like a giraffe.","I can lift my head 40 feet in the air and eat the top of a four-storey building.","I weigh as much as ten elephants.","My nostrils are up on the top of my head, above my eyes."] },
+
+/* ================= ZONE 3 — THE CRETACEOUS ================= */
+
+{ "id":"microraptor", "name":"Microraptor", "wiki":"Microraptor", "emoji":"🪶", "where":"prehistoric", "zones":[3], "tier":"rare", "tiny":true, "livedWhen":"120 million years ago",
+  "facts":["I have FOUR wings — feathers on my arms AND on my legs.","I'm a raptor the size of a crow, and I glided between trees.","Scientists found my colour: I was glossy black-blue, shiny like a crow.","One of my fossils has a whole bird inside my stomach. I ate other fliers."] },
+
+{ "id":"velociraptor", "name":"Velociraptor", "wiki":"Velociraptor", "emoji":"🦖", "where":"prehistoric", "zones":[3], "tier":"rare", "livedWhen":"75 million years ago",
+  "facts":["The movies made me huge. I'm really about the size of a turkey — and I had FEATHERS.","I have one giant curved claw on each foot that I hold up off the ground so it stays sharp.","The most famous fossil in the world is me locked in a fight with a Protoceratops, both of us buried mid-battle by a sandstorm.","My arm bones have the same little bumps that feathers attach to in birds today."] },
+
+{ "id":"pachycephalosaurus", "name":"Pachycephalosaurus", "wiki":"Pachycephalosaurus", "emoji":"🦕", "where":"prehistoric", "zones":[3], "tier":"rare", "livedWhen":"68 million years ago",
+  "facts":["The top of my skull is solid bone TEN INCHES thick. My head is a helmet.","Some of the skulls we find have bashed and healed spots, so we probably head-butted each other.","I have little bony knobs and spikes all around the rim, like a crown.","My name takes a while to say: PACK-ee-KEF-uh-lo-SORE-us."] },
+
+{ "id":"parasaurolophus", "name":"Parasaurolophus", "wiki":"Parasaurolophus", "emoji":"🦕", "where":"prehistoric", "zones":[3], "tier":"epic", "livedWhen":"75 million years ago",
+  "facts":["The crest on my head is a six-foot hollow TUBE, and my nose runs all the way up it and back.","Scientists built a copy and blew through it — I sound like a giant foghorn.","I have over a thousand teeth, stacked in rows, and I grow new ones forever.","I could walk on two legs or drop down onto four whenever I felt like it."] },
+
+{ "id":"ankylosaurus", "name":"Ankylosaurus", "wiki":"Ankylosaurus", "emoji":"🦕", "where":"prehistoric", "zones":[3], "tier":"epic", "livedWhen":"68 million years ago",
+  "facts":["I'm a living tank. My back is bony plates and my eyelids have armour on them.","My tail ends in a club of solid bone that could break a Tyrannosaurus's leg.","Even a Tyrannosaurus mostly left me alone, and that is saying something.","I'm as wide as a car, and I keep my belly low to the ground where nothing can reach it."] },
+
+{ "id":"triceratops", "name":"Triceratops", "wiki":"Triceratops", "emoji":"🦏", "where":"prehistoric", "zones":[3], "tier":"epic", "livedWhen":"67 million years ago",
+  "facts":["I have three horns and the two big ones are each as long as your whole arm.","My head is one of the biggest heads any land animal has ever had — a third of my whole body.","We find Tyrannosaurus bite marks on my frill, and some of them HEALED. I got away.","I was one of the very last dinosaurs alive before the asteroid."] },
+
+{ "id":"therizinosaurus", "name":"Therizinosaurus", "wiki":"Therizinosaurus", "emoji":"🦖", "where":"prehistoric", "zones":[3], "tier":"epic", "livedWhen":"70 million years ago",
+  "facts":["I have the longest claws of any animal that has ever lived — THREE FEET long.","With all those claws and teeth, guess what I ate. Leaves. I'm a plant eater.","I'm shaggy with feathers, I have a pot belly, and I look like nothing else.","For years all anybody had was my giant claws, and people thought I was a turtle."] },
+
+{ "id":"quetzalcoatlus", "name":"Quetzalcoatlus", "wiki":"Quetzalcoatlus", "emoji":"🦅", "where":"prehistoric", "zones":[3], "tier":"legendary", "magicOnly":true, "livedWhen":"68 million years ago",
+  "facts":["I'm the biggest thing that has ever flown. My wings are as wide as a small airplane.","Standing on the ground I'm as tall as a giraffe, and I walked around on all fours.","I take off by pole-vaulting off my own arms and I'm airborne in under a second.","I'm named after a feathered serpent god, which feels about right."] },
+
+{ "id":"spinosaurus", "name":"Spinosaurus", "wiki":"Spinosaurus", "emoji":"🦖", "where":"prehistoric", "zones":[3], "tier":"legendary", "magicOnly":true, "livedWhen":"95 million years ago",
+  "facts":["I'm the longest meat-eating dinosaur there has ever been — longer than a Tyrannosaurus.","I have a seven-foot sail on my back and a paddle tail, because I SWIM.","My snout is long like a crocodile's and full of cone teeth for catching fish.","My only good skeleton was blown up in a bombing raid in 1944, so we had to find me all over again."] },
+
+{ "id":"trex", "name":"Tyrannosaurus Rex", "wiki":"Tyrannosaurus", "emoji":"🦖", "where":"prehistoric", "zones":[3], "tier":"legendary", "magicOnly":true, "livedWhen":"67 million years ago",
+  "facts":["My bite is the strongest bite of any land animal ever. I crunched bones like crackers.","I have 60 teeth and the big ones are the size of bananas.","My name means TYRANT LIZARD KING.","There's more time between me and a Stegosaurus than between me and YOU."] },
+
+{ "id":"suetherex", "name":"SUE", "wiki":"Sue (dinosaur)", "emoji":"🦖", "where":"prehistoric", "zones":[3], "tier":"mythic", "mythic":true, "livedWhen":"67 million years ago",
+  "facts":["I am the most complete Tyrannosaurus rex anybody has ever found. 250 of my bones are real.","I was found sticking out of a cliff in South Dakota in 1990, and a fossil hunter named Sue found me.","I am 40 feet long and my skull alone weighs 600 pounds.","You can go and stand in front of me. I am standing in a museum in Chicago right now, today.","I am the only mythic in this whole book you could actually go and visit."] },
+
+/* ================= ZONE 4 — THE ANCIENT SEA ================= */
+
+{ "id":"trilobite", "name":"Trilobite", "wiki":"Trilobite", "emoji":"🪲", "where":"prehistoric", "zones":[4], "tier":"common", "tiny":true, "livedWhen":"500 million years ago",
+  "facts":["I crawled around the sea floor for 270 million years — way longer than the dinosaurs lasted.","My eyes are made of STONE. Little crystal lenses, hundreds of them.","I roll up into a ball like a roly-poly when something scares me.","There are more than 20,000 kinds of me, and every single one is gone."] },
+
+{ "id":"ammonite", "name":"Ammonite", "wiki":"Ammonoidea", "emoji":"🐚", "where":"prehistoric", "zones":[4], "tier":"uncommon", "givesMagic":true, "livedWhen":"200 million years ago",
+  "facts":["I'm a squid living inside a beautiful spiral shell.","My shell has sealed rooms inside it, and I fill them with gas to float up and down.","Some of my cousins grew shells as wide as a car tire.","I died out on the exact same day as the dinosaurs. My cousin the nautilus made it."] },
+
+{ "id":"opabinia", "name":"Opabinia", "wiki":"Opabinia", "emoji":"🦐", "where":"prehistoric", "zones":[4], "tier":"rare", "tiny":true, "livedWhen":"505 million years ago",
+  "facts":["I have FIVE eyes on top of my head.","I have one long bendy nozzle on my face with a claw on the end, and I use it to pass food to my mouth underneath.","When a scientist first showed a picture of me, the whole room laughed out loud.","Nothing alive today looks even a little bit like me."] },
+
+{ "id":"anomalocaris", "name":"Anomalocaris", "wiki":"Anomalocaris", "emoji":"🦐", "where":"prehistoric", "zones":[4], "tier":"rare", "livedWhen":"505 million years ago",
+  "facts":["I was the biggest hunter in the whole world — and I'm about as long as your arm. The world was small back then.","My name means STRANGE SHRIMP.","For years my grabbing arms, my mouth and my body were each thought to be three different animals.","My eyes have 16,000 lenses each. I saw better than almost anything alive."] },
+
+{ "id":"ichthyosaur", "name":"Ichthyosaurus", "wiki":"Ichthyosaurus", "emoji":"🐬", "where":"prehistoric", "zones":[4], "tier":"rare", "livedWhen":"195 million years ago",
+  "facts":["I look exactly like a dolphin, but I'm a reptile, and we're not related at all. We just both got good at the same job.","My eyes are bigger than my own dinner plate — the biggest eyes of almost anything.","I don't lay eggs. My babies are born alive, underwater, tail first.","A twelve-year-old girl named Mary Anning found the first complete me on a beach in England."] },
+
+{ "id":"helicoprion", "name":"Helicoprion", "wiki":"Helicoprion", "emoji":"🦈", "where":"prehistoric", "zones":[4], "tier":"epic", "livedWhen":"270 million years ago",
+  "facts":["I have a SPIRAL BUZZSAW of teeth in my bottom jaw. Nothing else ever had that.","I never lost a tooth in my life. The old ones curled around inside the spiral.","For a hundred years nobody could work out where on my body the buzzsaw even went.","A CT scan finally solved it in 2013, and the answer was: right in the middle of my mouth."] },
+
+{ "id":"dunkleosteus", "name":"Dunkleosteus", "wiki":"Dunkleosteus", "emoji":"🐟", "where":"prehistoric", "zones":[4], "tier":"epic", "livedWhen":"370 million years ago",
+  "facts":["My head and neck are covered in armour PLATES, like a knight's helmet.","I don't have teeth. I have two bony blades that sharpen each other every time I bite.","My jaws snap open in one fiftieth of a second and suck prey straight in.","I lived so long ago that there were no dinosaurs, no birds, and barely any plants on land."] },
+
+{ "id":"elasmosaurus", "name":"Elasmosaurus", "wiki":"Elasmosaurus", "emoji":"🐍", "where":"prehistoric", "zones":[4], "tier":"epic", "livedWhen":"80 million years ago",
+  "facts":["My neck is half of my whole body and it has 72 bones in it. You have seven.","I row through the water with four big flippers, like a turtle with wings.","The scientist who found me put my head on the wrong end by mistake, and his rival never let him forget it.","People who think they've seen the Loch Ness Monster are usually drawing me."] },
+
+{ "id":"archelon", "name":"Archelon", "wiki":"Archelon", "emoji":"🐢", "where":"prehistoric", "zones":[4], "tier":"epic", "magicOnly":true, "livedWhen":"75 million years ago",
+  "facts":["I'm the biggest sea turtle there has ever been — as wide as a car is long.","My shell isn't solid. It's a frame of struts with leathery skin over it, so I'm light enough to swim.","I have a hooked beak for crunching ammonites and squishy things.","One of me was found who lived about a hundred years."] },
+
+{ "id":"mosasaurus", "name":"Mosasaurus", "wiki":"Mosasaurus", "emoji":"🐊", "where":"prehistoric", "zones":[4], "tier":"legendary", "magicOnly":true, "livedWhen":"70 million years ago",
+  "facts":["I'm 50 feet of swimming lizard, and my closest living family is a monitor lizard or a snake.","I have a second set of teeth on the ROOF of my mouth to stop dinner sliding back out.","My tail has a fish-like fin on the end and it drives me like a shark.","My skull was found in a Dutch mine in 1764, and it helped people work out that animals can go extinct at all."] },
+
+{ "id":"megalodon", "name":"MEGALODON", "wiki":"Megalodon", "emoji":"🦈", "where":"prehistoric", "zones":[4], "tier":"legendary", "magicOnly":true, "livedWhen":"15 million years ago",
+  "facts":["I'm the biggest shark that has ever lived — 50 feet long, three great whites end to end.","My teeth are the size of your HAND. People find them on beaches to this day.","My bite is the most powerful bite of any animal in the history of the world.","I'm made of cartilage, not bone, so almost all we have of me is teeth.","No, I'm not still down there. I've been gone for three and a half million years."] }
+
+]

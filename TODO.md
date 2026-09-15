@@ -82,7 +82,7 @@ are blind, pale, and strange, which is a good pairing with the island idea.
       ones showing what unlocks them
 - [x] Book: sections for the new worlds, endemic island grouping
 - [x] Verify saves still merge, and that no existing creature `id` changed
-- [ ] Rebuild the shareable copy (`node tools/build-share.js`) and republish
+- [x] Rebuild the shareable copy (`node tools/build-share.js`) and republish
 
 ---
 
@@ -165,6 +165,39 @@ him powers. Anything we build should feed one of those three.
       written, and Cam writes the facts himself. Full spec in `WILD-TRAP.md`, including
       why the live-Wikipedia version was tested and rejected (12 seconds a pull, and it
       served up specimen-drawer molluscs).
+
+---
+
+# Round 3 — Prehistoric, from Cam, 2026-09-15
+
+Cam asked for "a level that's mostly dinosaurs, and a Megalodon."
+
+- [x] New world type `prehistoric`, walked ACROSS like land — and walking right is
+      walking forward through **time**
+- [x] Four zones: **The Triassic** (x3), **The Jurassic** (x5), **The Cretaceous** (x7),
+      **THE ANCIENT SEA** (x12)
+- [x] 37 animals with hand-written facts: T. rex, Triceratops, Stegosaurus, Spinosaurus,
+      Velociraptor (feathered, turkey-sized, and the card says the movies got it wrong),
+      Quetzalcoatlus, Brachiosaurus, Archaeopteryx, Dimetrodon (which is *not* a dinosaur
+      and says so), and down in the sea Dunkleosteus, Helicoprion's buzzsaw jaw,
+      Mosasaurus, Elasmosaurus, Archelon and the **MEGALODON**
+- [x] **The Time Machine** (7,000) gates the world; the **Diving Bell** (3,000) gates the
+      ancient sea, so the Megalodon is something to save up for
+- [x] Fossil Brush and Bone Armour — the prehistoric versions of the binoculars and the
+      bug jar, so the two land powers exist here too
+- [x] New `livedWhen` field: the card says *"I lived 67 million years ago. There are none
+      of us left anywhere on Earth."* The book section says the same thing about the photos
+- [x] Prehistoric mythic: **SUE**, the most complete T. rex ever found — the only mythic
+      in the book you could go and stand in front of
+- [x] Something enormous stomps past in the Jurassic and later, with a roar, and needs the
+      magic trap — the land version of the deep-sea roamers
+- [x] Art: volcanoes that smoke and cool off as time goes by, cycads and conifers, fossils
+      and egg clutches to open instead of rocks, and a real waterline where the sea starts
+- [x] Every one of the 37 photos looked at with vision; the dinosaurs use life
+      restorations, not museum skeletons (see README)
+- [x] **Two bugs found on the way:** the Rope Ladder's button called a `climbOut()` that
+      was never written, and `maxZoneAllowed()` treated gear at level 0 as level 1, so any
+      zone gated on level-1 gear would have been open from the start
 
 ---
 

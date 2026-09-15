@@ -17,7 +17,9 @@ const ROOT = path.join(__dirname, "..");
 const file = process.argv[2];
 if (!file) { console.error("usage: node tools/add-batch.js batch/<file>.json"); process.exit(1); }
 
-const batch = JSON.parse(fs.readFileSync(file, "utf8"));
+/* Batch files may carry block-comment lines to label the zones. Strip them
+   so the file stays readable without leaving JSON. */
+const batch = JSON.parse(fs.readFileSync(file, "utf8").replace(/^\s*\/\*[\s\S]*?\*\/\s*$/gm, ""));
 const creaturesPath = path.join(ROOT, "creatures.js");
 const fetchPath = path.join(ROOT, "tools", "fetch-photos.js");
 
@@ -39,7 +41,10 @@ for (const a of batch) {
     '", where:"' + a.where + '", zones:[' + a.zones.join(",") + '], tier:"' + a.tier + '"' +
     (a.tiny ? ", tiny:true" : "") +
     (a.magicOnly ? ", magicOnly:true" : "") +
+    (a.mythic ? ", mythic:true" : "") +
+    (a.givesMagic ? ", givesMagic:true" : "") +
     (a.endemicTo ? ', endemicTo:"' + a.endemicTo + '"' : "") +
+    (a.livedWhen ? ', livedWhen:"' + a.livedWhen + '"' : "") +
     ',\n    facts:[' + a.facts.map(f => JSON.stringify(f)).join(",") + '] },\n';
 
   if (fetchSrc.indexOf("\n  " + a.id + ":") === -1) {

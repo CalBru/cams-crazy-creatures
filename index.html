@@ -67,6 +67,7 @@
   #oceanCard       { background: linear-gradient(#4fc3f7, #010c16); }
   #undergroundCard { background: linear-gradient(#a9784a, #2a1016); }
   #islandCard      { background: linear-gradient(#37c6f4, #2f7d52); }
+  #prehistoricCard { background: linear-gradient(#e8703a, #2b4a2f); }
   .placeCard.locked { filter: grayscale(.7) brightness(.75); }
   .placeCard.locked .hint { color: #ffd0e0; }
   .howto {
@@ -378,6 +379,11 @@
       THE ISLANDS
       <span class="hint" id="islandHint">Animals found nowhere else</span>
     </button>
+    <button class="placeCard" id="prehistoricCard" onclick="tryStart('prehistoric')">
+      <span class="big">🦖</span>
+      PREHISTORIC
+      <span class="hint" id="prehistoricHint">Dinosaurs — and the MEGALODON</span>
+    </button>
   </div>
   <div class="howto" id="homeHowto"></div>
   <button class="btn gray" onclick="showWho()">🧒 Pick a different kid</button>
@@ -494,7 +500,8 @@ const DEFAULT_GEAR = {
   boots: 1, hammer: 0, binocs: 0, bugjar: 0,                     /* land */
   boat: 0, snorkel: 0, notebook: 0,                              /* islands */
   whistle: 0, freeze: 0, magnet: 0, xray: 0,                      /* powers */
-  dig: 1, headlamp: 1, ladder: 0                                 /* underground */
+  dig: 1, headlamp: 1, ladder: 0,                                /* underground */
+  time: 0, bell: 0, brush: 0, armour: 0                          /* prehistoric */
 };
 const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
 
@@ -758,6 +765,23 @@ function whaleSong() {
     osc.start(t); osc.stop(t + 3);
   } catch (e) {}
 }
+/* something enormous, a long way off, letting everyone know it's there */
+function dinoRoar() {
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audio.createOscillator(), gain = audio.createGain();
+    osc.type = "sawtooth";
+    const t = audio.currentTime;
+    osc.frequency.setValueAtTime(190, t);
+    osc.frequency.exponentialRampToValueAtTime(58, t + 1.1);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.12);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
+    osc.connect(gain).connect(audio.destination);
+    osc.start(t); osc.stop(t + 1.45);
+  } catch (e) {}
+}
+
 function caveDrip() {
   const f = 900 + Math.random() * 700;
   beep(f, 60, "sine", .05);
@@ -808,7 +832,10 @@ function maxZoneAllowed(kind) {
   let allowed = 1;
   for (let i = 0; i < list.length; i++) {
     const need = list[i].needs;
-    if (!need || (state.gear[need.gear] || 1) >= need.level) allowed = i + 1;
+    /* `|| 0` and not `|| 1`: gear that starts at 0 (the Diving Bell) has to be
+       bought before it counts, and gear that starts at 1 (suits, the shovel)
+       gates on level 2 and up, so it is unaffected. */
+    if (!need || (state.gear[need.gear] || 0) >= need.level) allowed = i + 1;
     else break;
   }
   return allowed;
@@ -831,7 +858,18 @@ function lightRadius() {
   const level = world && world.kind === "underground" ? state.gear.headlamp : state.gear.light;
   return 250 * level;
 }
-function canReach(kind) { return kind !== "island" || state.gear.boat >= 1; }
+/* Two worlds are locked until he buys the way in: the boat, and the time machine. */
+const WORLD_KEY = { island: "boat", prehistoric: "time" };
+function canReach(kind) {
+  const need = WORLD_KEY[kind];
+  return !need || state.gear[need] >= 1;
+}
+function worldKeyItem(kind) { return SHOP.find(i => i.gear === WORLD_KEY[kind] && i.level === 1); }
+
+/* Seeing what's inside before you open it, and getting a second try at it.
+   Prehistoric has its own versions of both, bought in its own shop. */
+function peekGear() { return world && world.kind === "prehistoric" ? state.gear.brush : state.gear.binocs; }
+function secondChanceGear() { return world && world.kind === "prehistoric" ? state.gear.armour : state.gear.bugjar; }
 
 /* ---------- the world ---------- */
 let world = null;
@@ -849,7 +887,7 @@ function startWorld(kind) {
 
   const vert = isVertical(kind);
   const zoneCount = ZONES[kind].length;
-  const W = vert ? 2600 : (kind === "island" ? 7000 : 5200);
+  const W = vert ? 2600 : (kind === "island" ? 7000 : (kind === "prehistoric" ? 7600 : 5200));
   const H = vert ? (kind === "ocean" ? 6600 : 4600) : CH;
 
   world = {
@@ -884,14 +922,18 @@ function startWorld(kind) {
     ocean:       ["weed", "coral", "rock", "weed"],
     land:        ["tree", "bush", "grass", "grass", "flower", "cactus"],
     island:      ["palm", "palm", "bush", "grass", "flower", "fern"],
-    underground: ["root", "pebble", "crystal", "root", "mushroom"]
+    underground: ["root", "pebble", "crystal", "root", "mushroom"],
+    prehistoric: ["fern", "cycad", "conifer", "fern", "boulder", "cycad"]
   };
+  const SEA_DECO = ["weed", "coral", "rock", "weed", "coral"];
   for (let i = 0; i < 110; i++) {
+    const dx = rand(0, W);
     world.deco.push({
-      x: rand(0, W),
+      x: dx,
       y: vert ? rand(world.surface + 200, world.ground) : 0,
       onFloor: !vert || Math.random() < .5,
-      kind: pick(DECO[kind]),
+      /* past the shore of the ancient sea it's seaweed and coral, not conifers */
+      kind: pick(kind === "prehistoric" && dx > W * .75 ? SEA_DECO : DECO[kind]),
       s: rand(.7, 1.6),
       depth: rand(.35, .8)
     });
@@ -901,7 +943,8 @@ function startWorld(kind) {
     ocean:       ["#ffd166", "#ef476f", "#06d6a0", "#f78c6b", "#c8e7ff"],
     land:        ["#ffe066", "#ff8fab", "#b8f2e6"],
     island:      ["#ff8fab", "#ffe066", "#9bf6ff", "#caffbf"],
-    underground: ["#c9b8a8", "#9fb3c8"]
+    underground: ["#c9b8a8", "#9fb3c8"],
+    prehistoric: ["#6b5a46", "#8a6a4a", "#5a6b4a"]
   };
   const ambientCount = kind === "underground" ? 12 : 26;
   for (let i = 0; i < ambientCount; i++) {
@@ -931,6 +974,14 @@ function startWorld(kind) {
         world.shadows.push({ x: rand(0, W), y: rand(H * .45, H * .95), s: rand(1.4, 3.4),
                              dir: Math.random() < .5 ? -1 : 1, sp: rand(.15, .4) });
       }
+    }
+  }
+
+  /* the ancient sea at the far end of the map shimmers */
+  if (kind === "prehistoric") {
+    for (let i = 0; i < 120; i++) {
+      world.sparks.push({ x: rand(W * .75, W), y: rand(H - 420, H - 90), r: rand(1, 3),
+                          ph: rand(0, 6.28), c: pick(["#9fe3f5", "#caffbf", "#fff3a8"]) });
     }
   }
 
@@ -1229,6 +1280,7 @@ function showZoneBanner(z) {
       depthFeet(world.player.y).toLocaleString() + " feet down</span>" : "");
   el.style.color = z.n >= 5 ? "#ff5ec7" : (z.n >= 3 ? "#ffcc00" : "#fff");
   if (world.kind === "island") el.style.color = z.n >= 3 ? "#ffcc00" : "#caffbf";
+  if (world.kind === "prehistoric") el.style.color = z.n >= 4 ? "#9fe3f5" : (z.n >= 3 ? "#ffcc00" : "#ffb38a");
   el.classList.add("show");
   playZoneSound();
   clearTimeout(showZoneBanner._t);
@@ -1294,7 +1346,7 @@ function pressSpace() {
   /* which trap did he switch on? */
   const trap = (armedTrap && trapCount(armedTrap) > 0) ? armedTrap : null;
   /* the X-Ray and the binoculars promise what's inside, so honour it */
-  const promised = (world.xray > 0 || state.gear.binocs) && !trap ? s.hint : null;
+  const promised = (world.xray > 0 || peekGear()) && !trap ? s.hint : null;
   const caught = catchWith(trap, pickWhere, pickZone, promised);
   if (!caught) return;                       /* nothing to catch — trap not spent */
   if (trap) { spendTrap(trap); armedTrap = null; }
@@ -1326,8 +1378,8 @@ function catchWith(trap, where, zone, promised) {
       const match = inZone(where, zone.n, false).filter(x => x.tier === want);
       if (match.length) c = pick(match);
     }
-    /* the bug jar keeps whichever of two was rarer */
-    if (state.gear.bugjar && !world.vertical) {
+    /* the bug jar (or the bone armour) keeps whichever of two was rarer */
+    if (secondChanceGear() && !world.vertical) {
       const other = pickCreature(where, zone, false);
       if (other && TIERS[other.tier].points > TIERS[c.tier].points) c = other;
     }
@@ -1489,14 +1541,18 @@ function tickReveal() {
 /* ============================================================
    SOMETHING BIG IS OUT THERE (roaming legendaries)
    ============================================================ */
+/* Below the Midnight Zone something huge swims past. Out in the Jurassic,
+   something huge STOMPS past. Same chase, same magic-trap rule. */
 function updateWanderer() {
-  if (world.kind !== "ocean") return;
+  const pre = world.kind === "prehistoric";
+  if (world.kind !== "ocean" && !pre) return;
 
   if (world.wanderer) {
     const wd = world.wanderer;
     if (wd.frozen > 0) { wd.life++; return; }      /* time-frozen: it waits for him */
     wd.x += wd.vx;
-    wd.y += Math.sin(world.t / 40) * .6;
+    if (world.vertical) wd.y += Math.sin(world.t / 40) * .6;
+    else wd.y = wd.baseY - Math.abs(Math.sin(world.t / 12)) * 5;   /* footfalls */
     wd.life--;
     if (wd.life <= 0 || wd.x < -500 || wd.x > world.w + 500) {
       world.wanderer = null;
@@ -1506,14 +1562,14 @@ function updateWanderer() {
     return;
   }
 
-  if (world.zone < 3) return;
+  if (world.zone < (pre ? 2 : 3)) return;
   world.nextWander--;
   if (world.nextWander > 0) return;
   world.nextWander = Math.round(rand(600, 1200) / (state.gear.chum ? 3 : 1));
   if (Math.random() > (state.gear.chum ? .9 : .55)) return;
 
   const zone = currentZone();
-  const pool = CREATURES.filter(c => c.where === "ocean" &&
+  const pool = CREATURES.filter(c => c.where === world.kind &&
     c.zones.indexOf(zone.n) !== -1 &&
     ["rare", "epic", "legendary", "mythic"].indexOf(c.tier) !== -1);
   if (!pool.length) return;
@@ -1526,16 +1582,22 @@ function updateWanderer() {
   });
   const c = pick(bag);
   const fromLeft = Math.random() < .5;
+  const size = TIERS[c.tier].stars >= 5 ? 2.6 : 1.9;
+  /* on land it has to stand ON the ground: its feet reach 22 units below its middle */
+  const baseY = world.ground - 22 * size;
   world.wanderer = {
-    c: c,
+    c: c, baseY: baseY,
     x: fromLeft ? world.player.x - CW * .7 : world.player.x + CW * .7,
-    y: Math.max(world.surface + 120, Math.min(world.ground - 120, world.player.y + rand(-140, 140))),
+    y: world.vertical
+      ? Math.max(world.surface + 120, Math.min(world.ground - 120, world.player.y + rand(-140, 140)))
+      : baseY,
     vx: (fromLeft ? 1 : -1) * rand(.7, 1.5),
     life: 1500,
-    size: TIERS[c.tier].stars >= 5 ? 2.6 : 1.9
+    size: size
   };
-  flashHint("👀 Something BIG is out there! Chase it and press SPACE!");
-  whaleSong();
+  flashHint(pre ? "👀 Something ENORMOUS is coming! Chase it and press SPACE!"
+                : "👀 Something BIG is out there! Chase it and press SPACE!");
+  pre ? dinoRoar() : whaleSong();
 }
 
 function flashHint(msg) {
@@ -1556,6 +1618,7 @@ function render() {
 
   if (world.kind === "ocean") drawOceanBg(cam);
   else if (world.kind === "underground") drawUndergroundBg(cam);
+  else if (world.kind === "prehistoric") drawPrehistoricBg(cam);
   else drawLandBg(cam);
 
   world.deco.filter(d => d.depth < .6).forEach(d => drawDeco(d, cam, .5));
@@ -1573,6 +1636,7 @@ function render() {
     g.strokeStyle = "rgba(255,255,255,.6)";
     world.bubbles.forEach(b => { g.beginPath(); g.arc(b.x - cam.x, b.y - cam.y, b.r, 0, 6.3); g.stroke(); });
   }
+  if (world.kind === "prehistoric") drawAncientSea(cam);
 
   if (world.wanderer) drawWanderer(cam);
 
@@ -1833,6 +1897,115 @@ function drawLandBg(cam) {
   for (let i = -1; i < 16; i++) { g.beginPath(); g.arc(off * 1.5 + i * 330 + 120, world.ground - cam.y - 10, 170, Math.PI, 0); g.fill(); }
 }
 
+/* ============================================================
+   PREHISTORIC — walked across from left to right, but the
+   left-to-right is TIME. Triassic, Jurassic, Cretaceous, and
+   then the ground drops away into the ancient sea.
+   ============================================================ */
+/* how far along the map the ancient sea starts */
+function seaStartX() { return world.w * .75; }
+
+function drawPrehistoricBg(cam) {
+  const f = Math.min(1, world.player.x / world.w);
+  const sky = g.createLinearGradient(0, 0, 0, CH);
+  if (f < .25) {            /* Triassic: hot, dusty, volcanic */
+    sky.addColorStop(0, "#c9522f"); sky.addColorStop(.55, "#e8955c"); sky.addColorStop(1, "#f3d3a0");
+  } else if (f < .5) {      /* Jurassic: green and steamy */
+    sky.addColorStop(0, "#6fb6c9"); sky.addColorStop(.6, "#bfe4cf"); sky.addColorStop(1, "#eaf3c0");
+  } else if (f < .75) {     /* Cretaceous: the first proper blue sky */
+    sky.addColorStop(0, "#4f9fe0"); sky.addColorStop(.7, "#bfe6ff"); sky.addColorStop(1, "#e8f6ff");
+  } else {                  /* the ancient sea */
+    sky.addColorStop(0, "#24607f"); sky.addColorStop(.7, "#7fc4dd"); sky.addColorStop(1, "#bfe6f2");
+  }
+  g.fillStyle = sky;
+  g.fillRect(0, 0, CW, CH);
+
+  /* the sun burns red early on and cools down as time goes by */
+  g.fillStyle = f < .25 ? "#ffd28a" : "#fff3a8";
+  g.globalAlpha = f < .25 ? .9 : 1;
+  g.beginPath(); g.arc(CW - 110, 90, 52, 0, 6.3); g.fill();
+  g.globalAlpha = .3;
+  g.beginPath(); g.arc(CW - 110, 90, 82, 0, 6.3); g.fill();
+  g.globalAlpha = 1;
+
+  /* smoking volcanoes along the back, thickest in the Triassic */
+  const base = world.ground - cam.y - 30;
+  for (let i = -1; i < 22; i++) {
+    const vx = -cam.x * .28 + i * 430;
+    if (vx < -320 || vx > CW + 320) continue;
+    const old = (i * 430) < world.w * .45;          /* the early ones are the angry ones */
+    const h = old ? 250 : 170;
+    g.fillStyle = old ? "#5a3a34" : "#4a5a4a";
+    g.beginPath();
+    g.moveTo(vx - 210, base); g.lineTo(vx - 34, base - h);
+    g.lineTo(vx + 34, base - h); g.lineTo(vx + 210, base);
+    g.closePath(); g.fill();
+    if (old) {
+      g.fillStyle = "rgba(255,110,30,.85)";
+      g.beginPath(); g.ellipse(vx, base - h + 4, 34, 9, 0, 0, 6.3); g.fill();
+      /* a slow plume of smoke */
+      g.fillStyle = "rgba(90,70,66,.35)";
+      for (let k = 0; k < 4; k++) {
+        const sy = base - h - 26 - k * 34;
+        const sw = 26 + k * 13 + Math.sin(world.t / 60 + i + k) * 6;
+        g.beginPath(); g.arc(vx + Math.sin(world.t / 70 + k) * 12, sy, sw, 0, 6.3); g.fill();
+      }
+    }
+  }
+
+  /* two rows of hills, greener the later it gets */
+  const hill1 = f < .25 ? "#8a6a4a" : (f < .5 ? "#5f9e63" : "#6fae74");
+  const hill2 = f < .25 ? "#6b5138" : (f < .5 ? "#3f7d4a" : "#4d8a55");
+  const off = -cam.x * .35;
+  g.fillStyle = hill1;
+  for (let i = -1; i < 20; i++) { g.beginPath(); g.arc(off + i * 400, world.ground - cam.y - 40, 230, Math.PI, 0); g.fill(); }
+  g.fillStyle = hill2;
+  for (let i = -1; i < 22; i++) { g.beginPath(); g.arc(off * 1.5 + i * 330 + 120, world.ground - cam.y - 10, 170, Math.PI, 0); g.fill(); }
+}
+
+/* The water that fills the last quarter of the map. Drawn over the top of
+   everything so he is genuinely UNDER it once he wades past the shore. */
+function drawAncientSea(cam) {
+  const sx = seaStartX() - cam.x;
+  if (sx > CW) return;
+  const left = Math.max(0, sx);
+  const top = world.ground - cam.y - 300;
+
+  g.save();
+  const water = g.createLinearGradient(0, top, 0, CH);
+  water.addColorStop(0, "rgba(40,150,190,.30)");
+  water.addColorStop(1, "rgba(6,50,90,.62)");
+  g.fillStyle = water;
+  g.fillRect(left, top, CW - left, CH - top);
+
+  /* the surface, with a little swell on it */
+  g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 3;
+  g.beginPath();
+  for (let x = left; x <= CW; x += 18) {
+    const y = top + Math.sin((x + cam.x) / 70 + world.t / 26) * 6;
+    x === left ? g.moveTo(x, y) : g.lineTo(x, y);
+  }
+  g.stroke();
+
+  /* the shoreline itself, so it's obvious where the water starts */
+  if (sx > -20 && sx < CW + 20) {
+    g.strokeStyle = "rgba(255,255,255,.35)"; g.lineWidth = 2;
+    g.setLineDash([10, 10]);
+    g.beginPath(); g.moveTo(sx, top); g.lineTo(sx, CH); g.stroke();
+    g.setLineDash([]);
+  }
+
+  /* shimmer */
+  world.sparks.forEach(sp => {
+    const x = sp.x - cam.x, y = sp.y - cam.y;
+    if (x < left - 10 || x > CW + 10 || y < -10 || y > CH + 10) return;
+    g.globalAlpha = .3 + Math.sin(world.t / 24 + sp.ph) * .3;
+    g.fillStyle = sp.c;
+    g.beginPath(); g.arc(x, y, sp.r, 0, 6.3); g.fill();
+  });
+  g.restore();
+}
+
 function drawGround(cam) {
   const gy = world.ground - cam.y;
   if (gy > CH + 60) return;
@@ -1845,6 +2018,34 @@ function drawGround(cam) {
       const x = (i * 300 - cam.x) % (CW + 400) - 100;
       g.fillStyle = "rgba(255,90,20," + (.35 + Math.sin(world.t / 22 + i) * .2) + ")";
       g.beginPath(); g.ellipse(x, gy + 16, 44, 9, 0, 0, 6.3); g.fill();
+    }
+    return;
+  }
+
+  if (world.kind === "prehistoric") {
+    const f = Math.min(1, world.player.x / world.w);
+    /* bare volcanic rock early on, turning to real soil once plants take over */
+    g.fillStyle = f < .25 ? "#6b5546" : (f < .5 ? "#5f6b46" : "#5a7a4a");
+    g.fillRect(0, gy, CW, CH - gy);
+    g.fillStyle = f < .25 ? "#8a6f58" : (f < .5 ? "#7d8a55" : "#79a15f");
+    g.fillRect(0, gy, CW, 14);
+    /* stones and dropped bones lying about */
+    for (let i = 0; i < 30; i++) {
+      const x = (i * 263 - cam.x) % (CW + 300) - 100;
+      g.fillStyle = "rgba(0,0,0,.14)";
+      g.beginPath(); g.ellipse(x, gy + 26 + (i % 4) * 22, 17, 5, 0, 0, 6.3); g.fill();
+      if (i % 5 === 0) {
+        g.strokeStyle = "rgba(240,232,214,.75)"; g.lineWidth = 4; g.lineCap = "round";
+        g.beginPath(); g.moveTo(x - 14, gy + 34); g.lineTo(x + 14, gy + 30); g.stroke();
+      }
+    }
+    /* the sea floor, past the shore */
+    const sx = seaStartX() - cam.x;
+    if (sx < CW) {
+      g.fillStyle = "#4a5a52";
+      g.fillRect(Math.max(0, sx), gy, CW - Math.max(0, sx), CH - gy);
+      g.fillStyle = "#5f7268";
+      g.fillRect(Math.max(0, sx), gy, CW - Math.max(0, sx), 12);
     }
     return;
   }
@@ -1956,6 +2157,32 @@ function drawDeco(d, cam, par) {
       g.beginPath(); g.moveTo(0, 0);
       g.quadraticCurveTo(i * 20 + sway * .3, -34, i * 34 + sway * .6, -54); g.stroke();
     }
+  } else if (d.kind === "cycad") {
+    /* a squat pineapple trunk with a crown of stiff fronds */
+    g.fillStyle = "#6b5236";
+    roundRect(-13, -42, 26, 42, 6); g.fill();
+    g.fillStyle = "#2f7d3f";
+    for (let i = 0; i < 7; i++) {
+      const a = -Math.PI / 2 + (i - 3) * .42;
+      g.save();
+      g.translate(0, -44); g.rotate(a + Math.sin(world.t / 90 + d.x) * .04);
+      g.beginPath(); g.ellipse(0, -30, 7, 32, 0, 0, 6.3); g.fill();
+      g.restore();
+    }
+  } else if (d.kind === "conifer") {
+    g.fillStyle = "#6b4a2a"; g.fillRect(-8, -84, 16, 84);
+    g.fillStyle = "#2f6b44";
+    for (let i = 0; i < 3; i++) {
+      const ty = -84 - i * 34, w = 52 - i * 13;
+      g.beginPath();
+      g.moveTo(-w, ty + 46); g.lineTo(0, ty - 14); g.lineTo(w, ty + 46);
+      g.closePath(); g.fill();
+    }
+  } else if (d.kind === "boulder") {
+    g.fillStyle = "#77685c";
+    g.beginPath(); g.ellipse(0, -20, 38, 26, .1, 0, 6.3); g.fill();
+    g.fillStyle = "#8d7d6f";
+    g.beginPath(); g.ellipse(-11, -30, 17, 11, -.2, 0, 6.3); g.fill();
   } else if (d.kind === "root") {
     g.strokeStyle = "#6b4a2a"; g.lineWidth = 6; g.lineCap = "round";
     g.beginPath(); g.moveTo(-30, -6); g.quadraticCurveTo(0, 10, 34, -10); g.stroke();
@@ -2017,6 +2244,18 @@ function drawCritter(f, cam) {
       g.beginPath(); g.moveTo(i * 3, 0);
       g.lineTo(i * 3 + Math.sin(f.wob * 4 + i) * 4, 6); g.stroke();
     }
+  } else if (world.kind === "prehistoric" && f.x > seaStartX()) {
+    /* out over the ancient sea they are fish, not fliers */
+    g.beginPath(); g.ellipse(0, 0, 15, 8, 0, 0, 6.3); g.fill();
+    g.beginPath(); g.moveTo(-13, 0); g.lineTo(-24, -8); g.lineTo(-24, 8); g.fill();
+  } else if (world.kind === "prehistoric") {
+    /* pterosaurs gliding past in the distance */
+    const flap = Math.sin(f.wob * 2) * 7;
+    g.strokeStyle = f.c; g.lineWidth = 3; g.lineCap = "round";
+    g.beginPath();
+    g.moveTo(-20, flap); g.quadraticCurveTo(-8, -6, 0, 0);
+    g.quadraticCurveTo(8, -6, 20, flap); g.stroke();
+    g.beginPath(); g.moveTo(0, 0); g.lineTo(9, -4); g.stroke();
   } else {
     const flap = Math.abs(Math.sin(f.wob * 3)) * 10 + 5;
     g.beginPath(); g.ellipse(-7, 0, 9, flap, .4, 0, 6.3); g.fill();
@@ -2066,8 +2305,8 @@ function drawSpot(s, cam, isNear) {
     g.restore();
   }
 
-  /* binoculars (on land) hint that something good is under this one */
-  if (state.gear.binocs && !world.vertical && !s.opened && s.hint > .82) {
+  /* binoculars (or the fossil brush) hint that something good is in this one */
+  if (peekGear() && !world.vertical && !s.opened && s.hint > .82) {
     g.save();
     g.globalAlpha = .35 + Math.sin(world.t / 12 + s.wob) * .2;
     g.fillStyle = s.hint > .95 ? "#ffcc00" : "#4cc9f0";
@@ -2084,7 +2323,40 @@ function drawSpot(s, cam, isNear) {
     g.restore();
   }
 
-  if (world.kind === "underground") {
+  if (world.kind === "prehistoric") {
+    /* Half of them are a fossil sticking out of the rock and half are a
+       clutch of eggs, so the same screen doesn't read as one thing repeated. */
+    const eggs = Math.floor(s.wob * 10) % 2 === 0;
+    const wet = s.x > seaStartX();
+    if (eggs) {
+      g.fillStyle = wet ? "#4a5a52" : "#6b5236";
+      g.beginPath(); g.ellipse(0, 14, 40, 15, 0, 0, 6.3); g.fill();
+      g.fillStyle = "#efe3cc";
+      [[-17, 4], [0, -2], [17, 4], [-8, 12], [9, 12]].forEach(pt => {
+        g.beginPath(); g.ellipse(pt[0], pt[1], 10, 13, 0, 0, 6.3); g.fill();
+      });
+      g.fillStyle = "rgba(0,0,0,.14)";
+      [[-17, 4], [0, -2], [17, 4]].forEach(pt => {
+        g.beginPath(); g.ellipse(pt[0] + 4, pt[1] + 2, 4, 7, 0, 0, 6.3); g.fill();
+      });
+    } else {
+      g.fillStyle = wet ? "#5f7268" : "#77685c";
+      g.beginPath(); g.ellipse(0, 6, 42, 27, .08, 0, 6.3); g.fill();
+      /* ribs and a leg bone weathering out of it */
+      g.strokeStyle = "#efe6d2"; g.lineWidth = 4; g.lineCap = "round";
+      for (let i = -1; i <= 1; i++) {
+        g.beginPath();
+        g.moveTo(i * 13 - 5, 12);
+        g.quadraticCurveTo(i * 13 + 6, -10, i * 13 + 2, -22);
+        g.stroke();
+      }
+      g.lineWidth = 6;
+      g.beginPath(); g.moveTo(-26, 2); g.lineTo(-12, 14); g.stroke();
+      g.fillStyle = "#efe6d2";
+      g.beginPath(); g.arc(-28, 0, 5, 0, 6.3); g.fill();
+      g.beginPath(); g.arc(-10, 16, 5, 0, 6.3); g.fill();
+    }
+  } else if (world.kind === "underground") {
     /* a burrow: a dark hole with loose dirt around it */
     g.fillStyle = "#6b4a2a";
     g.beginPath(); g.ellipse(0, 10, 36, 20, 0, 0, 6.3); g.fill();
@@ -2203,13 +2475,30 @@ function drawWanderer(cam) {
   g.scale((wd.vx > 0 ? 1 : -1) * wd.size, wd.size);
   g.globalAlpha = close ? .85 : .55;
   g.fillStyle = close ? "#0b1a2a" : "#050d16";
-  g.beginPath(); g.ellipse(0, 0, 62, 20, 0, 0, 6.3); g.fill();
-  g.beginPath(); g.moveTo(-55, 0); g.lineTo(-92, -24); g.lineTo(-88, 24); g.closePath(); g.fill();
-  g.beginPath(); g.moveTo(-6, -14); g.lineTo(10, -44); g.lineTo(28, -12); g.closePath(); g.fill();
+  if (world.kind === "prehistoric" && !world.vertical) {
+    /* a body on two legs with a long neck and a long tail */
+    g.beginPath(); g.ellipse(0, -18, 46, 24, 0, 0, 6.3); g.fill();
+    g.beginPath();                                   /* tail */
+    g.moveTo(-38, -22); g.quadraticCurveTo(-82, -34, -104, -56);
+    g.lineTo(-98, -44); g.quadraticCurveTo(-74, -16, -36, -8);
+    g.closePath(); g.fill();
+    g.beginPath();                                   /* neck and head */
+    g.moveTo(30, -30); g.quadraticCurveTo(62, -54, 74, -74);
+    g.lineTo(92, -70); g.lineTo(88, -56);
+    g.quadraticCurveTo(66, -44, 40, -14);
+    g.closePath(); g.fill();
+    g.fillRect(-22, 2, 13, 20);                      /* legs */
+    g.fillRect(8, 2, 13, 20);
+  } else {
+    g.beginPath(); g.ellipse(0, 0, 62, 20, 0, 0, 6.3); g.fill();
+    g.beginPath(); g.moveTo(-55, 0); g.lineTo(-92, -24); g.lineTo(-88, 24); g.closePath(); g.fill();
+    g.beginPath(); g.moveTo(-6, -14); g.lineTo(10, -44); g.lineTo(28, -12); g.closePath(); g.fill();
+  }
   /* the glowing eye */
   g.globalAlpha = 1;
   g.fillStyle = close ? "#ffe680" : "#7ee8fa";
-  g.beginPath(); g.arc(40, -5, 4.5 + Math.sin(world.t / 10) * 1.2, 0, 6.3); g.fill();
+  const eye = world.kind === "prehistoric" && !world.vertical ? { x: 84, y: -66 } : { x: 40, y: -5 };
+  g.beginPath(); g.arc(eye.x, eye.y, 4.5 + Math.sin(world.t / 10) * 1.2, 0, 6.3); g.fill();
   g.restore();
 
   g.save();
@@ -2631,7 +2920,8 @@ function drawZoneHud() {
     land:        ["rgba(126,201,127,.85)", "rgba(141,154,84,.85)", "rgba(216,187,122,.9)"],
     island:      ["rgba(120,210,180,.85)", "rgba(90,180,140,.85)", "rgba(200,160,90,.9)",
                   "rgba(120,120,200,.9)"],
-    underground: ["rgba(123,90,58,.9)", "rgba(59,48,56,.9)", "rgba(45,42,68,.92)", "rgba(60,14,22,.95)"]
+    underground: ["rgba(123,90,58,.9)", "rgba(59,48,56,.9)", "rgba(45,42,68,.92)", "rgba(60,14,22,.95)"],
+    prehistoric: ["rgba(201,82,47,.9)", "rgba(95,158,99,.88)", "rgba(79,159,224,.88)", "rgba(20,70,110,.92)"]
   };
   const colors = METER[world.kind] || METER.ocean;
   const stops = list.length;
@@ -2768,7 +3058,8 @@ function fillCard(c, opts) {
   } else if (opts.points != null) {
     const WHY = {
       ocean: "for going deep", underground: "for digging deep",
-      land: "for going way out", island: "for sailing this far"
+      land: "for going way out", island: "for sailing this far",
+      prehistoric: "for going this far back in time"
     };
     pts.textContent = "+" + opts.points.toLocaleString() + " points" +
       (opts.zone && opts.zone.bonus > 1
@@ -2791,9 +3082,13 @@ function fillCard(c, opts) {
   if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
   if (c.imaginary) line += '<br><span style="color:#b06a00"><b>Every other animal in this book is real. ' +
     "This one is Cam's.</b></span>";
+  if (c.livedWhen) {
+    line += '<br><span style="color:#8a4a10"><b>🦴 I lived ' + c.livedWhen +
+            ". There are none of us left anywhere on Earth.</b></span>";
+  }
   if (c.givesMagic) line += me().crabDouble
-    ? "<br>🪄 A crab! Cam gets TWO magic traps!"
-    : "<br>🪄 A crab! You earned a MAGIC TRAP!";
+    ? "<br>🪄 " + c.name + "! Cam gets TWO magic traps!"
+    : "<br>🪄 " + c.name + "! You earned a MAGIC TRAP!";
   if (opts.fav) line += '<br><span style="color:#b06a00"><b>' + opts.fav.label + "</b></span>";
   if (c.isPet) line += "<br><b>🦎 This is a real pet. He lives at Carter's house.</b>";
   if (c.mine) {
@@ -2928,7 +3223,7 @@ function showShop() {
     "You have " + state.score.toLocaleString() + " points  ⭐";
 
   /* the place he's exploring right now comes first */
-  const order = ["ocean", "land", "island", "underground", "any"];
+  const order = ["ocean", "land", "island", "underground", "prehistoric", "any"];
   const here = world ? world.kind : null;
   if (here) order.splice(order.indexOf(here), 1), order.unshift(here);
 
@@ -2978,13 +3273,18 @@ function shopCard(item) {
   return div;
 }
 
-/* You need the boat before the islands are anywhere you can go. */
+/* You need the boat before the islands are anywhere you can go, and the
+   time machine before the dinosaurs are. */
+const WORLD_HINT = { island: "islandHint", prehistoric: "prehistoricHint" };
 function tryStart(kind) {
   if (!canReach(kind)) {
-    const boat = SHOP.find(i => i.id === "boat");
+    const item = worldKeyItem(kind);
     updateHomeText();
-    document.getElementById("islandHint").innerHTML =
-      "🔒 You need <b>The Boat</b> (" + boat.cost.toLocaleString() + " points) — it's in the 🛒 shop!";
+    const hint = document.getElementById(WORLD_HINT[kind]);
+    if (hint && item) {
+      hint.innerHTML = "🔒 You need <b>" + item.name + "</b> (" +
+        item.cost.toLocaleString() + " points) — it's in the 🛒 shop!";
+    }
     beep(160, 240, "sawtooth", .08);
     return;
   }
@@ -3066,6 +3366,17 @@ function show(id) {
 }
 function goHome() { world = null; armedTrap = null; updateHomeText(); show("home"); }
 
+/* The Rope Ladder: straight back up to the top of the hole. */
+function climbOut() {
+  if (!world || !world.vertical || !state.gear.ladder) return;
+  world.player.y = world.surface + 40;
+  world.player.vy = 0;
+  world.target = null;
+  clampCamera();
+  beep(880, 120, "triangle", .08);
+  flashHint("🪜 Up the ladder! Back at the top.");
+}
+
 /* Leaving the shop or the book puts him back exactly where he was.
    If he was in the middle of a dive, the dive is still going. */
 function backFromMenu() {
@@ -3078,7 +3389,8 @@ function backFromMenu() {
 function labelBackButtons() {
   const BACK = {
     ocean: "⬅️ Back to my dive", land: "⬅️ Back to exploring",
-    island: "⬅️ Back to the island", underground: "⬅️ Back down the hole"
+    island: "⬅️ Back to the island", underground: "⬅️ Back down the hole",
+    prehistoric: "⬅️ Back to the dinosaurs"
   };
   const label = world ? BACK[world.kind] : "⬅️ Back home";
   document.querySelectorAll(".big-back").forEach(b => { b.textContent = label; });
@@ -3093,19 +3405,28 @@ function updateHomeText() {
       ZONES.ocean[maxZoneAllowed("ocean") - 1].name + "</b>.<br>" +
     "⛏️ Digging with " + digs[state.gear.dig] + " — you can reach <b>" +
       ZONES.underground[maxZoneAllowed("underground") - 1].name + "</b>.<br>" +
+    (state.gear.time
+      ? "🦬 Your time machine reaches <b>" +
+          ZONES.prehistoric[maxZoneAllowed("prehistoric") - 1].name + "</b>.<br>"
+      : "") +
     "🏆 Deepest dive ever: <b>" + state.deepest.toLocaleString() + " feet</b><br>" +
     "🧒 <b>" + me().label + "</b> is exploring — " + me().perkTitle;
 
-  /* the islands stay locked until he buys the boat */
-  const card = document.getElementById("islandCard");
-  const hint = document.getElementById("islandHint");
-  if (card && hint) {
-    const boat = SHOP.find(i => i.id === "boat");
-    card.classList.toggle("locked", !canReach("island"));
-    hint.innerHTML = canReach("island")
-      ? "Animals found nowhere else on Earth"
-      : "🔒 Needs <b>The Boat</b> — " + boat.cost.toLocaleString() + " points";
-  }
+  /* the two bought worlds stay locked until he buys the way in */
+  const OPEN = {
+    island: "Animals found nowhere else on Earth",
+    prehistoric: "Dinosaurs — and the MEGALODON"
+  };
+  Object.keys(WORLD_KEY).forEach(kind => {
+    const card = document.getElementById(kind + "Card");
+    const hint = document.getElementById(kind + "Hint");
+    if (!card || !hint) return;
+    const item = worldKeyItem(kind);
+    card.classList.toggle("locked", !canReach(kind));
+    hint.innerHTML = canReach(kind)
+      ? OPEN[kind]
+      : "🔒 Needs <b>" + item.name + "</b> — " + item.cost.toLocaleString() + " points";
+  });
 }
 
 function refresh() {
@@ -3154,10 +3475,12 @@ function updateHint() {
   const near = nearestSpot();
   h.classList.toggle("magicOn", !!armedTrap && !world.reveal);
 
-  const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow" };
+  const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow",
+                  prehistoric: "fossil" };
   const OPEN = {
     ocean: "open the trap!", land: "flip the rock!",
-    island: "look in the nest!", underground: "dig out the burrow!"
+    island: "look in the nest!", underground: "dig out the burrow!",
+    prehistoric: "chip the fossil out!"
   };
   const inPool = near && near.type === "pool";
   const thing = inPool ? "tide pool" : THING[world.kind];
@@ -3165,7 +3488,8 @@ function updateHint() {
     ocean: "🏊 Swim DOWN — the deeper you go, the weirder they get!",
     land: "🚶 Walk RIGHT for rarer creatures! (up = jump)",
     island: "⛵ Head RIGHT to the next island — each one has animals found nowhere else!",
-    underground: "⛏️ Dig DOWN — everything down there is blind and pale and strange."
+    underground: "⛏️ Dig DOWN — everything down there is blind and pale and strange.",
+    prehistoric: "🦬 Walk RIGHT through TIME — Triassic, Jurassic, Cretaceous, then into the sea."
   };
 
   /* the CATCH button glows when he's standing at something */
@@ -3216,7 +3540,7 @@ function showBook() {
   shrine.appendChild(buildGrid(mythics));
   body.appendChild(shrine);
 
-  ["land", "ocean", "island", "underground"].forEach(where => {
+  ["land", "ocean", "island", "underground", "prehistoric"].forEach(where => {
     const h3 = document.createElement("h3");
     h3.textContent = PLACES[where].emoji + " " + PLACES[where].name;
     body.appendChild(h3);
@@ -3226,6 +3550,13 @@ function showBook() {
       note.className = "islandNote";
       note.textContent = "Every animal on these islands lives there and nowhere else in the world. " +
         "They were cut off by the sea for so long that they turned into something new.";
+      body.appendChild(note);
+    }
+    if (where === "prehistoric") {
+      const note = document.createElement("div");
+      note.className = "islandNote";
+      note.textContent = "Every single one of these is gone. Nobody has ever photographed one, " +
+        "so the pictures are either real fossils or paintings made from the bones.";
       body.appendChild(note);
     }
 
@@ -3752,7 +4083,7 @@ function buildAddForm() {
   s1.innerHTML = "<h4>Where does the " + addPick.title + " live?</h4>";
   const r1 = document.createElement("div");
   r1.className = "pickRow";
-  ["land", "ocean", "island", "underground"].forEach(w => {
+  ["land", "ocean", "island", "underground", "prehistoric"].forEach(w => {
     const b = document.createElement("button");
     b.className = "pick" + (addWhere === w ? " on" : "");
     b.textContent = PLACES[w].emoji + " " + PLACES[w].name;

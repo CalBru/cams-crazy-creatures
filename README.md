@@ -1,6 +1,6 @@
 # Cam's Crazy Creatures
 
-A creature-collecting exploration game designed by Cam (age 6). 199 real animals, each
+A creature-collecting exploration game designed by Cam (age 6). 236 real animals, each
 with a real photo and hand-written facts — plus one dragon. Open `index.html` in a
 browser — no installs, no server. The shared copy everyone plays is
 **https://calbru.github.io/cams-crazy-creatures/**, deployed from `main` by GitHub Pages.
@@ -44,22 +44,22 @@ asking everybody their age added a step and told the game nothing.
 
 ## How you play
 
-Pick **LAND**, **OCEAN**, **UNDERGROUND**, or **THE ISLANDS**. Move with the arrow keys
-(or click where you want to go).
+Pick **LAND**, **OCEAN**, **UNDERGROUND**, **THE ISLANDS**, or **PREHISTORIC**. Move with
+the arrow keys (or click where you want to go).
 Get close to a rock or a trap, press **SPACE**, and see what you found. Every creature
 has a real photo and real facts. Everything you find goes in your book.
 
-The further you go, the rarer the creatures. Ocean and underground go **down**; land and
-the islands go **across**.
+The further you go, the rarer the creatures. Ocean and underground go **down**; land, the
+islands and prehistoric go **across**.
 
-| Ocean | Underground | Land | Islands |
-|---|---|---|---|
-| Sunlight x1 | The Topsoil x1 | The Backyard x1 | The Galápagos x4 |
-| Twilight x2 | The Caves x3 | Deep Forest x2 | Madagascar x6 |
-| Midnight x3 | Crystal Caverns x6 *(Shovel)* | The Desert x3 | Komodo & Sulawesi x8 |
-| THE TRENCH x5 | THE DEEP DARK x10 *(Pickaxe)* | — | New Zealand x10 |
-| THE HADAL ZONE x8 *(Deep Suit)* | | | |
-| THE VOLCANO VENTS x12 *(Volcano Suit)* | | | |
+| Ocean | Underground | Land | Islands | Prehistoric |
+|---|---|---|---|---|
+| Sunlight x1 | The Topsoil x1 | The Backyard x1 | The Galápagos x4 | The Triassic x3 |
+| Twilight x2 | The Caves x3 | Deep Forest x2 | Madagascar x6 | The Jurassic x5 |
+| Midnight x3 | Crystal Caverns x6 *(Shovel)* | The Desert x3 | Komodo & Sulawesi x8 | The Cretaceous x7 |
+| THE TRENCH x5 | THE DEEP DARK x10 *(Pickaxe)* | — | New Zealand x10 | THE ANCIENT SEA x12 *(Diving Bell)* |
+| THE HADAL ZONE x8 *(Deep Suit)* | | | | |
+| THE VOLCANO VENTS x12 *(Volcano Suit)* | | | | |
 
 **The Dragon is the exception.** Cam asked for a dragon in the Deep Forest, so there is
 one — a mythic, and the only creature in the book with no photo. Its card says so:
@@ -70,6 +70,20 @@ He is as long as a school bus, so he needs the **magic trap**, and he carries
 what, once per kid, because meeting your own dragon shouldn't come down to the dice. After
 that he shares the forest with the king cobra — about one magic trap in sixteen. A plain
 rock flip never turns him up.
+
+**Prehistoric is the extinction lesson**, and it is the one world where walking right is
+walking forward through **time**: the Triassic, the Jurassic, the Cretaceous, and then the
+ground runs out and you wade into the ancient sea. 37 animals, and every one of them is
+gone. Their cards say so — *"I lived 67 million years ago. There are none of us left
+anywhere on Earth."* — which is why their pictures are either real fossils or paintings
+made from the bones, and the book says that out loud rather than pretending otherwise.
+
+Getting there at all needs **The Time Machine** (7,000 points); the ancient sea, where the
+**MEGALODON** is, needs the **Diving Bell** on top of that. The mythic down there is
+**SUE** — the most complete Tyrannosaurus anybody has ever found, and the only mythic in
+the book Cam could go and stand in front of, because she is in a museum in Chicago.
+Out in the Jurassic and later, something enormous occasionally stomps past and roars;
+chase it down with a magic trap armed, exactly like the giants in the deep sea.
 
 **The islands are the evolution lesson.** Every island animal has an `endemicTo` field, and
 its card says plainly: *"I live on Madagascar and NOWHERE else on Earth."* Darwin's finches
@@ -94,7 +108,9 @@ Catching a 🦀 crab earns a **magic trap**, which is the only way to catch the 
 comes first. Ocean: diving suits (which unlock the two deepest zones), flashlights,
 flippers, trap radar, sonar, chum bucket. Land: boots, rock hammer, binoculars, bug jar.
 Islands: the boat, snorkel mask, field notebook. Underground: shovel, pickaxe, head lamps,
-rope ladder (press **R** to climb out). Magic traps are sold everywhere.
+rope ladder (press **R** to climb out). Prehistoric: the time machine, diving bell, fossil
+brush (the binoculars of the dinosaur world) and bone armour (its bug jar). Magic traps are
+sold everywhere.
 
 Gear-gated zones are the spine of the progression: explore → earn → buy the thing →
 reach animals that were literally out of reach.
@@ -130,6 +146,14 @@ node tools/find-candidates.js <id> "<search words>"   # downloads 5 options
 # look at images/_candidates/<id>_*.jpg, copy the best over images/<id>.jpg
 node tools/make-photos-js.js
 ```
+
+**Extinct animals need a different kind of picture.** Wikipedia's lead image for a dinosaur
+is nearly always a museum skeleton, which is not what a six-year-old wants on a card. Every
+prehistoric animal's photo was swapped for a life restoration — painted or modelled from the
+bones — pulled out of the Wikipedia article's own images rather than its lead. Four kept a
+real fossil on purpose, because the fossil *is* the story: Archaeopteryx's feathered slab,
+the Pterodactylus slab that was the first flying fossil ever found, the golden ammonite
+spiral, and SUE's mounted skeleton.
 
 Some animals genuinely have no good free photo in existence (bigfin squid, viperfish,
 gulper eel, the cave robber fly). Those use the best available option. The devil worm has

@@ -984,8 +984,189 @@
     "title": "Cyclocosmia",
     "url": "https://en.wikipedia.org/wiki/Cyclocosmia"
   },
-  "jack": {
-    "title": "Jack the Bearded Dragon",
-    "url": "https://en.wikipedia.org/wiki/Central_bearded_dragon"
+  "lystrosaurus": {
+    "file": "lystrosaurus.jpg",
+    "title": "Lystrosaurus",
+    "url": "https://en.wikipedia.org/wiki/Lystrosaurus"
+  },
+  "coelophysis": {
+    "file": "coelophysis.jpg",
+    "title": "Coelophysis",
+    "url": "https://en.wikipedia.org/wiki/Coelophysis"
+  },
+  "eoraptor": {
+    "file": "eoraptor.jpg",
+    "title": "Eoraptor",
+    "url": "https://en.wikipedia.org/wiki/Eoraptor"
+  },
+  "morganucodon": {
+    "file": "morganucodon.jpg",
+    "title": "Morganucodon",
+    "url": "https://en.wikipedia.org/wiki/Morganucodon"
+  },
+  "dimetrodon": {
+    "file": "dimetrodon.jpg",
+    "title": "Dimetrodon",
+    "url": "https://en.wikipedia.org/wiki/Dimetrodon"
+  },
+  "plateosaurus": {
+    "file": "plateosaurus.jpg",
+    "title": "Plateosaurus",
+    "url": "https://en.wikipedia.org/wiki/Plateosaurus"
+  },
+  "postosuchus": {
+    "file": "postosuchus.jpg",
+    "title": "Postosuchus",
+    "url": "https://en.wikipedia.org/wiki/Postosuchus"
+  },
+  "herrerasaurus": {
+    "file": "herrerasaurus.jpg",
+    "title": "Herrerasaurus",
+    "url": "https://en.wikipedia.org/wiki/Herrerasaurus"
+  },
+  "compsognathus": {
+    "file": "compsognathus.jpg",
+    "title": "Compsognathus",
+    "url": "https://en.wikipedia.org/wiki/Compsognathus"
+  },
+  "archaeopteryx": {
+    "file": "archaeopteryx.jpg",
+    "title": "Archaeopteryx",
+    "url": "https://en.wikipedia.org/wiki/Archaeopteryx"
+  },
+  "pterodactyl": {
+    "file": "pterodactyl.jpg",
+    "title": "Pterodactylus",
+    "url": "https://en.wikipedia.org/wiki/Pterodactylus"
+  },
+  "stegosaurus": {
+    "file": "stegosaurus.jpg",
+    "title": "Stegosaurus",
+    "url": "https://en.wikipedia.org/wiki/Stegosaurus"
+  },
+  "allosaurus": {
+    "file": "allosaurus.jpg",
+    "title": "Allosaurus",
+    "url": "https://en.wikipedia.org/wiki/Allosaurus"
+  },
+  "diplodocus": {
+    "file": "diplodocus.jpg",
+    "title": "Diplodocus",
+    "url": "https://en.wikipedia.org/wiki/Diplodocus"
+  },
+  "brachiosaurus": {
+    "file": "brachiosaurus.jpg",
+    "title": "Brachiosaurus",
+    "url": "https://en.wikipedia.org/wiki/Brachiosaurus"
+  },
+  "microraptor": {
+    "file": "microraptor.jpg",
+    "title": "Microraptor",
+    "url": "https://en.wikipedia.org/wiki/Microraptor"
+  },
+  "velociraptor": {
+    "file": "velociraptor.jpg",
+    "title": "Velociraptor",
+    "url": "https://en.wikipedia.org/wiki/Velociraptor"
+  },
+  "pachycephalosaurus": {
+    "file": "pachycephalosaurus.jpg",
+    "title": "Pachycephalosaurus",
+    "url": "https://en.wikipedia.org/wiki/Pachycephalosaurus"
+  },
+  "parasaurolophus": {
+    "file": "parasaurolophus.jpg",
+    "title": "Parasaurolophus",
+    "url": "https://en.wikipedia.org/wiki/Parasaurolophus"
+  },
+  "ankylosaurus": {
+    "file": "ankylosaurus.jpg",
+    "title": "Ankylosaurus",
+    "url": "https://en.wikipedia.org/wiki/Ankylosaurus"
+  },
+  "triceratops": {
+    "file": "triceratops.jpg",
+    "title": "Triceratops",
+    "url": "https://en.wikipedia.org/wiki/Triceratops"
+  },
+  "therizinosaurus": {
+    "file": "therizinosaurus.jpg",
+    "title": "Therizinosaurus",
+    "url": "https://en.wikipedia.org/wiki/Therizinosaurus"
+  },
+  "quetzalcoatlus": {
+    "file": "quetzalcoatlus.jpg",
+    "title": "Quetzalcoatlus",
+    "url": "https://en.wikipedia.org/wiki/Quetzalcoatlus"
+  },
+  "spinosaurus": {
+    "file": "spinosaurus.jpg",
+    "title": "Spinosaurus",
+    "url": "https://en.wikipedia.org/wiki/Spinosaurus"
+  },
+  "trex": {
+    "file": "trex.jpg",
+    "title": "Tyrannosaurus",
+    "url": "https://en.wikipedia.org/wiki/Tyrannosaurus"
+  },
+  "suetherex": {
+    "file": "suetherex.jpg",
+    "title": "Sue (dinosaur)",
+    "url": "https://en.wikipedia.org/wiki/Sue_(dinosaur)"
+  },
+  "trilobite": {
+    "file": "trilobite.jpg",
+    "title": "Trilobite",
+    "url": "https://en.wikipedia.org/wiki/Trilobite"
+  },
+  "ammonite": {
+    "file": "ammonite.jpg",
+    "title": "Ammonoidea",
+    "url": "https://en.wikipedia.org/wiki/Ammonoidea"
+  },
+  "opabinia": {
+    "file": "opabinia.jpg",
+    "title": "Opabinia",
+    "url": "https://en.wikipedia.org/wiki/Opabinia"
+  },
+  "anomalocaris": {
+    "file": "anomalocaris.jpg",
+    "title": "Anomalocaris",
+    "url": "https://en.wikipedia.org/wiki/Anomalocaris"
+  },
+  "ichthyosaur": {
+    "file": "ichthyosaur.jpg",
+    "title": "Ichthyosaurus",
+    "url": "https://en.wikipedia.org/wiki/Ichthyosaurus"
+  },
+  "helicoprion": {
+    "file": "helicoprion.jpg",
+    "title": "Helicoprion",
+    "url": "https://en.wikipedia.org/wiki/Helicoprion"
+  },
+  "dunkleosteus": {
+    "file": "dunkleosteus.jpg",
+    "title": "Dunkleosteus",
+    "url": "https://en.wikipedia.org/wiki/Dunkleosteus"
+  },
+  "elasmosaurus": {
+    "file": "elasmosaurus.jpg",
+    "title": "Elasmosaurus",
+    "url": "https://en.wikipedia.org/wiki/Elasmosaurus"
+  },
+  "archelon": {
+    "file": "archelon.jpg",
+    "title": "Archelon",
+    "url": "https://en.wikipedia.org/wiki/Archelon"
+  },
+  "mosasaurus": {
+    "file": "mosasaurus.jpg",
+    "title": "Mosasaurus",
+    "url": "https://en.wikipedia.org/wiki/Mosasaurus"
+  },
+  "megalodon": {
+    "file": "megalodon.jpg",
+    "title": "Megalodon",
+    "url": "https://en.wikipedia.org/wiki/Megalodon"
   }
 }
