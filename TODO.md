@@ -201,6 +201,55 @@ Cam asked for "a level that's mostly dinosaurs, and a Megalodon."
 
 ---
 
+# Round 4 — Mythical, from Cam, 2026-09-27
+
+Cam asked for "a mythical level, with unicorns, chupacabra, etc." Dad asked for a way to
+see from the front end when new animals and levels have landed, because the iPad
+home-screen app had been quietly showing an old build.
+
+- [x] New world type `mythical`, walked across: **The Enchanted Forest → The Misty
+      Mountains → The Deep Waters → THE UNDERWORLD**
+- [x] 36 legends from **27 different cultures**, with hand-written facts: unicorn,
+      chupacabra, yeti, sasquatch, kitsune, tengu, kappa, qilin, Chinese dragon, simurgh,
+      taniwha, bunyip, ahuizotl, leshy, Nian, thunderbird, the Roc, Jörmungandr, Fenrir,
+      the Hydra, Cerberus, the Minotaur, the manticore, the basilisk, the Loch Ness
+      Monster, the Kelpie, a selkie, a mermaid — and a jackalope that admits it was
+      invented by a taxidermist in 1932
+- [x] New `storyFrom` field: the card says *"🌍 This story comes from Japan. Nobody has
+      ever proved I'm real."* Every fact is honest about what's known
+- [x] **The Storybook** (9,000) gates the world; **The Everlight** (3,500) gates the
+      Underworld. Crystal Ball and Lucky Charm are the peek / second-chance pair
+- [x] Mythic: **THE PHOENIX** — the game's own rule that mythics come back again and again
+      is literally the phoenix's story, and its card says so
+- [x] Art: magic twilight and glowing toadstools, snow peaks with mist that only hangs
+      over the mountains, a black loch in the middle of the map, an underworld that burns
+      from below. Rune stones and fairy rings instead of rocks. Will-o'-the-wisps
+- [x] A winged silhouette glides past from the Misty Mountains on, with its own cry
+- [x] Every one of the 36 pictures checked with vision — for nudity and violence as well
+      as clarity, because classical art is full of both. 21 of 36 were replaced
+- [x] **The Dragon's card was lying.** It said "every other animal in this book is real",
+      which stopped being true. It now says everything else either really lived or is
+      really told about, and he is the one Cam made up
+
+## Seeing what's new (the iPad problem)
+
+- [x] `tools/stamp-build.js` + `version.json` + a `BUILD` constant: the game asks the
+      server whether it is out of date, on launch and every time it comes back to the
+      front, and reloads itself at `?v=<new>` to beat the cache. `?v=` does not change the
+      origin, so the book is untouched
+- [x] `state.seen` / `state.seenWorlds`: anything in the catalog he has not been shown is
+      new. No server list needed — the catalog IS the announcement, so it works offline
+- [x] A **✨** button in the top bar with a red count, and a What's New screen that shows
+      new worlds as cards and new creatures face-up
+- [x] It opens by itself on launch when something has landed, and has a **🔄 Check for
+      more** button as the manual override
+- [x] Two layout bugs this shook out: the seventh top-bar button wrapped the bar onto a
+      second row (the title now drops its words under 1200px, and the menu screens measure
+      the bar instead of assuming 58px), and the Back button was positioned against the
+      viewport rather than its own screen
+
+---
+
 ## Open questions for Cam
 
 - Does he want the islands reached by **boat** (buy it once) or should they be open

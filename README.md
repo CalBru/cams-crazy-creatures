@@ -1,7 +1,7 @@
 # Cam's Crazy Creatures
 
-A creature-collecting exploration game designed by Cam (age 6). 236 real animals, each
-with a real photo and hand-written facts — plus one dragon. Open `index.html` in a
+A creature-collecting exploration game designed by Cam (age 6). 236 real animals and
+36 legends, each with a real picture and hand-written facts — plus one dragon. Open `index.html` in a
 browser — no installs, no server. The shared copy everyone plays is
 **https://calbru.github.io/cams-crazy-creatures/**, deployed from `main` by GitHub Pages.
 
@@ -44,22 +44,22 @@ asking everybody their age added a step and told the game nothing.
 
 ## How you play
 
-Pick **LAND**, **OCEAN**, **UNDERGROUND**, **THE ISLANDS**, or **PREHISTORIC**. Move with
-the arrow keys (or click where you want to go).
+Pick **LAND**, **OCEAN**, **UNDERGROUND**, **THE ISLANDS**, **PREHISTORIC** or
+**MYTHICAL**. Move with the arrow keys (or click where you want to go).
 Get close to a rock or a trap, press **SPACE**, and see what you found. Every creature
 has a real photo and real facts. Everything you find goes in your book.
 
 The further you go, the rarer the creatures. Ocean and underground go **down**; land, the
 islands and prehistoric go **across**.
 
-| Ocean | Underground | Land | Islands | Prehistoric |
-|---|---|---|---|---|
-| Sunlight x1 | The Topsoil x1 | The Backyard x1 | The Galápagos x4 | The Triassic x3 |
-| Twilight x2 | The Caves x3 | Deep Forest x2 | Madagascar x6 | The Jurassic x5 |
-| Midnight x3 | Crystal Caverns x6 *(Shovel)* | The Desert x3 | Komodo & Sulawesi x8 | The Cretaceous x7 |
-| THE TRENCH x5 | THE DEEP DARK x10 *(Pickaxe)* | — | New Zealand x10 | THE ANCIENT SEA x12 *(Diving Bell)* |
-| THE HADAL ZONE x8 *(Deep Suit)* | | | | |
-| THE VOLCANO VENTS x12 *(Volcano Suit)* | | | | |
+| Ocean | Underground | Land | Islands | Prehistoric | Mythical |
+|---|---|---|---|---|---|
+| Sunlight x1 | The Topsoil x1 | The Backyard x1 | The Galápagos x4 | The Triassic x3 | The Enchanted Forest x3 |
+| Twilight x2 | The Caves x3 | Deep Forest x2 | Madagascar x6 | The Jurassic x5 | The Misty Mountains x5 |
+| Midnight x3 | Crystal Caverns x6 *(Shovel)* | The Desert x3 | Komodo & Sulawesi x8 | The Cretaceous x7 | The Deep Waters x8 |
+| THE TRENCH x5 | THE DEEP DARK x10 *(Pickaxe)* | — | New Zealand x10 | THE ANCIENT SEA x12 *(Diving Bell)* | THE UNDERWORLD x14 *(Everlight)* |
+| THE HADAL ZONE x8 *(Deep Suit)* | | | | | |
+| THE VOLCANO VENTS x12 *(Volcano Suit)* | | | | | |
 
 **The Dragon is the exception.** Cam asked for a dragon in the Deep Forest, so there is
 one — a mythic, and the only creature in the book with no photo. Its card says so:
@@ -70,6 +70,30 @@ He is as long as a school bus, so he needs the **magic trap**, and he carries
 what, once per kid, because meeting your own dragon shouldn't come down to the dice. After
 that he shares the forest with the king cobra — about one magic trap in sixteen. A plain
 rock flip never turns him up.
+
+**Mythical is the one world where nothing is real, and every card says so.** Cam asked for
+unicorns and a chupacabra; what he got is 36 legends from 27 different cultures, and the
+honest version of each one. Walking right goes **The Enchanted Forest → The Misty Mountains
+→ The Deep Waters → THE UNDERWORLD**, and it needs **The Storybook** (9,000 points) to get
+in at all and **The Everlight** (3,500) to go down into the last of it.
+
+Every creature carries a `storyFrom` field, and the card says plainly: *"🌍 This story comes
+from Japan. Nobody has ever proved I'm real."* The facts do not pretend either — the
+jackalope admits a taxidermist invented it in 1932, the chupacabra admits every body ever
+handed to a scientist turned out to be a coyote with mange, and the Loch Ness Monster
+admits the famous photo was a toy submarine. The interesting thing isn't whether they're
+real; it's that every corner of the world made monsters up, and you can still go and look
+at the carvings and tapestries they made.
+
+Which is what the pictures are. **There are no photos here**, so a card shows the actual
+object: the Lady and the Unicorn tapestry, a Bodleian bestiary manticore, the Nine-Dragon
+Wall, a Māori carved panel, Hokusai-era yokai woodblocks, the Kelpies at Falkirk, a
+Bodleian phoenix in gold leaf. Two are deliberately honest jokes — the Nian's picture is
+the lion dance people invented to scare it off, and the selkie's picture is just a grey
+seal, which is exactly the point.
+
+The mythic is **THE PHOENIX**, because the game's rule that mythics can be found again and
+again *is* the phoenix's own story. Its card says so.
 
 **Prehistoric is the extinction lesson**, and it is the one world where walking right is
 walking forward through **time**: the Triassic, the Jurassic, the Cretaceous, and then the
@@ -109,8 +133,9 @@ comes first. Ocean: diving suits (which unlock the two deepest zones), flashligh
 flippers, trap radar, sonar, chum bucket. Land: boots, rock hammer, binoculars, bug jar.
 Islands: the boat, snorkel mask, field notebook. Underground: shovel, pickaxe, head lamps,
 rope ladder (press **R** to climb out). Prehistoric: the time machine, diving bell, fossil
-brush (the binoculars of the dinosaur world) and bone armour (its bug jar). Magic traps are
-sold everywhere.
+brush (the binoculars of the dinosaur world) and bone armour (its bug jar). Mythical: the
+storybook, the everlight, a crystal ball and a lucky charm — the same peek-and-second-chance
+pair again. Magic traps are sold everywhere.
 
 Gear-gated zones are the spine of the progression: explore → earn → buy the thing →
 reach animals that were literally out of reach.
@@ -229,6 +254,35 @@ them before they ship) rather than generated live while Cam is playing. Three re
 `WILD-TRAP.md` has the full reasoning, including the measured latency and quality of the
 live-Wikipedia version that was tested and rejected.
 
+## Telling him something new has arrived
+
+He plays this from a home-screen icon on an iPad, and that is not the same thing as the
+same URL in Safari: it is a separate little web app with **its own cache and its own
+storage**. It will happily keep showing a months-old copy of the game forever, because
+nothing ever makes it ask the server again. Two pieces solve that.
+
+**The game checks its own version.** `tools/stamp-build.js` hashes `index.html`,
+`creatures.js` and `photos.js` and writes the same id into a `BUILD` constant in the page
+and into `version.json`. On launch — and again every time the iPad brings the game back to
+the front — the page fetches `version.json` with `cache: "no-store"` and compares. If they
+disagree there is a newer game, and it reloads itself at `?v=<new>`, which is a URL the web
+app has never seen and therefore has to go and fetch. **A query string does not change the
+origin**, so localStorage, and with it Cam's book, is untouched. Offline, the fetch fails
+and he just keeps playing. Run the stamper before publishing — `build-share.js` runs it for
+you.
+
+**Then the game tells him what he got.** `state.seen` is the list of creature ids he has
+already been shown and `state.seenWorlds` the same for places; anything not on the list is
+new. That needs no server data at all — the catalog that arrived *is* the announcement, so
+it works offline and cannot get out of step. A **✨** button sits in the top bar with a red
+count on it, and the What's New screen shows new worlds as big cards and new creatures
+face-up with their photos, because knowing a MEGALODON is out there is the fun part. It
+opens by itself on launch when something new has landed. It also has a **🔄 Check for more**
+button, which is the manual override for exactly the iPad problem above.
+
+Creatures added with ➕ Add are skipped — those are his, not news. A brand-new book is
+marked all-seen so a first-time player isn't told all 273 creatures are new.
+
 ## ⚠️ Never break Cam's book
 
 His saved book is the thing he cares about most, and it has been lost once already.
@@ -245,3 +299,7 @@ The rules:
   looks like a different save to the browser. Keep opening it the same way.
 - The book has **💾 Save a backup file** and **📂 Load a backup** buttons. Before any
   big change, have him save a backup — that file survives anything.
+- **A home-screen web app and Safari are two different saves.** iOS gives the home-screen
+  icon its own storage container, so points earned in one do not appear in the other, and
+  deleting the icon deletes its book. Move a book between them with the backup file. Save
+  the backup *before* deleting or re-adding a home-screen icon, not after.

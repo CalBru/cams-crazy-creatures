@@ -17,6 +17,10 @@ const OUTDIR = path.join(ROOT, "share");
 fs.mkdirSync(TMP, { recursive: true });
 fs.mkdirSync(OUTDIR, { recursive: true });
 
+/* Stamp the build first, so the copy that goes up and the version.json next to
+   it always agree — see tools/stamp-build.js. */
+execFileSync("node", [path.join(__dirname, "stamp-build.js")], { stdio: "inherit" });
+
 /* ---------- 1. shrink every photo, then embed it as a data: URI ---------- */
 eval(fs.readFileSync(path.join(ROOT, "photos.js"), "utf8").replace("var PHOTOS", "globalThis.PHOTOS"));
 
@@ -49,6 +53,8 @@ console.log("\nphotos embedded: " + Object.keys(embedded).length +
 /* ---------- 2. stitch the game into one file ---------- */
 let html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
 const creatures = fs.readFileSync(path.join(ROOT, "creatures.js"), "utf8");
+/* counted, not typed, so the blurb can't go stale the next time a batch lands */
+const creatureCount = require("vm").runInNewContext(creatures + ";CREATURES.length");
 
 const photoScript = "var PHOTOS = " + JSON.stringify(embedded) + ";\n" +
   /* photoOf() normally builds a path; here the photo is already inline */
@@ -62,6 +68,10 @@ html = html.replace('function photoOf(id) { return PHOTOS[id] ? "images/" + PHOT
                     'function photoOf(id) { return __sharedPhotoOf(id); }');
 
 /* ---------- 3. shared-version tweaks ---------- */
+
+/* There is no version.json sitting next to a single shared file, and a visitor
+   has nothing to update to anyway. "shared" switches that check off. */
+html = html.replace(/const BUILD = "[^"]*";/, 'const BUILD = "shared";');
 
 /* Some browsers block storage inside a shared frame. Never let that break the game. */
 html = html.replace(
@@ -81,7 +91,7 @@ html = html.replace(
 html = html.replace(
   '<p class="sub">The deeper you go, the weirder the creatures get.</p>',
   '<p class="sub">The deeper you go, the weirder the creatures get.</p>\n' +
-  '  <p class="byline">Designed by Cam, age 6. All 153 creatures are real, with a real ' +
+  '  <p class="byline">Designed by Cam, age 6. All ' + creatureCount + ' creatures are real, with a real ' +
   'photo and real facts — a 512-year-old shark, a snail that builds armor out of iron, a ' +
   'fish with a see-through head, and islands full of animals that live in one place on ' +
   'Earth and nowhere else.<br><b>You start with 9,000 points</b> — spend them in the shop ' +

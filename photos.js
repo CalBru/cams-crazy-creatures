@@ -6,6 +6,11 @@ var PHOTOS = {
     "title": "Aardvark",
     "url": "https://en.wikipedia.org/wiki/Aardvark"
   },
+  "ahuizotl": {
+    "file": "ahuizotl.jpg",
+    "title": "Ahuizotl (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Ahuizotl_(mythology)"
+  },
   "allosaurus": {
     "file": "allosaurus.jpg",
     "title": "Allosaurus",
@@ -86,6 +91,11 @@ var PHOTOS = {
     "title": "Barreleye",
     "url": "https://en.wikipedia.org/wiki/Barreleye"
   },
+  "basilisk": {
+    "file": "basilisk.jpg",
+    "title": "Basilisk",
+    "url": "https://en.wikipedia.org/wiki/Basilisk"
+  },
   "bat": {
     "file": "bat.jpg",
     "title": "Mexican free-tailed bat",
@@ -146,6 +156,11 @@ var PHOTOS = {
     "title": "Brachiosaurus",
     "url": "https://en.wikipedia.org/wiki/Brachiosaurus"
   },
+  "bunyip": {
+    "file": "bunyip.jpg",
+    "title": "Bunyip",
+    "url": "https://en.wikipedia.org/wiki/Bunyip"
+  },
   "camelspider": {
     "file": "camelspider.jpg",
     "title": "Solifugae",
@@ -176,6 +191,16 @@ var PHOTOS = {
     "title": "Meta menardi",
     "url": "https://en.wikipedia.org/wiki/Meta_menardi"
   },
+  "centaur": {
+    "file": "centaur.jpg",
+    "title": "Centaur",
+    "url": "https://en.wikipedia.org/wiki/Centaur"
+  },
+  "cerberus": {
+    "file": "cerberus.jpg",
+    "title": "Cerberus",
+    "url": "https://en.wikipedia.org/wiki/Cerberus"
+  },
   "chameleon": {
     "file": "chameleon.jpg",
     "title": "Chameleon",
@@ -185,6 +210,21 @@ var PHOTOS = {
     "file": "cheetah.jpg",
     "title": "Cheetah",
     "url": "https://en.wikipedia.org/wiki/Cheetah"
+  },
+  "chimera": {
+    "file": "chimera.jpg",
+    "title": "Chimera (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Chimera_(mythology)"
+  },
+  "chinesedragon": {
+    "file": "chinesedragon.jpg",
+    "title": "Chinese dragon",
+    "url": "https://en.wikipedia.org/wiki/Chinese_dragon"
+  },
+  "chupacabra": {
+    "file": "chupacabra.jpg",
+    "title": "Chupacabra",
+    "url": "https://en.wikipedia.org/wiki/Chupacabra"
   },
   "cicadanymph": {
     "file": "cicadanymph.jpg",
@@ -326,10 +366,20 @@ var PHOTOS = {
     "title": "Fennec fox",
     "url": "https://en.wikipedia.org/wiki/Fennec_fox"
   },
+  "fenrir": {
+    "file": "fenrir.jpg",
+    "title": "Fenrir",
+    "url": "https://en.wikipedia.org/wiki/Fenrir"
+  },
   "firefly": {
     "file": "firefly.jpg",
     "title": "Firefly",
     "url": "https://en.wikipedia.org/wiki/Firefly"
+  },
+  "firesalamander": {
+    "file": "firesalamander.jpg",
+    "title": "Salamanders in folklore",
+    "url": "https://en.wikipedia.org/wiki/Salamanders_in_folklore"
   },
   "flightlesscormorant": {
     "file": "flightlesscormorant.jpg",
@@ -461,6 +511,11 @@ var PHOTOS = {
     "title": "Greenland shark",
     "url": "https://en.wikipedia.org/wiki/Greenland_shark"
   },
+  "griffin": {
+    "file": "griffin.jpg",
+    "title": "Griffin",
+    "url": "https://en.wikipedia.org/wiki/Griffin"
+  },
   "grub": {
     "file": "grub.jpg",
     "title": "Larva",
@@ -531,6 +586,11 @@ var PHOTOS = {
     "title": "Humpback whale",
     "url": "https://en.wikipedia.org/wiki/Humpback_whale"
   },
+  "hydra": {
+    "file": "hydra.jpg",
+    "title": "Lernaean Hydra",
+    "url": "https://en.wikipedia.org/wiki/Lernaean_Hydra"
+  },
   "ichthyosaur": {
     "file": "ichthyosaur.jpg",
     "title": "Ichthyosaurus",
@@ -561,6 +621,11 @@ var PHOTOS = {
     "title": "jack",
     "url": "https://en.wikipedia.org/wiki/jack"
   },
+  "jackalope": {
+    "file": "jackalope.jpg",
+    "title": "Jackalope",
+    "url": "https://en.wikipedia.org/wiki/Jackalope"
+  },
   "jellyfish": {
     "file": "jellyfish.jpg",
     "title": "Jellyfish",
@@ -570,6 +635,11 @@ var PHOTOS = {
     "file": "jerboa.jpg",
     "title": "Jerboa",
     "url": "https://en.wikipedia.org/wiki/Jerboa"
+  },
+  "jormungandr": {
+    "file": "jormungandr.jpg",
+    "title": "Jörmungandr",
+    "url": "https://en.wikipedia.org/wiki/J%C3%B6rmungandr"
   },
   "kakapo": {
     "file": "kakapo.jpg",
@@ -581,15 +651,30 @@ var PHOTOS = {
     "title": "Kangaroo rat",
     "url": "https://en.wikipedia.org/wiki/Kangaroo_rat"
   },
+  "kappa": {
+    "file": "kappa.jpg",
+    "title": "Kappa (folklore)",
+    "url": "https://en.wikipedia.org/wiki/Kappa_(folklore)"
+  },
   "kea": {
     "file": "kea.jpg",
     "title": "Kea",
     "url": "https://en.wikipedia.org/wiki/Kea"
   },
+  "kelpie": {
+    "file": "kelpie.jpg",
+    "title": "Kelpie",
+    "url": "https://en.wikipedia.org/wiki/Kelpie"
+  },
   "kingcobra": {
     "file": "kingcobra.jpg",
     "title": "King cobra",
     "url": "https://en.wikipedia.org/wiki/King_cobra"
+  },
+  "kitsune": {
+    "file": "kitsune.jpg",
+    "title": "Kitsune",
+    "url": "https://en.wikipedia.org/wiki/Kitsune"
   },
   "kiwi": {
     "file": "kiwi.jpg",
@@ -626,6 +711,16 @@ var PHOTOS = {
     "title": "Leafy seadragon",
     "url": "https://en.wikipedia.org/wiki/Leafy_seadragon"
   },
+  "leshy": {
+    "file": "leshy.jpg",
+    "title": "Leshy",
+    "url": "https://en.wikipedia.org/wiki/Leshy"
+  },
+  "leviathan": {
+    "file": "leviathan.jpg",
+    "title": "Leviathan",
+    "url": "https://en.wikipedia.org/wiki/Leviathan"
+  },
   "lionfish": {
     "file": "lionfish.jpg",
     "title": "Lionfish",
@@ -660,6 +755,11 @@ var PHOTOS = {
     "file": "mantaray.jpg",
     "title": "Manta ray",
     "url": "https://en.wikipedia.org/wiki/Manta_ray"
+  },
+  "manticore": {
+    "file": "manticore.jpg",
+    "title": "Manticore",
+    "url": "https://en.wikipedia.org/wiki/Manticore"
   },
   "mantis": {
     "file": "mantis.jpg",
@@ -696,6 +796,11 @@ var PHOTOS = {
     "title": "Megamouth shark",
     "url": "https://en.wikipedia.org/wiki/Megamouth_shark"
   },
+  "mermaid": {
+    "file": "mermaid.jpg",
+    "title": "Mermaid",
+    "url": "https://en.wikipedia.org/wiki/Mermaid"
+  },
   "microraptor": {
     "file": "microraptor.jpg",
     "title": "Microraptor",
@@ -705,6 +810,11 @@ var PHOTOS = {
     "file": "millipede.jpg",
     "title": "Archispirostreptus gigas",
     "url": "https://en.wikipedia.org/wiki/Archispirostreptus_gigas"
+  },
+  "minotaur": {
+    "file": "minotaur.jpg",
+    "title": "Minotaur",
+    "url": "https://en.wikipedia.org/wiki/Minotaur"
   },
   "mole": {
     "file": "mole.jpg",
@@ -755,6 +865,16 @@ var PHOTOS = {
     "file": "nautilus.jpg",
     "title": "Nautilus",
     "url": "https://en.wikipedia.org/wiki/Nautilus"
+  },
+  "nessie": {
+    "file": "nessie.jpg",
+    "title": "Loch Ness Monster",
+    "url": "https://en.wikipedia.org/wiki/Loch_Ness_Monster"
+  },
+  "nian": {
+    "file": "nian.jpg",
+    "title": "Nian",
+    "url": "https://en.wikipedia.org/wiki/Nian"
   },
   "oarfish": {
     "file": "oarfish.jpg",
@@ -811,6 +931,16 @@ var PHOTOS = {
     "title": "Parasaurolophus",
     "url": "https://en.wikipedia.org/wiki/Parasaurolophus"
   },
+  "pegasus": {
+    "file": "pegasus.jpg",
+    "title": "Pegasus",
+    "url": "https://en.wikipedia.org/wiki/Pegasus"
+  },
+  "phoenix": {
+    "file": "phoenix.jpg",
+    "title": "Phoenix (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Phoenix_(mythology)"
+  },
   "pistolshrimp": {
     "file": "pistolshrimp.jpg",
     "title": "Alpheidae",
@@ -856,6 +986,11 @@ var PHOTOS = {
     "title": "Long-spine porcupinefish",
     "url": "https://en.wikipedia.org/wiki/Long-spine_porcupinefish"
   },
+  "qilin": {
+    "file": "qilin.jpg",
+    "title": "Qilin",
+    "url": "https://en.wikipedia.org/wiki/Qilin"
+  },
   "quetzalcoatlus": {
     "file": "quetzalcoatlus.jpg",
     "title": "Quetzalcoatlus",
@@ -881,10 +1016,20 @@ var PHOTOS = {
     "title": "Greater roadrunner",
     "url": "https://en.wikipedia.org/wiki/Greater_roadrunner"
   },
+  "roc": {
+    "file": "roc.jpg",
+    "title": "Roc (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Roc_(mythology)"
+  },
   "rolypoly": {
     "file": "rolypoly.jpg",
     "title": "Armadillidiidae",
     "url": "https://en.wikipedia.org/wiki/Armadillidiidae"
+  },
+  "sasquatch": {
+    "file": "sasquatch.jpg",
+    "title": "Bigfoot",
+    "url": "https://en.wikipedia.org/wiki/Bigfoot"
   },
   "sawfish": {
     "file": "sawfish.jpg",
@@ -916,10 +1061,20 @@ var PHOTOS = {
     "title": "Scotoplanes",
     "url": "https://en.wikipedia.org/wiki/Scotoplanes"
   },
+  "selkie": {
+    "file": "selkie.jpg",
+    "title": "Selkie",
+    "url": "https://en.wikipedia.org/wiki/Selkie"
+  },
   "sidewinder": {
     "file": "sidewinder.jpg",
     "title": "Crotalus cerastes",
     "url": "https://en.wikipedia.org/wiki/Crotalus_cerastes"
+  },
+  "simurgh": {
+    "file": "simurgh.jpg",
+    "title": "Simurgh",
+    "url": "https://en.wikipedia.org/wiki/Simurgh"
   },
   "snail": {
     "file": "snail.jpg",
@@ -1001,6 +1156,11 @@ var PHOTOS = {
     "title": "Takahē",
     "url": "https://en.wikipedia.org/wiki/Takah%C4%93"
   },
+  "taniwha": {
+    "file": "taniwha.jpg",
+    "title": "Taniwha",
+    "url": "https://en.wikipedia.org/wiki/Taniwha"
+  },
   "tarantula": {
     "file": "tarantula.jpg",
     "title": "Brachypelma hamorii",
@@ -1010,6 +1170,11 @@ var PHOTOS = {
     "file": "tarantulahawk.jpg",
     "title": "Tarantula hawk",
     "url": "https://en.wikipedia.org/wiki/Tarantula_hawk"
+  },
+  "tengu": {
+    "file": "tengu.jpg",
+    "title": "Tengu",
+    "url": "https://en.wikipedia.org/wiki/Tengu"
   },
   "texasblindsalamander": {
     "file": "texasblindsalamander.jpg",
@@ -1061,6 +1226,11 @@ var PHOTOS = {
     "title": "Thresher shark",
     "url": "https://en.wikipedia.org/wiki/Thresher_shark"
   },
+  "thunderbird": {
+    "file": "thunderbird.jpg",
+    "title": "Thunderbird (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Thunderbird_(mythology)"
+  },
   "titanbeetle": {
     "file": "titanbeetle.jpg",
     "title": "Titan beetle",
@@ -1105,6 +1275,11 @@ var PHOTOS = {
     "file": "turtle.jpg",
     "title": "Sea turtle",
     "url": "https://en.wikipedia.org/wiki/Sea_turtle"
+  },
+  "unicorn": {
+    "file": "unicorn.jpg",
+    "title": "Unicorn",
+    "url": "https://en.wikipedia.org/wiki/Unicorn"
   },
   "urchin": {
     "file": "urchin.jpg",
@@ -1165,6 +1340,11 @@ var PHOTOS = {
     "file": "wombat.jpg",
     "title": "Wombat",
     "url": "https://en.wikipedia.org/wiki/Wombat"
+  },
+  "yeti": {
+    "file": "yeti.jpg",
+    "title": "Yeti",
+    "url": "https://en.wikipedia.org/wiki/Yeti"
   },
   "yeticrab": {
     "file": "yeticrab.jpg",

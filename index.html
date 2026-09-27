@@ -15,11 +15,17 @@
 
   /* ---------- top bar ---------- */
   #topbar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 12px; background: #0b1729;
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 10px; background: #0b1729;
     border-bottom: 4px solid #ffcc00; flex-wrap: wrap;
   }
   #gameTitle { font-size: 19px; color: #ffcc00; margin-right: auto; }
+  /* On a tablet the title gives up its words rather than let the buttons wrap
+     onto a second row, which would eat a chunk of the play area. */
+  @media (max-width: 1200px) {
+    #gameTitle { font-size: 0; }
+    #gameTitle::after { content: "\1F31F"; font-size: 22px; }
+  }
   .chip {
     background: #1d3557; border: 3px solid #4a7ab5; border-radius: 999px;
     padding: 4px 12px; font-size: 16px; white-space: nowrap;
@@ -43,9 +49,13 @@
   .btn.small { font-size: 15px; padding: 6px 12px; }
   .btn:disabled { filter: grayscale(1) brightness(.7); cursor: default; }
 
-  .screen { display: none; }
+  /* the Back button is absolutely placed, so each screen has to be the thing
+     it is placed against — otherwise it lands on top of the top bar */
+  .screen { display: none; position: relative; }
   .screen.active { display: block; }
-  #home, #book, #shop, #bucket, #add { height: calc(100vh - 58px); overflow-y: auto; }
+  #home, #book, #shop, #bucket, #add, #news {
+    height: calc(100vh - var(--topbar, 58px)); overflow-y: auto;
+  }
 
   /* ---------- home ---------- */
   #home { text-align: center; padding: 20px 20px 60px; }
@@ -68,6 +78,7 @@
   #undergroundCard { background: linear-gradient(#a9784a, #2a1016); }
   #islandCard      { background: linear-gradient(#37c6f4, #2f7d52); }
   #prehistoricCard { background: linear-gradient(#e8703a, #2b4a2f); }
+  #mythicalCard    { background: linear-gradient(#8f5fd0, #2a1b4d 60%, #8a1f0a); }
   .placeCard.locked { filter: grayscale(.7) brightness(.75); }
   .placeCard.locked .hint { color: #ffd0e0; }
   .howto {
@@ -165,6 +176,32 @@
   #bookCount { text-align: center; font-size: 18px; color: #9fd3ff; margin-bottom: 6px; }
   #bookTools { text-align: center; margin-bottom: 10px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
   #saveNote { text-align: center; font-size: 14px; color: #80ed99; min-height: 20px; margin-bottom: 8px; }
+  /* only ever visible when a newer version of the game is sitting on the server */
+  #updateBar {
+    display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    background: #2f7d52; border-top: 4px solid #80ed99; padding: 10px;
+    text-align: center; font-size: 18px; color: #fff;
+  }
+  #newsBtn { position: relative; }
+  #newsDot {
+    position: absolute; top: -5px; right: -5px; min-width: 20px; height: 20px;
+    border-radius: 999px; background: #ff4d6d; color: #fff; font-size: 12px;
+    line-height: 20px; padding: 0 5px; display: none;
+    box-shadow: 0 0 0 2px #0b1729;
+  }
+  .newsWorld {
+    max-width: 760px; margin: 0 auto 18px; border-radius: 20px; padding: 16px;
+    border: 5px solid #ffcc00; background: rgba(255,204,0,.12);
+  }
+  .newsWorld .big { font-size: 58px; }
+  .newsWorld h3 { margin: 4px 0 6px; font-size: 27px; color: #ffcc00; }
+  .newsWorld p { margin: 0; font-size: 16px; color: #cfe6ff; line-height: 1.5; }
+  #newsCheck { font-size: 14px; color: #9fd3ff; margin: 6px 0 14px; min-height: 18px; }
+  #updateBar button {
+    background: #ffcc00; color: #10203a; border-radius: 999px;
+    padding: 8px 20px; font-size: 18px; margin-left: 10px;
+    box-shadow: 0 4px 0 #c79c00;
+  }
   .bookGrid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
     gap: 10px; max-width: 1050px; margin: 0 auto 22px;
@@ -206,6 +243,9 @@
   .big-back:active { box-shadow: 0 1px 0 #8f1f3c; }
   .big-back.bottom { position: static; display: inline-block; margin: 6px auto 30px; }
   #shop, #book { position: relative; padding-top: 62px; }
+  #news { padding: 62px 16px 60px; text-align: center; }
+  #news h3 { color: #9fd3ff; margin: 18px 0 8px; }
+  #news .newsWorld h3 { color: #ffcc00; }
 
   /* a finger needs somewhere to press for the SPACE action */
   #trapTray, #powerTray { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -333,6 +373,11 @@
 </head>
 <body>
 
+<div id="updateBar">
+  ✨ There's a NEW version of the game!
+  <button onclick="takeTheUpdate()">Get it</button>
+</div>
+
 <div id="topbar">
   <div id="gameTitle">🌟 Cam's Crazy Creatures 🌟</div>
   <div class="chip score">⭐ <span id="scoreNum">0</span></div>
@@ -342,6 +387,8 @@
           onclick="showAdd()">➕ Add</button>
   <button class="btn gold small" onclick="showShop()">🛒 Shop</button>
   <button class="btn gray small" onclick="showBook()">📖 Book</button>
+  <button class="btn small" id="newsBtn" style="background:#6b4a8f;border-color:#4a3163;box-shadow:0 5px 0 #33224a"
+          onclick="showWhatsNew()" title="What's New">✨<span id="newsDot"></span></button>
   <button class="btn gray small" id="whoBtn" onclick="showWho()">🧒 Cam</button>
   <button class="btn gray small" onclick="goHome()">🏠 Home</button>
 </div>
@@ -384,6 +431,11 @@
       PREHISTORIC
       <span class="hint" id="prehistoricHint">Dinosaurs — and the MEGALODON</span>
     </button>
+    <button class="placeCard" id="mythicalCard" onclick="tryStart('mythical')">
+      <span class="big">🦄</span>
+      MYTHICAL
+      <span class="hint" id="mythicalHint">Monsters people made up, all over the world</span>
+    </button>
   </div>
   <div class="howto" id="homeHowto"></div>
   <button class="btn gray" onclick="showWho()">🧒 Pick a different kid</button>
@@ -401,6 +453,16 @@
   <div id="zoneBanner"></div>
   <div id="flash"></div>
   <div id="hint"></div>
+</div>
+
+<!-- ============ WHAT'S NEW ============ -->
+<div id="news" class="screen">
+  <button class="btn gray big-back" onclick="backFromMenu()">⬅️ Back</button>
+  <h2>✨ What's New</h2>
+  <p class="sub" id="newsSummary"></p>
+  <div id="newsCheck"></div>
+  <button class="btn small gray" onclick="checkForUpdate(true)">🔄 Check for more</button>
+  <div id="newsBody"></div>
 </div>
 
 <!-- ============ SHOP ============ -->
@@ -490,6 +552,66 @@
 if (typeof PHOTOS === "undefined") { window.PHOTOS = {}; }
 
 /* ============================================================
+   IS THERE A NEWER VERSION?
+
+   On an iPad, "Add to Home Screen" makes a little web app that keeps its own
+   copy of the page and its own storage — it is NOT the same thing as the same
+   URL open in Safari. It will happily go on showing a months-old copy of the
+   game, because nothing ever makes it ask the server again.
+
+   So the game asks, itself. BUILD is stamped in by tools/stamp-build.js and
+   version.json holds whatever is actually deployed; if they disagree, there is
+   a newer game waiting. Reloading with ?v=<new> is the cache-bust: it is a URL
+   the web app has never seen, so it has to go and fetch it.
+
+   A query string does NOT change the origin, so ?v= is safe — localStorage,
+   and therefore Cam's book, is exactly the same before and after.
+   ============================================================ */
+const BUILD = "2026-09-27-8a640e57";
+
+/* Its own function so a test can stand in for it: opened off the disk, or
+   built into the single shared file, there is no server to ask. */
+function canAskTheServer() { return location.protocol !== "file:" && BUILD !== "shared"; }
+
+function takeTheUpdate() {
+  const v = takeTheUpdate.waiting || Date.now();
+  location.replace(location.pathname + "?v=" + encodeURIComponent(v));
+}
+
+async function checkForUpdate(outLoud) {
+  const say = msg => {
+    const el = document.getElementById("newsCheck");
+    if (outLoud && el) el.textContent = msg;
+  };
+  /* opened straight off the disk, or a shared single-file copy: nothing to check */
+  if (!canAskTheServer()) {
+    say("This copy of the game isn't online, so there's nothing to check.");
+    return;
+  }
+  say("Checking\u2026");
+  try {
+    const r = await fetch("version.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) { say("Couldn't reach the game's home. Try again in a bit."); return; }
+    const deployed = (await r.json()).build;
+    if (!deployed || deployed === BUILD) {
+      say("\u2705 You have the very latest version.");
+      return;
+    }
+    takeTheUpdate.waiting = deployed;
+    say("\u2728 A newer version is here \u2014 getting it now\u2026");
+    /* If he has not started playing yet, just go and get it — he never sees this.
+       If he is mid-dive, ask, so the screen does not blink out from under him. */
+    if (!world || outLoud) takeTheUpdate();
+    else document.getElementById("updateBar").style.display = "block";
+  } catch (e) {
+    say("No internet right now \u2014 but everything you already have still works.");
+  }
+}
+
+/* and ask again whenever the iPad brings the game back to the front */
+addEventListener("visibilitychange", () => { if (!document.hidden) checkForUpdate(); });
+
+/* ============================================================
    SAVING — this must never lose Cam's book.
    One key that never changes; loading MERGES every save it can
    find, including ones from older versions of the game.
@@ -501,9 +623,62 @@ const DEFAULT_GEAR = {
   boat: 0, snorkel: 0, notebook: 0,                              /* islands */
   whistle: 0, freeze: 0, magnet: 0, xray: 0,                      /* powers */
   dig: 1, headlamp: 1, ladder: 0,                                /* underground */
-  time: 0, bell: 0, brush: 0, armour: 0                          /* prehistoric */
+  time: 0, bell: 0, brush: 0, armour: 0,                         /* prehistoric */
+  story: 0, everlight: 0, crystal: 0, charm: 0                   /* mythical */
 };
 const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
+
+/* ============================================================
+   WHAT'S NEW
+
+   He plays this off a home-screen icon on an iPad, which means new
+   creatures and whole new worlds can land overnight without anybody
+   telling him. So the game keeps a list of everything it has already
+   shown him, and anything not on that list is new.
+
+   No server list is needed for this: the catalog that arrived IS the
+   announcement. Works offline, and it cannot get out of step.
+   ============================================================ */
+
+/* Creatures he added himself with the + button are his, not news. */
+function catalogIds() { return CREATURES.filter(c => !c.mine).map(c => c.id); }
+
+function newStuff() {
+  const seen = state.seen || [];
+  const seenW = state.seenWorlds || [];
+  return {
+    creatures: CREATURES.filter(c => !c.mine && seen.indexOf(c.id) === -1),
+    worlds: Object.keys(ZONES).filter(w => seenW.indexOf(w) === -1)
+  };
+}
+
+function markAllSeen() {
+  state.seen = catalogIds();
+  state.seenWorlds = Object.keys(ZONES);
+  save();
+  refresh();
+}
+
+/* The very first run after this feature shipped has no list to compare
+   against. A brand new book gets everything marked seen, so a first-time
+   player is not told that all 307 creatures are "new". An existing book is
+   caught up to everything EXCEPT the mythical world, because that is the
+   one that landed in the same update as this screen. After this, the list
+   exists and every future update works out its own news. */
+function seedSeen() {
+  if (Array.isArray(state.seen) && Array.isArray(state.seenWorlds)) return;
+  const brandNew = !Object.keys(state.books || {}).some(w => (state.books[w].found || []).length);
+  if (brandNew) {
+    markAllSeen();
+  } else {
+    state.seen = catalogIds().filter(id => {
+      const c = CREATURES.find(x => x.id === id);
+      return !c || c.where !== "mythical";
+    });
+    state.seenWorlds = Object.keys(ZONES).filter(w => w !== "mythical");
+    save();
+  }
+}
 
 /* ============================================================
    WHO IS EXPLORING
@@ -592,7 +767,8 @@ function myBook() { return bookOf(state, state.who || "cam"); }
 function bookCount(who) { return ((state.books || {})[who] || blankBook()).found.length; }
 
 let state = installBookViews({ score: 0, magic: 1, traps: Object.assign({}, DEFAULT_TRAPS),
-              mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {} });
+              mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {},
+              seen: null, seenWorlds: null });
 
 function mergeInto(target, data) {
   if (!data || typeof data !== "object") return target;
@@ -620,6 +796,12 @@ function mergeInto(target, data) {
     const have = target.mine.find(x => x.id === m.id);
     if (!have) target.mine.push(m);
     else if ((m.facts || []).length > (have.facts || []).length) have.facts = m.facts;
+  });
+
+  /* which creatures and worlds he has already been shown: a union, never a reset */
+  ["seen", "seenWorlds"].forEach(f => {
+    if (!Array.isArray(data[f])) return;
+    target[f] = [...new Set((target[f] || []).concat(data[f]))];
   });
 
   /* whoever was picked last is who we start as next time */
@@ -659,7 +841,8 @@ function mergeBook(book, data) {
 
 function load() {
   const merged = { score: 0, magic: 1, traps: Object.assign({}, DEFAULT_TRAPS),
-                   mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {} };
+                   mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {},
+                   seen: null, seenWorlds: null };
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k || k.toLowerCase().indexOf("camscrazycreatures") !== 0) continue;
@@ -782,6 +965,26 @@ function dinoRoar() {
   } catch (e) {}
 }
 
+/* high and strange, nothing like the dinosaur roar */
+function legendCry() {
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const t = audio.currentTime;
+    [0, .18, .42].forEach((delay, i) => {
+      const osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(700 + i * 180, t + delay);
+      osc.frequency.exponentialRampToValueAtTime(1500 + i * 200, t + delay + .3);
+      osc.frequency.exponentialRampToValueAtTime(420, t + delay + .8);
+      gain.gain.setValueAtTime(0.0001, t + delay);
+      gain.gain.exponentialRampToValueAtTime(0.07, t + delay + .08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + delay + .9);
+      osc.connect(gain).connect(audio.destination);
+      osc.start(t + delay); osc.stop(t + delay + .95);
+    });
+  } catch (e) {}
+}
+
 function caveDrip() {
   const f = 900 + Math.random() * 700;
   beep(f, 60, "sine", .05);
@@ -806,6 +1009,9 @@ const g = cv.getContext("2d");
 let CW = 0, CH = 0;
 function fitCanvas() {
   const bar = document.getElementById("topbar").offsetHeight;
+  /* the menu screens size themselves off this too, so it has to be measured
+     rather than assumed — the bar wraps to two rows on a narrow screen */
+  document.documentElement.style.setProperty("--topbar", bar + "px");
   CW = window.innerWidth;
   CH = Math.max(300, window.innerHeight - bar);
   cv.width = CW; cv.height = CH;
@@ -859,7 +1065,7 @@ function lightRadius() {
   return 250 * level;
 }
 /* Two worlds are locked until he buys the way in: the boat, and the time machine. */
-const WORLD_KEY = { island: "boat", prehistoric: "time" };
+const WORLD_KEY = { island: "boat", prehistoric: "time", mythical: "story" };
 function canReach(kind) {
   const need = WORLD_KEY[kind];
   return !need || state.gear[need] >= 1;
@@ -868,8 +1074,10 @@ function worldKeyItem(kind) { return SHOP.find(i => i.gear === WORLD_KEY[kind] &
 
 /* Seeing what's inside before you open it, and getting a second try at it.
    Prehistoric has its own versions of both, bought in its own shop. */
-function peekGear() { return world && world.kind === "prehistoric" ? state.gear.brush : state.gear.binocs; }
-function secondChanceGear() { return world && world.kind === "prehistoric" ? state.gear.armour : state.gear.bugjar; }
+const PEEK_GEAR   = { prehistoric: "brush",  mythical: "crystal" };
+const SECOND_GEAR = { prehistoric: "armour", mythical: "charm" };
+function peekGear() { return state.gear[(world && PEEK_GEAR[world.kind]) || "binocs"]; }
+function secondChanceGear() { return state.gear[(world && SECOND_GEAR[world.kind]) || "bugjar"]; }
 
 /* ---------- the world ---------- */
 let world = null;
@@ -887,7 +1095,8 @@ function startWorld(kind) {
 
   const vert = isVertical(kind);
   const zoneCount = ZONES[kind].length;
-  const W = vert ? 2600 : (kind === "island" ? 7000 : (kind === "prehistoric" ? 7600 : 5200));
+  const WIDE = { island: 7000, prehistoric: 7600, mythical: 8000 };
+  const W = vert ? 2600 : (WIDE[kind] || 5200);
   const H = vert ? (kind === "ocean" ? 6600 : 4600) : CH;
 
   world = {
@@ -923,17 +1132,28 @@ function startWorld(kind) {
     land:        ["tree", "bush", "grass", "grass", "flower", "cactus"],
     island:      ["palm", "palm", "bush", "grass", "flower", "fern"],
     underground: ["root", "pebble", "crystal", "root", "mushroom"],
-    prehistoric: ["fern", "cycad", "conifer", "fern", "boulder", "cycad"]
+    prehistoric: ["fern", "cycad", "conifer", "fern", "boulder", "cycad"],
+    mythical:    ["bigmushroom", "twistedtree", "fern", "bigmushroom", "crag", "twistedtree"]
   };
   const SEA_DECO = ["weed", "coral", "rock", "weed", "coral"];
+  /* the land of legends changes what grows in it as the realms change */
+  const MYTH_DECO = [
+    ["bigmushroom", "twistedtree", "bigmushroom", "fern", "twistedtree"],   /* forest */
+    ["crag", "twistedtree", "crag", "fern", "crag"],                        /* mountains */
+    ["crag", "twistedtree", "crag", "crag", "twistedtree"],                 /* (water: unused) */
+    ["crag", "crag", "twistedtree", "crag", "bigmushroom"]                  /* underworld */
+  ];
   for (let i = 0; i < 110; i++) {
     const dx = rand(0, W);
     world.deco.push({
       x: dx,
       y: vert ? rand(world.surface + 200, world.ground) : 0,
       onFloor: !vert || Math.random() < .5,
-      /* past the shore of the ancient sea it's seaweed and coral, not conifers */
-      kind: pick(kind === "prehistoric" && dx > W * .75 ? SEA_DECO : DECO[kind]),
+      /* standing in water: seaweed and coral, not trees */
+      kind: pick(inWaterAt(kind, W, dx) ? SEA_DECO
+                 : (kind === "mythical"
+                    ? MYTH_DECO[Math.min(3, Math.floor((dx / W) * 4))]
+                    : DECO[kind])),
       s: rand(.7, 1.6),
       depth: rand(.35, .8)
     });
@@ -944,7 +1164,8 @@ function startWorld(kind) {
     land:        ["#ffe066", "#ff8fab", "#b8f2e6"],
     island:      ["#ff8fab", "#ffe066", "#9bf6ff", "#caffbf"],
     underground: ["#c9b8a8", "#9fb3c8"],
-    prehistoric: ["#6b5a46", "#8a6a4a", "#5a6b4a"]
+    prehistoric: ["#6b5a46", "#8a6a4a", "#5a6b4a"],
+    mythical:    ["#ffe680", "#9fe3f5", "#e2b6ff", "#caffbf"]
   };
   const ambientCount = kind === "underground" ? 12 : 26;
   for (let i = 0; i < ambientCount; i++) {
@@ -977,11 +1198,19 @@ function startWorld(kind) {
     }
   }
 
-  /* the ancient sea at the far end of the map shimmers */
-  if (kind === "prehistoric") {
+  /* water shimmers, wherever a world happens to keep its water */
+  const band = waterBandFor(kind, W);
+  if (band) {
     for (let i = 0; i < 120; i++) {
-      world.sparks.push({ x: rand(W * .75, W), y: rand(H - 420, H - 90), r: rand(1, 3),
+      world.sparks.push({ x: rand(band.x0, band.x1), y: rand(H - 420, H - 90), r: rand(1, 3),
                           ph: rand(0, 6.28), c: pick(["#9fe3f5", "#caffbf", "#fff3a8"]) });
+    }
+  }
+  /* and the land of legends is full of floating lights the whole way across */
+  if (kind === "mythical") {
+    for (let i = 0; i < 150; i++) {
+      world.sparks.push({ x: rand(0, W), y: rand(H - 520, H - 110), r: rand(1.5, 3.5),
+                          ph: rand(0, 6.28), c: pick(["#ffe680", "#e2b6ff", "#9fe3f5", "#caffbf"]) });
     }
   }
 
@@ -1281,6 +1510,7 @@ function showZoneBanner(z) {
   el.style.color = z.n >= 5 ? "#ff5ec7" : (z.n >= 3 ? "#ffcc00" : "#fff");
   if (world.kind === "island") el.style.color = z.n >= 3 ? "#ffcc00" : "#caffbf";
   if (world.kind === "prehistoric") el.style.color = z.n >= 4 ? "#9fe3f5" : (z.n >= 3 ? "#ffcc00" : "#ffb38a");
+  if (world.kind === "mythical") el.style.color = z.n >= 4 ? "#ff8a3c" : (z.n >= 3 ? "#9fe3f5" : "#e2b6ff");
   el.classList.add("show");
   playZoneSound();
   clearTimeout(showZoneBanner._t);
@@ -1545,13 +1775,15 @@ function tickReveal() {
    something huge STOMPS past. Same chase, same magic-trap rule. */
 function updateWanderer() {
   const pre = world.kind === "prehistoric";
-  if (world.kind !== "ocean" && !pre) return;
+  const myth = world.kind === "mythical";
+  if (world.kind !== "ocean" && !pre && !myth) return;
 
   if (world.wanderer) {
     const wd = world.wanderer;
     if (wd.frozen > 0) { wd.life++; return; }      /* time-frozen: it waits for him */
     wd.x += wd.vx;
     if (world.vertical) wd.y += Math.sin(world.t / 40) * .6;
+    else if (world.kind === "mythical") wd.y = wd.baseY + Math.sin(world.t / 26) * 22;  /* gliding */
     else wd.y = wd.baseY - Math.abs(Math.sin(world.t / 12)) * 5;   /* footfalls */
     wd.life--;
     if (wd.life <= 0 || wd.x < -500 || wd.x > world.w + 500) {
@@ -1562,7 +1794,7 @@ function updateWanderer() {
     return;
   }
 
-  if (world.zone < (pre ? 2 : 3)) return;
+  if (world.zone < (pre || myth ? 2 : 3)) return;
   world.nextWander--;
   if (world.nextWander > 0) return;
   world.nextWander = Math.round(rand(600, 1200) / (state.gear.chum ? 3 : 1));
@@ -1583,8 +1815,10 @@ function updateWanderer() {
   const c = pick(bag);
   const fromLeft = Math.random() < .5;
   const size = TIERS[c.tier].stars >= 5 ? 2.6 : 1.9;
-  /* on land it has to stand ON the ground: its feet reach 22 units below its middle */
-  const baseY = world.ground - 22 * size;
+  /* On land it has to stand ON the ground: its feet reach 22 units below its
+     middle. A legend flies, so it hangs in the air instead — but still low
+     enough that he can run underneath it and grab it. */
+  const baseY = myth ? world.ground - 140 : world.ground - 22 * size;
   world.wanderer = {
     c: c, baseY: baseY,
     x: fromLeft ? world.player.x - CW * .7 : world.player.x + CW * .7,
@@ -1595,9 +1829,10 @@ function updateWanderer() {
     life: 1500,
     size: size
   };
-  flashHint(pre ? "👀 Something ENORMOUS is coming! Chase it and press SPACE!"
-                : "👀 Something BIG is out there! Chase it and press SPACE!");
-  pre ? dinoRoar() : whaleSong();
+  flashHint(myth ? "👀 Something out of a STORY just went past! Chase it and press SPACE!"
+          : pre  ? "👀 Something ENORMOUS is coming! Chase it and press SPACE!"
+                 : "👀 Something BIG is out there! Chase it and press SPACE!");
+  myth ? legendCry() : (pre ? dinoRoar() : whaleSong());
 }
 
 function flashHint(msg) {
@@ -1619,6 +1854,7 @@ function render() {
   if (world.kind === "ocean") drawOceanBg(cam);
   else if (world.kind === "underground") drawUndergroundBg(cam);
   else if (world.kind === "prehistoric") drawPrehistoricBg(cam);
+  else if (world.kind === "mythical") drawMythicalBg(cam);
   else drawLandBg(cam);
 
   world.deco.filter(d => d.depth < .6).forEach(d => drawDeco(d, cam, .5));
@@ -1636,7 +1872,7 @@ function render() {
     g.strokeStyle = "rgba(255,255,255,.6)";
     world.bubbles.forEach(b => { g.beginPath(); g.arc(b.x - cam.x, b.y - cam.y, b.r, 0, 6.3); g.stroke(); });
   }
-  if (world.kind === "prehistoric") drawAncientSea(cam);
+  if (world.kind === "prehistoric" || world.kind === "mythical") drawWaterBand(cam);
 
   if (world.wanderer) drawWanderer(cam);
 
@@ -1902,8 +2138,20 @@ function drawLandBg(cam) {
    left-to-right is TIME. Triassic, Jurassic, Cretaceous, and
    then the ground drops away into the ancient sea.
    ============================================================ */
-/* how far along the map the ancient sea starts */
-function seaStartX() { return world.w * .75; }
+/* Two walking worlds have water in them: the prehistoric map ends in the
+   ancient sea, and the land of legends has a black loch in the middle of it.
+   Both are the same piece of drawing, just over a different stretch of map. */
+const WATER_BANDS = { prehistoric: [.75, 1], mythical: [.5, .75] };
+function waterBandFor(kind, w) {
+  const b = WATER_BANDS[kind];
+  return b ? { x0: w * b[0], x1: w * b[1] } : null;
+}
+function waterBand() { return world ? waterBandFor(world.kind, world.w) : null; }
+function inWaterAt(kind, w, x) {
+  const b = waterBandFor(kind, w);
+  return !!b && x > b.x0 && x < b.x1;
+}
+function inWater(x) { return world ? inWaterAt(world.kind, world.w, x) : false; }
 
 function drawPrehistoricBg(cam) {
   const f = Math.min(1, world.player.x / world.w);
@@ -1965,10 +2213,12 @@ function drawPrehistoricBg(cam) {
 
 /* The water that fills the last quarter of the map. Drawn over the top of
    everything so he is genuinely UNDER it once he wades past the shore. */
-function drawAncientSea(cam) {
-  const sx = seaStartX() - cam.x;
-  if (sx > CW) return;
-  const left = Math.max(0, sx);
+function drawWaterBand(cam) {
+  const b = waterBand();
+  if (!b) return;
+  const sx = b.x0 - cam.x, ex = b.x1 - cam.x;
+  if (sx > CW || ex < 0) return;
+  const left = Math.max(0, sx), right = Math.min(CW, ex);
   const top = world.ground - cam.y - 300;
 
   g.save();
@@ -1976,32 +2226,152 @@ function drawAncientSea(cam) {
   water.addColorStop(0, "rgba(40,150,190,.30)");
   water.addColorStop(1, "rgba(6,50,90,.62)");
   g.fillStyle = water;
-  g.fillRect(left, top, CW - left, CH - top);
+  g.fillRect(left, top, right - left, CH - top);
 
   /* the surface, with a little swell on it */
   g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 3;
   g.beginPath();
-  for (let x = left; x <= CW; x += 18) {
+  for (let x = left; x <= right; x += 18) {
     const y = top + Math.sin((x + cam.x) / 70 + world.t / 26) * 6;
     x === left ? g.moveTo(x, y) : g.lineTo(x, y);
   }
   g.stroke();
 
-  /* the shoreline itself, so it's obvious where the water starts */
-  if (sx > -20 && sx < CW + 20) {
-    g.strokeStyle = "rgba(255,255,255,.35)"; g.lineWidth = 2;
-    g.setLineDash([10, 10]);
-    g.beginPath(); g.moveTo(sx, top); g.lineTo(sx, CH); g.stroke();
-    g.setLineDash([]);
-  }
+  /* the shorelines, so it's obvious where the water starts and stops */
+  g.strokeStyle = "rgba(255,255,255,.35)"; g.lineWidth = 2;
+  g.setLineDash([10, 10]);
+  [sx, ex].forEach(edge => {
+    if (edge < -20 || edge > CW + 20 || edge >= world.w - cam.x) return;
+    g.beginPath(); g.moveTo(edge, top); g.lineTo(edge, CH); g.stroke();
+  });
+  g.setLineDash([]);
 
   /* shimmer */
   world.sparks.forEach(sp => {
     const x = sp.x - cam.x, y = sp.y - cam.y;
-    if (x < left - 10 || x > CW + 10 || y < -10 || y > CH + 10) return;
+    if (x < left - 10 || x > right + 10 || y < -10 || y > CH + 10) return;
     g.globalAlpha = .3 + Math.sin(world.t / 24 + sp.ph) * .3;
     g.fillStyle = sp.c;
     g.beginPath(); g.arc(x, y, sp.r, 0, 6.3); g.fill();
+  });
+  g.restore();
+}
+
+/* the floor under a stretch of water, drawn darker than the land beside it */
+function drawSeaFloor(cam, gy, floor, top) {
+  const b = waterBand();
+  if (!b) return;
+  const x0 = Math.max(0, b.x0 - cam.x), x1 = Math.min(CW, b.x1 - cam.x);
+  if (x1 <= x0) return;
+  g.fillStyle = floor;
+  g.fillRect(x0, gy, x1 - x0, CH - gy);
+  g.fillStyle = top;
+  g.fillRect(x0, gy, x1 - x0, 12);
+}
+
+/* ============================================================
+   MYTHICAL — the one world where nothing is real. Walking right
+   goes Enchanted Forest, Misty Mountains, a black loch, and then
+   down into the Underworld, and the light changes the whole way.
+   ============================================================ */
+function drawMythicalBg(cam) {
+  const f = Math.min(1, world.player.x / world.w);
+  const sky = g.createLinearGradient(0, 0, 0, CH);
+  if (f < .25) {                /* enchanted forest: permanent magic twilight */
+    sky.addColorStop(0, "#2a1b4d"); sky.addColorStop(.55, "#6b4a8f"); sky.addColorStop(1, "#c39ad4");
+  } else if (f < .5) {          /* misty mountains */
+    sky.addColorStop(0, "#54708a"); sky.addColorStop(.6, "#9fb6c6"); sky.addColorStop(1, "#dfe9ef");
+  } else if (f < .75) {         /* the deep waters */
+    sky.addColorStop(0, "#152d43"); sky.addColorStop(.6, "#3f6d8f"); sky.addColorStop(1, "#86b3ca");
+  } else {                      /* the underworld */
+    sky.addColorStop(0, "#160406"); sky.addColorStop(.55, "#5c1208"); sky.addColorStop(1, "#c4470f");
+  }
+  g.fillStyle = sky;
+  g.fillRect(0, 0, CW, CH);
+
+  /* a big low moon over the first half, swallowed by the fire later on */
+  if (f < .6) {
+    g.save();
+    g.globalAlpha = f < .25 ? 1 : Math.max(0, 1 - (f - .25) / .35);
+    g.fillStyle = "#f4ecd0";
+    g.beginPath(); g.arc(CW - 120, 100, 46, 0, 6.3); g.fill();
+    g.globalAlpha *= .3;
+    g.beginPath(); g.arc(CW - 120, 100, 74, 0, 6.3); g.fill();
+    g.restore();
+  }
+
+  const base = world.ground - cam.y - 30;
+
+  /* jagged peaks across the back. Their colour comes from where they are on
+     SCREEN, not from where they are in the parallax layer, or the underworld
+     ends up with a snow-capped alp standing in it. */
+  for (let i = -1; i < 26; i++) {
+    const px = -cam.x * .26 + i * 380;
+    if (px < -320 || px > CW + 320) continue;
+    const far = Math.min(1, Math.max(0, (cam.x + px) / world.w));
+    const h = 180 + Math.abs(Math.sin(i * 2.3)) * 160;
+    g.fillStyle = far < .25 ? "#3b2a52" : (far < .5 ? "#6d7f92" : (far < .75 ? "#26415a" : "#2a0f0e"));
+    g.beginPath();
+    g.moveTo(px - 200, base); g.lineTo(px, base - h); g.lineTo(px + 200, base);
+    g.closePath(); g.fill();
+    if (far >= .25 && far < .5) {            /* snow on the misty mountains */
+      g.fillStyle = "rgba(255,255,255,.75)";
+      g.beginPath();
+      g.moveTo(px - 46, base - h + 46); g.lineTo(px, base - h); g.lineTo(px + 46, base - h + 46);
+      g.closePath(); g.fill();
+    }
+  }
+
+  /* Bands of mist, but ONLY over the Misty Mountains — everywhere else they
+     just read as stripes across the sky. Fades in and out at the edges. */
+  const mist = Math.max(0, 1 - Math.abs(f - .375) / .2);
+  if (mist > 0) {
+    g.save();
+    for (let i = 0; i < 6; i++) {
+      const my = base - 120 - i * 52 + Math.sin(world.t / 90 + i) * 8;
+      g.globalAlpha = .14 * mist;
+      g.fillStyle = "#ffffff";
+      g.fillRect(0, my, CW, 24);
+    }
+    g.restore();
+  }
+
+  /* two rows of hills */
+  const hill1 = f < .25 ? "#4a3a6b" : (f < .5 ? "#7d8f9e" : (f < .75 ? "#2f4f63" : "#3a1410"));
+  const hill2 = f < .25 ? "#33264d" : (f < .5 ? "#5d6f7e" : (f < .75 ? "#20394a" : "#240b09"));
+  const off = -cam.x * .35;
+  g.fillStyle = hill1;
+  for (let i = -1; i < 22; i++) { g.beginPath(); g.arc(off + i * 400, world.ground - cam.y - 40, 230, Math.PI, 0); g.fill(); }
+  g.fillStyle = hill2;
+  for (let i = -1; i < 24; i++) { g.beginPath(); g.arc(off * 1.5 + i * 330 + 120, world.ground - cam.y - 10, 170, Math.PI, 0); g.fill(); }
+
+  /* the underworld burns from below, and throws up embers */
+  const fireX = world.w * .75 - cam.x;
+  if (fireX < CW) {
+    const x0 = Math.max(0, fireX);
+    const r = g.createLinearGradient(0, CH * .45, 0, CH);
+    r.addColorStop(0, "rgba(255,70,0,0)");
+    r.addColorStop(1, "rgba(255,90,10,.4)");
+    g.fillStyle = r;
+    g.fillRect(x0, CH * .45, CW - x0, CH * .55);
+    for (let i = 0; i < 26; i++) {
+      const ex = x0 + ((i * 137 + world.t * .6) % Math.max(1, CW - x0));
+      const ey = CH - ((world.t * 1.3 + i * 90) % CH);
+      g.globalAlpha = .5 + Math.sin(world.t / 12 + i) * .3;
+      g.fillStyle = i % 3 ? "#ffb457" : "#ff6a2a";
+      g.beginPath(); g.arc(ex, ey, 2 + (i % 3), 0, 6.3); g.fill();
+    }
+    g.globalAlpha = 1;
+  }
+
+  /* will-o'-the-wisps, everywhere but the fire */
+  g.save();
+  world.sparks.forEach(sp => {
+    const x = sp.x - cam.x * .9, y = sp.y - cam.y;
+    if (x < -20 || x > CW + 20 || y < -20 || y > CH + 20) return;
+    g.globalAlpha = .25 + Math.sin(world.t / 34 + sp.ph) * .25;
+    g.fillStyle = sp.c;
+    g.beginPath(); g.arc(x, y + Math.sin(world.t / 50 + sp.ph) * 10, sp.r, 0, 6.3); g.fill();
   });
   g.restore();
 }
@@ -2022,7 +2392,69 @@ function drawGround(cam) {
     return;
   }
 
-  if (world.kind === "prehistoric") {
+  if (world.kind === "mythical") {
+    const f = Math.min(1, world.player.x / world.w);
+    g.fillStyle = f < .25 ? "#2f4433" : (f < .5 ? "#5e6773" : (f < .75 ? "#33414d" : "#1c0c0b"));
+    g.fillRect(0, gy, CW, CH - gy);
+    g.fillStyle = f < .25 ? "#4e7a4a" : (f < .5 ? "#7f8a96" : (f < .75 ? "#46586a" : "#3a140f"));
+    g.fillRect(0, gy, CW, 14);
+    /* glowing cracks, once the ground is hot */
+    if (f >= .7) {
+      for (let i = 0; i < 16; i++) {
+        const x = (i * 231 - cam.x) % (CW + 300) - 100;
+        g.strokeStyle = "rgba(255,110,30," + (.4 + Math.sin(world.t / 18 + i) * .25) + ")";
+        g.lineWidth = 3; g.lineCap = "round";
+        g.beginPath();
+        g.moveTo(x, gy + 22 + (i % 3) * 26);
+        g.lineTo(x + 40, gy + 30 + (i % 3) * 26);
+        g.stroke();
+      }
+    }
+    drawSeaFloor(cam, gy, "#1f2c38", "#2e4150");
+    return;
+  }
+
+  if (world.kind === "mythical") {
+    /* half standing stones with runes cut into them, half fairy rings */
+    const ring = Math.floor(s.wob * 10) % 2 === 0;
+    const wet = inWater(s.x);
+    const hot = s.x > world.w * .75;
+    const glow = hot ? "#ff8a3c" : (wet ? "#7ee8fa" : "#e2b6ff");
+    if (ring) {
+      g.fillStyle = wet ? "#2e4150" : (hot ? "#3a140f" : "#3c5a3a");
+      g.beginPath(); g.ellipse(0, 10, 44, 17, 0, 0, 6.3); g.fill();
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * 6.28, mx = Math.cos(a) * 36, my = 10 + Math.sin(a) * 13;
+        g.fillStyle = "#efe6d8";
+        g.fillRect(mx - 2, my - 9, 4, 9);
+        g.fillStyle = glow;
+        g.beginPath(); g.ellipse(mx, my - 9, 8, 5, 0, Math.PI, 0); g.fill();
+      }
+      g.save();
+      g.globalAlpha = .2 + Math.sin(world.t / 16 + s.wob) * .12;
+      g.fillStyle = glow;
+      g.beginPath(); g.ellipse(0, 6, 44, 20, 0, 0, 6.3); g.fill();
+      g.restore();
+    } else {
+      g.fillStyle = wet ? "#46586a" : (hot ? "#4a1c14" : "#6b6478");
+      g.beginPath();
+      g.moveTo(-22, 26); g.lineTo(-17, -34); g.lineTo(0, -44); g.lineTo(17, -34); g.lineTo(22, 26);
+      g.closePath(); g.fill();
+      g.fillStyle = "rgba(255,255,255,.16)";
+      g.beginPath(); g.moveTo(-13, -30); g.lineTo(0, -40); g.lineTo(4, -26); g.closePath(); g.fill();
+      /* runes, lit up */
+      g.save();
+      g.globalAlpha = .6 + Math.sin(world.t / 14 + s.wob) * .35;
+      g.strokeStyle = glow; g.lineWidth = 3; g.lineCap = "round";
+      [-16, 0, 16].forEach((ry, i) => {
+        g.beginPath();
+        g.moveTo(-8, ry - 6); g.lineTo(8, ry - 6);
+        g.moveTo(i % 2 ? -8 : 8, ry - 6); g.lineTo(0, ry + 6);
+        g.stroke();
+      });
+      g.restore();
+    }
+  } else if (world.kind === "prehistoric") {
     const f = Math.min(1, world.player.x / world.w);
     /* bare volcanic rock early on, turning to real soil once plants take over */
     g.fillStyle = f < .25 ? "#6b5546" : (f < .5 ? "#5f6b46" : "#5a7a4a");
@@ -2039,14 +2471,7 @@ function drawGround(cam) {
         g.beginPath(); g.moveTo(x - 14, gy + 34); g.lineTo(x + 14, gy + 30); g.stroke();
       }
     }
-    /* the sea floor, past the shore */
-    const sx = seaStartX() - cam.x;
-    if (sx < CW) {
-      g.fillStyle = "#4a5a52";
-      g.fillRect(Math.max(0, sx), gy, CW - Math.max(0, sx), CH - gy);
-      g.fillStyle = "#5f7268";
-      g.fillRect(Math.max(0, sx), gy, CW - Math.max(0, sx), 12);
-    }
+    drawSeaFloor(cam, gy, "#4a5a52", "#5f7268");
     return;
   }
 
@@ -2157,6 +2582,42 @@ function drawDeco(d, cam, par) {
       g.beginPath(); g.moveTo(0, 0);
       g.quadraticCurveTo(i * 20 + sway * .3, -34, i * 34 + sway * .6, -54); g.stroke();
     }
+  } else if (d.kind === "bigmushroom") {
+    /* a toadstool taller than a person, lit from underneath */
+    const cap = stableColor(d, ["#d94f7a", "#9b5fd0", "#e08a3c", "#4fc3c9"]);
+    g.fillStyle = "#efe6d8";
+    roundRect(-7, -64, 14, 64, 6); g.fill();
+    g.fillStyle = cap;
+    g.beginPath(); g.ellipse(0, -64, 40, 26, 0, Math.PI, 0); g.fill();
+    g.fillStyle = "rgba(255,255,255,.45)";
+    [[-18, -72], [10, -78], [22, -66]].forEach(pt => {
+      g.beginPath(); g.arc(pt[0], pt[1], 5, 0, 6.3); g.fill();
+    });
+    g.save();
+    g.globalAlpha = .18 + Math.sin(world.t / 40 + d.x) * .08;
+    g.fillStyle = cap;
+    g.beginPath(); g.arc(0, -56, 54, 0, 6.3); g.fill();
+    g.restore();
+  } else if (d.kind === "twistedtree") {
+    g.strokeStyle = "#3a2b46"; g.lineWidth = 13; g.lineCap = "round";
+    g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(sway * .4 - 16, -60, sway + 10, -116); g.stroke();
+    g.lineWidth = 6;
+    [[-1, -70], [1, -92]].forEach((b, i) => {
+      g.beginPath();
+      g.moveTo(sway * .3 + b[0] * 6, b[1]);
+      g.quadraticCurveTo(b[0] * 40, b[1] - 18, b[0] * 62, b[1] - 40);
+      g.stroke();
+    });
+    g.fillStyle = "#4d3a5e";
+    g.beginPath(); g.arc(sway + 10, -124, 22, 0, 6.3); g.fill();
+    g.beginPath(); g.arc(sway - 18, -108, 15, 0, 6.3); g.fill();
+  } else if (d.kind === "crag") {
+    g.fillStyle = "#5b5f6b";
+    g.beginPath();
+    g.moveTo(-34, 0); g.lineTo(-16, -54); g.lineTo(6, -30); g.lineTo(24, -66); g.lineTo(40, 0);
+    g.closePath(); g.fill();
+    g.fillStyle = "rgba(255,255,255,.2)";
+    g.beginPath(); g.moveTo(16, -58); g.lineTo(24, -66); g.lineTo(32, -40); g.closePath(); g.fill();
   } else if (d.kind === "cycad") {
     /* a squat pineapple trunk with a crown of stiff fronds */
     g.fillStyle = "#6b5236";
@@ -2244,7 +2705,15 @@ function drawCritter(f, cam) {
       g.beginPath(); g.moveTo(i * 3, 0);
       g.lineTo(i * 3 + Math.sin(f.wob * 4 + i) * 4, 6); g.stroke();
     }
-  } else if (world.kind === "prehistoric" && f.x > seaStartX()) {
+  } else if (world.kind === "mythical") {
+    /* a will-o'-the-wisp: a little light with a halo and a tail */
+    g.globalAlpha = .55 + Math.sin(f.wob * 2) * .25;
+    g.beginPath(); g.arc(0, 0, 5, 0, 6.3); g.fill();
+    g.globalAlpha = .18;
+    g.beginPath(); g.arc(0, 0, 13, 0, 6.3); g.fill();
+    g.globalAlpha = .3;
+    g.beginPath(); g.ellipse(-12, 0, 11, 3, 0, 0, 6.3); g.fill();
+  } else if (world.kind === "prehistoric" && inWater(f.x)) {
     /* out over the ancient sea they are fish, not fliers */
     g.beginPath(); g.ellipse(0, 0, 15, 8, 0, 0, 6.3); g.fill();
     g.beginPath(); g.moveTo(-13, 0); g.lineTo(-24, -8); g.lineTo(-24, 8); g.fill();
@@ -2327,7 +2796,7 @@ function drawSpot(s, cam, isNear) {
     /* Half of them are a fossil sticking out of the rock and half are a
        clutch of eggs, so the same screen doesn't read as one thing repeated. */
     const eggs = Math.floor(s.wob * 10) % 2 === 0;
-    const wet = s.x > seaStartX();
+    const wet = inWater(s.x);
     if (eggs) {
       g.fillStyle = wet ? "#4a5a52" : "#6b5236";
       g.beginPath(); g.ellipse(0, 14, 40, 15, 0, 0, 6.3); g.fill();
@@ -2475,7 +2944,27 @@ function drawWanderer(cam) {
   g.scale((wd.vx > 0 ? 1 : -1) * wd.size, wd.size);
   g.globalAlpha = close ? .85 : .55;
   g.fillStyle = close ? "#0b1a2a" : "#050d16";
-  if (world.kind === "prehistoric" && !world.vertical) {
+  if (world.kind === "mythical") {
+    /* a winged thing: body, long neck, and two big beating wings */
+    const beat = Math.sin(world.t / 9) * 26;
+    g.beginPath(); g.ellipse(0, 0, 40, 15, 0, 0, 6.3); g.fill();
+    g.beginPath();                                    /* tail */
+    g.moveTo(-34, -4); g.quadraticCurveTo(-72, 6, -96, 26);
+    g.lineTo(-90, 10); g.quadraticCurveTo(-64, -2, -32, -10);
+    g.closePath(); g.fill();
+    g.beginPath();                                    /* neck and head */
+    g.moveTo(28, -8); g.quadraticCurveTo(56, -22, 72, -40);
+    g.lineTo(88, -34); g.lineTo(80, -22);
+    g.quadraticCurveTo(58, -8, 34, 6);
+    g.closePath(); g.fill();
+    [-1, 1].forEach(dir => {                          /* wings */
+      g.beginPath();
+      g.moveTo(-4, -6);
+      g.quadraticCurveTo(14, -46 - beat * dir, 58, -62 - beat * dir);
+      g.quadraticCurveTo(30, -26 - beat * dir * .4, 20, 2);
+      g.closePath(); g.fill();
+    });
+  } else if (world.kind === "prehistoric" && !world.vertical) {
     /* a body on two legs with a long neck and a long tail */
     g.beginPath(); g.ellipse(0, -18, 46, 24, 0, 0, 6.3); g.fill();
     g.beginPath();                                   /* tail */
@@ -2497,7 +2986,8 @@ function drawWanderer(cam) {
   /* the glowing eye */
   g.globalAlpha = 1;
   g.fillStyle = close ? "#ffe680" : "#7ee8fa";
-  const eye = world.kind === "prehistoric" && !world.vertical ? { x: 84, y: -66 } : { x: 40, y: -5 };
+  const eye = world.kind === "mythical" ? { x: 80, y: -32 }
+            : (world.kind === "prehistoric" && !world.vertical ? { x: 84, y: -66 } : { x: 40, y: -5 });
   g.beginPath(); g.arc(eye.x, eye.y, 4.5 + Math.sin(world.t / 10) * 1.2, 0, 6.3); g.fill();
   g.restore();
 
@@ -2921,7 +3411,8 @@ function drawZoneHud() {
     island:      ["rgba(120,210,180,.85)", "rgba(90,180,140,.85)", "rgba(200,160,90,.9)",
                   "rgba(120,120,200,.9)"],
     underground: ["rgba(123,90,58,.9)", "rgba(59,48,56,.9)", "rgba(45,42,68,.92)", "rgba(60,14,22,.95)"],
-    prehistoric: ["rgba(201,82,47,.9)", "rgba(95,158,99,.88)", "rgba(79,159,224,.88)", "rgba(20,70,110,.92)"]
+    prehistoric: ["rgba(201,82,47,.9)", "rgba(95,158,99,.88)", "rgba(79,159,224,.88)", "rgba(20,70,110,.92)"],
+    mythical:    ["rgba(107,74,143,.9)", "rgba(159,182,198,.88)", "rgba(63,109,143,.9)", "rgba(150,30,10,.94)"]
   };
   const colors = METER[world.kind] || METER.ocean;
   const stops = list.length;
@@ -3059,7 +3550,8 @@ function fillCard(c, opts) {
     const WHY = {
       ocean: "for going deep", underground: "for digging deep",
       land: "for going way out", island: "for sailing this far",
-      prehistoric: "for going this far back in time"
+      prehistoric: "for going this far back in time",
+      mythical: "for going this deep into the stories"
     };
     pts.textContent = "+" + opts.points.toLocaleString() + " points" +
       (opts.zone && opts.zone.bonus > 1
@@ -3080,8 +3572,12 @@ function fillCard(c, opts) {
   }
   if (c.magicOnly) line += "  🪄 (needs the magic trap)";
   if (c.mythic) line += "<br><b>Hardly anybody in the whole world has ever seen me.</b>";
-  if (c.imaginary) line += '<br><span style="color:#b06a00"><b>Every other animal in this book is real. ' +
-    "This one is Cam's.</b></span>";
+  if (c.imaginary) line += '<br><span style="color:#b06a00"><b>Everything else in this book either really ' +
+    'lived, or somebody somewhere really tells stories about it. This one is Cam\'s own.</b></span>';
+  if (c.storyFrom) {
+    line += '<br><span style="color:#6b3fa0"><b>🌍 This story comes from ' + c.storyFrom +
+            ". Nobody has ever proved I'm real.</b></span>";
+  }
   if (c.livedWhen) {
     line += '<br><span style="color:#8a4a10"><b>🦴 I lived ' + c.livedWhen +
             ". There are none of us left anywhere on Earth.</b></span>";
@@ -3223,7 +3719,7 @@ function showShop() {
     "You have " + state.score.toLocaleString() + " points  ⭐";
 
   /* the place he's exploring right now comes first */
-  const order = ["ocean", "land", "island", "underground", "prehistoric", "any"];
+  const order = ["ocean", "land", "island", "underground", "prehistoric", "mythical", "any"];
   const here = world ? world.kind : null;
   if (here) order.splice(order.indexOf(here), 1), order.unshift(here);
 
@@ -3390,7 +3886,8 @@ function labelBackButtons() {
   const BACK = {
     ocean: "⬅️ Back to my dive", land: "⬅️ Back to exploring",
     island: "⬅️ Back to the island", underground: "⬅️ Back down the hole",
-    prehistoric: "⬅️ Back to the dinosaurs"
+    prehistoric: "⬅️ Back to the dinosaurs",
+    mythical: "⬅️ Back to the stories"
   };
   const label = world ? BACK[world.kind] : "⬅️ Back home";
   document.querySelectorAll(".big-back").forEach(b => { b.textContent = label; });
@@ -3409,13 +3906,18 @@ function updateHomeText() {
       ? "🦬 Your time machine reaches <b>" +
           ZONES.prehistoric[maxZoneAllowed("prehistoric") - 1].name + "</b>.<br>"
       : "") +
+    (state.gear.story
+      ? "📖 Your storybook is open as far as <b>" +
+          ZONES.mythical[maxZoneAllowed("mythical") - 1].name + "</b>.<br>"
+      : "") +
     "🏆 Deepest dive ever: <b>" + state.deepest.toLocaleString() + " feet</b><br>" +
     "🧒 <b>" + me().label + "</b> is exploring — " + me().perkTitle;
 
   /* the two bought worlds stay locked until he buys the way in */
   const OPEN = {
     island: "Animals found nowhere else on Earth",
-    prehistoric: "Dinosaurs — and the MEGALODON"
+    prehistoric: "Dinosaurs — and the MEGALODON",
+    mythical: "Monsters people made up, all over the world"
   };
   Object.keys(WORLD_KEY).forEach(kind => {
     const card = document.getElementById(kind + "Card");
@@ -3438,6 +3940,7 @@ function refresh() {
   if (wb) wb.textContent = (me().chip || "🧒") + " " + me().label;
   drawTrapTray();
   drawPowerTray();
+  updateNewsDot();
   updateHomeText();
   updateHint();
 }
@@ -3476,11 +3979,12 @@ function updateHint() {
   h.classList.toggle("magicOn", !!armedTrap && !world.reveal);
 
   const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow",
-                  prehistoric: "fossil" };
+                  prehistoric: "fossil", mythical: "rune stone" };
   const OPEN = {
     ocean: "open the trap!", land: "flip the rock!",
     island: "look in the nest!", underground: "dig out the burrow!",
-    prehistoric: "chip the fossil out!"
+    prehistoric: "chip the fossil out!",
+    mythical: "wake the stone up!"
   };
   const inPool = near && near.type === "pool";
   const thing = inPool ? "tide pool" : THING[world.kind];
@@ -3489,7 +3993,8 @@ function updateHint() {
     land: "🚶 Walk RIGHT for rarer creatures! (up = jump)",
     island: "⛵ Head RIGHT to the next island — each one has animals found nowhere else!",
     underground: "⛏️ Dig DOWN — everything down there is blind and pale and strange.",
-    prehistoric: "🦬 Walk RIGHT through TIME — Triassic, Jurassic, Cretaceous, then into the sea."
+    prehistoric: "🦬 Walk RIGHT through TIME — Triassic, Jurassic, Cretaceous, then into the sea.",
+    mythical: "🔮 Walk RIGHT — forest, mountains, the black loch, and down into the Underworld."
   };
 
   /* the CATCH button glows when he's standing at something */
@@ -3540,7 +4045,7 @@ function showBook() {
   shrine.appendChild(buildGrid(mythics));
   body.appendChild(shrine);
 
-  ["land", "ocean", "island", "underground", "prehistoric"].forEach(where => {
+  ["land", "ocean", "island", "underground", "prehistoric", "mythical"].forEach(where => {
     const h3 = document.createElement("h3");
     h3.textContent = PLACES[where].emoji + " " + PLACES[where].name;
     body.appendChild(h3);
@@ -3557,6 +4062,14 @@ function showBook() {
       note.className = "islandNote";
       note.textContent = "Every single one of these is gone. Nobody has ever photographed one, " +
         "so the pictures are either real fossils or paintings made from the bones.";
+      body.appendChild(note);
+    }
+    if (where === "mythical") {
+      const note = document.createElement("div");
+      note.className = "islandNote";
+      note.textContent = "None of these are real, and every card says so. What IS real is that " +
+        "somebody made each one up \u2014 and the pictures are the actual carvings, tapestries and " +
+        "paintings they made. Every corner of the world invented monsters. That's the interesting part.";
       body.appendChild(note);
     }
 
@@ -3579,11 +4092,74 @@ function showBook() {
   show("book");
 }
 
-function buildGrid(list) {
+/* A short line about each new world, so a new place feels like an event
+   rather than an extra button that quietly turned up on the home screen. */
+const WORLD_PITCH = {
+  ocean:       "Six layers straight down, all the way to the volcano vents.",
+  land:        "The backyard, the deep forest and the desert.",
+  island:      "Four islands full of animals that live in ONE place on Earth.",
+  underground: "Dig down through dirt, caves and crystal into the deep dark.",
+  prehistoric: "Walk right and you walk through TIME \u2014 and the Megalodon is at the end of it.",
+  mythical:    "Unicorns, the chupacabra, the yeti, a phoenix. Monsters people made up all over the world."
+};
+
+function showWhatsNew() {
+  const nw = newStuff();
+  const body = document.getElementById("newsBody");
+  const sum = document.getElementById("newsSummary");
+  document.getElementById("newsCheck").textContent = "";
+  body.innerHTML = "";
+
+  if (!nw.worlds.length && !nw.creatures.length) {
+    sum.textContent = "You are all caught up \u2014 you have seen everything in the game. " +
+      "When new animals or a new place turn up, they will show up here.";
+  } else {
+    const bits = [];
+    if (nw.worlds.length) bits.push(nw.worlds.length === 1 ? "a whole NEW PLACE to explore" :
+                                    nw.worlds.length + " new places to explore");
+    if (nw.creatures.length) bits.push(nw.creatures.length + " new creatures to find");
+    sum.textContent = "There is " + bits.join(" and ") + "!";
+
+    nw.worlds.forEach(w => {
+      const box = document.createElement("div");
+      box.className = "newsWorld";
+      box.innerHTML = '<div class="big">' + PLACES[w].emoji + "</div>" +
+        "<h3>" + PLACES[w].name.toUpperCase() + "</h3>" +
+        "<p>" + (WORLD_PITCH[w] || "") + "</p>" +
+        "<p style=\"margin-top:8px;color:#9fd3ff\">" +
+          ZONES[w].map(z => z.name).join(" \u2192 ") + "</p>";
+      body.appendChild(box);
+    });
+
+    if (nw.creatures.length) {
+      const h3 = document.createElement("h3");
+      h3.textContent = "New creatures";
+      body.appendChild(h3);
+      /* face up on purpose: knowing a MEGALODON is out there is the fun part */
+      body.appendChild(buildGrid(nw.creatures, true));
+    }
+  }
+
+  markAllSeen();
+  labelBackButtons();
+  show("news");
+}
+
+/* the red dot on the top bar, so he notices without being told */
+function updateNewsDot() {
+  const dot = document.getElementById("newsDot");
+  if (!dot) return;
+  const nw = newStuff();
+  const n = nw.creatures.length + nw.worlds.length;
+  dot.style.display = n ? "block" : "none";
+  dot.textContent = n > 99 ? "99+" : n;
+}
+
+function buildGrid(list, showAll) {
   const grid = document.createElement("div");
   grid.className = "bookGrid";
   list.slice().sort((a, b) => TIERS[a.tier].points - TIERS[b.tier].points).forEach(c => {
-    const have = state.found.includes(c.id);
+    const have = state.found.includes(c.id) || showAll;
     const cell = document.createElement("button");
     cell.className = "bookCell" + (have ? "" : " locked");
     cell.style.borderColor = have ? TIERS[c.tier].color : "#4a7ab5";
@@ -4083,7 +4659,7 @@ function buildAddForm() {
   s1.innerHTML = "<h4>Where does the " + addPick.title + " live?</h4>";
   const r1 = document.createElement("div");
   r1.className = "pickRow";
-  ["land", "ocean", "island", "underground", "prehistoric"].forEach(w => {
+  ["land", "ocean", "island", "underground", "prehistoric", "mythical"].forEach(w => {
     const b = document.createElement("button");
     b.className = "pick" + (addWhere === w ? " on" : "");
     b.textContent = PLACES[w].emoji + " " + PLACES[w].name;
@@ -4295,12 +4871,16 @@ function confettiTick() {
 confettiTick();
 
 /* ---------- go! ---------- */
+checkForUpdate();
 load();
 installMyAnimals();
+seedSeen();
 fitCanvas();
 refresh();
 /* the very first thing is choosing who goes */
 if (!state.who || !CHARACTERS[state.who]) { state.who = "cam"; showWho(); }
+/* ...unless something new arrived since he last played, which beats everything */
+else if (newStuff().creatures.length || newStuff().worlds.length) showWhatsNew();
 loop();
 </script>
 </body>

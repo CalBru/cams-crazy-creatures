@@ -1168,5 +1168,175 @@
     "file": "megalodon.jpg",
     "title": "Megalodon",
     "url": "https://en.wikipedia.org/wiki/Megalodon"
+  },
+  "jackalope": {
+    "file": "jackalope.jpg",
+    "title": "Jackalope",
+    "url": "https://en.wikipedia.org/wiki/Jackalope"
+  },
+  "unicorn": {
+    "file": "unicorn.jpg",
+    "title": "Unicorn",
+    "url": "https://en.wikipedia.org/wiki/Unicorn"
+  },
+  "kitsune": {
+    "file": "kitsune.jpg",
+    "title": "Kitsune",
+    "url": "https://en.wikipedia.org/wiki/Kitsune"
+  },
+  "centaur": {
+    "file": "centaur.jpg",
+    "title": "Centaur",
+    "url": "https://en.wikipedia.org/wiki/Centaur"
+  },
+  "pegasus": {
+    "file": "pegasus.jpg",
+    "title": "Pegasus",
+    "url": "https://en.wikipedia.org/wiki/Pegasus"
+  },
+  "bunyip": {
+    "file": "bunyip.jpg",
+    "title": "Bunyip",
+    "url": "https://en.wikipedia.org/wiki/Bunyip"
+  },
+  "leshy": {
+    "file": "leshy.jpg",
+    "title": "Leshy",
+    "url": "https://en.wikipedia.org/wiki/Leshy"
+  },
+  "yeti": {
+    "file": "yeti.jpg",
+    "title": "Yeti",
+    "url": "https://en.wikipedia.org/wiki/Yeti"
+  },
+  "sasquatch": {
+    "file": "sasquatch.jpg",
+    "title": "Bigfoot",
+    "url": "https://en.wikipedia.org/wiki/Bigfoot"
+  },
+  "griffin": {
+    "file": "griffin.jpg",
+    "title": "Griffin",
+    "url": "https://en.wikipedia.org/wiki/Griffin"
+  },
+  "roc": {
+    "file": "roc.jpg",
+    "title": "Roc (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Roc_(mythology)"
+  },
+  "thunderbird": {
+    "file": "thunderbird.jpg",
+    "title": "Thunderbird (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Thunderbird_(mythology)"
+  },
+  "qilin": {
+    "file": "qilin.jpg",
+    "title": "Qilin",
+    "url": "https://en.wikipedia.org/wiki/Qilin"
+  },
+  "tengu": {
+    "file": "tengu.jpg",
+    "title": "Tengu",
+    "url": "https://en.wikipedia.org/wiki/Tengu"
+  },
+  "simurgh": {
+    "file": "simurgh.jpg",
+    "title": "Simurgh",
+    "url": "https://en.wikipedia.org/wiki/Simurgh"
+  },
+  "nian": {
+    "file": "nian.jpg",
+    "title": "Nian",
+    "url": "https://en.wikipedia.org/wiki/Nian"
+  },
+  "kappa": {
+    "file": "kappa.jpg",
+    "title": "Kappa (folklore)",
+    "url": "https://en.wikipedia.org/wiki/Kappa_(folklore)"
+  },
+  "kelpie": {
+    "file": "kelpie.jpg",
+    "title": "Kelpie",
+    "url": "https://en.wikipedia.org/wiki/Kelpie"
+  },
+  "nessie": {
+    "file": "nessie.jpg",
+    "title": "Loch Ness Monster",
+    "url": "https://en.wikipedia.org/wiki/Loch_Ness_Monster"
+  },
+  "mermaid": {
+    "file": "mermaid.jpg",
+    "title": "Mermaid",
+    "url": "https://en.wikipedia.org/wiki/Mermaid"
+  },
+  "selkie": {
+    "file": "selkie.jpg",
+    "title": "Selkie",
+    "url": "https://en.wikipedia.org/wiki/Selkie"
+  },
+  "chinesedragon": {
+    "file": "chinesedragon.jpg",
+    "title": "Chinese dragon",
+    "url": "https://en.wikipedia.org/wiki/Chinese_dragon"
+  },
+  "ahuizotl": {
+    "file": "ahuizotl.jpg",
+    "title": "Ahuizotl (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Ahuizotl_(mythology)"
+  },
+  "jormungandr": {
+    "file": "jormungandr.jpg",
+    "title": "Jörmungandr",
+    "url": "https://en.wikipedia.org/wiki/J%C3%B6rmungandr"
+  },
+  "leviathan": {
+    "file": "leviathan.jpg",
+    "title": "Leviathan",
+    "url": "https://en.wikipedia.org/wiki/Leviathan"
+  },
+  "basilisk": {
+    "file": "basilisk.jpg",
+    "title": "Basilisk",
+    "url": "https://en.wikipedia.org/wiki/Basilisk"
+  },
+  "cerberus": {
+    "file": "cerberus.jpg",
+    "title": "Cerberus",
+    "url": "https://en.wikipedia.org/wiki/Cerberus"
+  },
+  "chimera": {
+    "file": "chimera.jpg",
+    "title": "Chimera (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Chimera_(mythology)"
+  },
+  "minotaur": {
+    "file": "minotaur.jpg",
+    "title": "Minotaur",
+    "url": "https://en.wikipedia.org/wiki/Minotaur"
+  },
+  "manticore": {
+    "file": "manticore.jpg",
+    "title": "Manticore",
+    "url": "https://en.wikipedia.org/wiki/Manticore"
+  },
+  "firesalamander": {
+    "file": "firesalamander.jpg",
+    "title": "Salamanders in folklore",
+    "url": "https://en.wikipedia.org/wiki/Salamanders_in_folklore"
+  },
+  "hydra": {
+    "file": "hydra.jpg",
+    "title": "Lernaean Hydra",
+    "url": "https://en.wikipedia.org/wiki/Lernaean_Hydra"
+  },
+  "fenrir": {
+    "file": "fenrir.jpg",
+    "title": "Fenrir",
+    "url": "https://en.wikipedia.org/wiki/Fenrir"
+  },
+  "phoenix": {
+    "file": "phoenix.jpg",
+    "title": "Phoenix (mythology)",
+    "url": "https://en.wikipedia.org/wiki/Phoenix_(mythology)"
   }
 }

@@ -1,0 +1,119 @@
+[
+
+/* ================= ZONE 1 — THE ENCHANTED FOREST ================= */
+
+{ "id":"jackalope", "name":"Jackalope", "wiki":"Jackalope", "emoji":"🐰", "where":"mythical", "zones":[1], "tier":"uncommon", "givesMagic":true, "storyFrom":"Wyoming, in the United States",
+  "facts":["I'm a jackrabbit with antlers, and I was invented in 1932 by a taxidermist who stuck deer antlers on a dead rabbit for a joke.","The joke worked so well that Wyoming still sells pretend jackalope hunting licences.","Here's the strange part: real rabbits sometimes DO grow horn-shaped lumps, from a virus. People saw those, and the story had somewhere to start.","Catch me and I'll leave you a magic trap, just to keep the joke going."] },
+
+{ "id":"unicorn", "name":"Unicorn", "wiki":"Unicorn", "emoji":"🦄", "where":"mythical", "zones":[1], "tier":"rare", "storyFrom":"Europe, going all the way back to ancient Greece",
+  "facts":["I am the national animal of SCOTLAND. A real country picked me, and I'm not even real.","For hundreds of years, people bought 'unicorn horns' for enormous amounts of money. They were narwhal tusks.","A Greek doctor wrote me down 2,400 years ago after travelling to India. He had probably seen a rhinoceros.","Queens kept my horn on the dinner table because they believed it would bubble if the food was poisoned."] },
+
+{ "id":"kitsune", "name":"Kitsune", "wiki":"Kitsune", "emoji":"🦊", "where":"mythical", "zones":[1], "tier":"rare", "storyFrom":"Japan",
+  "facts":["I'm a fox, and I grow one more tail every hundred years. At nine tails my fur turns white or gold.","I can turn into a person if I want to, and I usually do it to play a trick.","There are thousands of real stone foxes standing guard at Inari shrines all over Japan. You can go and see them.","The older I get, the wiser I get. A nine-tailed me is a thousand years old."] },
+
+{ "id":"centaur", "name":"Centaur", "wiki":"Centaur", "emoji":"🐴", "where":"mythical", "zones":[1], "tier":"uncommon", "storyFrom":"ancient Greece",
+  "facts":["I'm a person from the waist up and a horse from the waist down.","One idea about where I came from: people who had never seen anybody ride a horse before, watching riders come over a hill.","Most centaurs in the stories are wild and rowdy. One of us, Chiron, was a brilliant doctor and teacher instead.","Chiron taught Achilles and Heracles, and the Greeks put him in the sky as a constellation."] },
+
+{ "id":"chupacabra", "name":"Chupacabra", "wiki":"Chupacabra", "emoji":"👹", "where":"mythical", "zones":[1,2], "tier":"rare", "storyFrom":"Puerto Rico",
+  "facts":["My name means GOAT SUCKER in Spanish.","The very first report of me was in Puerto Rico in 1995, which makes me one of the youngest legends there is.","People describe me as a spiny grey thing that hops like a kangaroo with big red eyes.","Every single 'chupacabra body' anybody has ever handed to a scientist has turned out to be a coyote or a dog with its fur fallen out."] },
+
+{ "id":"pegasus", "name":"Pegasus", "wiki":"Pegasus", "emoji":"🐎", "where":"mythical", "zones":[1], "tier":"epic", "storyFrom":"ancient Greece",
+  "facts":["I'm a white horse with wings, and where my hoof struck the ground a spring of water bubbled up.","I carried the hero Bellerophon, right up until he tried to ride me all the way to the home of the gods, and I threw him off.","There is a constellation named after me. On an autumn night you can find my square of four stars for real.","I'm one of the oldest flying animals anybody ever imagined — nearly 3,000 years old."] },
+
+{ "id":"bunyip", "name":"Bunyip", "wiki":"Bunyip", "emoji":"🫧", "where":"mythical", "zones":[1], "tier":"rare", "storyFrom":"the First Nations peoples of Australia",
+  "facts":["I live in the billabongs and swamps, and you hear me long before you see me — a booming call across the water at night.","Nobody agrees what I look like. Some say a dog's face, some say flippers, some say a long neck and tusks.","Australia really did have a giant animal in its waterholes once: Diprotodon, the biggest pouched animal ever. Some people think the stories remember it.","In 1846 a skull was put in a museum in Sydney labelled BUNYIP. It was a deformed horse."] },
+
+{ "id":"leshy", "name":"Leshy", "wiki":"Leshy", "emoji":"🌲", "where":"mythical", "zones":[1], "tier":"uncommon", "storyFrom":"Russia, Poland and the Slavic forests",
+  "facts":["I am the forest. If you are in the woods, you are standing in me.","I can be as tall as the tallest pine or as small as a blade of grass, and I change size whenever I like.","If you get lost in my woods, that's me. Turn your coat inside out and put your shoes on the wrong feet and I'll let you go.","I'm not wicked. I just don't like people who are rude to trees."] },
+
+/* ================= ZONE 2 — THE MISTY MOUNTAINS ================= */
+
+{ "id":"yeti", "name":"Yeti", "wiki":"Yeti", "emoji":"❄️", "where":"mythical", "zones":[2], "tier":"epic", "storyFrom":"Nepal and Tibet, high in the Himalayas",
+  "facts":["People in the Himalayas have talked about me for a very long time. The mountaineers only turned up a hundred years ago.","'Abominable Snowman' came from a newspaper in 1921 getting a Tibetan phrase wrong. It stuck.","A monastery kept a 'yeti scalp' for centuries. Scientists tested it. It was goat.","In 2017 a team tested nine yeti bones, teeth and hairs from museums. Eight were bears. One was a dog."] },
+
+{ "id":"sasquatch", "name":"Sasquatch", "wiki":"Bigfoot", "emoji":"🦶", "where":"mythical", "zones":[2], "tier":"rare", "storyFrom":"the Pacific Northwest of North America",
+  "facts":["My name comes from sásq'ets, a word from the Halkomelem language of the Sts'ailes people.","I'm supposed to be two and a half metres tall and covered in dark hair, and I always leave before anyone gets a proper look.","In 2002 a family announced that their dad had been stomping around with big carved wooden feet since 1958.","There is a stretch of highway in Washington State with an official Sasquatch crossing sign on it."] },
+
+{ "id":"griffin", "name":"Griffin", "wiki":"Griffin", "emoji":"🦅", "where":"mythical", "zones":[2], "tier":"epic", "storyFrom":"ancient Greece and Persia",
+  "facts":["I have the head and wings of an eagle and the body of a lion, so I'm the king of the sky AND the king of the beasts at once.","My job is guarding treasure. Whole mountains of gold, and I never sleep.","Here is a real idea about me: the gold country in the stories is the Gobi Desert, which is full of Protoceratops fossils — a beaked four-legged animal lying next to its eggs.","Travellers may have been describing dinosaur bones for 2,500 years without knowing it."] },
+
+{ "id":"roc", "name":"The Roc", "wiki":"Roc (mythology)", "emoji":"🪶", "where":"mythical", "zones":[2], "tier":"legendary", "magicOnly":true, "storyFrom":"the Middle East, in the tales of the Thousand and One Nights",
+  "facts":["I am a bird big enough to pick up an ELEPHANT, and I do.","Sinbad escaped an island by tying himself to my foot with his turban while I slept.","Marco Polo wrote that people on Madagascar sent a giant feather to the emperor of China as proof of me.","Madagascar really did have the elephant bird — three metres tall, half a tonne, and it laid the biggest egg of any animal ever. It died out about 400 years ago."] },
+
+{ "id":"thunderbird", "name":"Thunderbird", "wiki":"Thunderbird (mythology)", "emoji":"⚡", "where":"mythical", "zones":[2], "tier":"legendary", "magicOnly":true, "storyFrom":"many Indigenous nations of North America, who each tell it their own way",
+  "facts":["Thunder is the beating of my wings. Lightning is the flash of my eyes.","I'm carved at the top of totem poles on the Northwest Coast, above everything else, because I am the one who watches the sky.","I am big enough to carry a whale in my claws, and in some tellings that is exactly what I do.","Different nations tell different stories about me, and they are their stories to tell, not mine."] },
+
+{ "id":"qilin", "name":"Qilin", "wiki":"Qilin", "emoji":"🦌", "where":"mythical", "zones":[2], "tier":"epic", "storyFrom":"China",
+  "facts":["I only appear when somebody truly good and wise is about to be born, or is about to die.","I walk over grass without bending a single blade, and I will not step on a living insect.","I have scales like a dragon, hooves like a deer, and a body wrapped in fire.","In 1414 a ship brought a giraffe back to the Chinese emperor. The court decided it was me, and everybody celebrated."] },
+
+{ "id":"tengu", "name":"Tengu", "wiki":"Tengu", "emoji":"👺", "where":"mythical", "zones":[2], "tier":"rare", "storyFrom":"Japan",
+  "facts":["I live at the tops of the mountains, in the oldest cedar trees, and I have wings.","I started out in the stories as a troublemaker and slowly turned into a protector of the mountains instead.","I'm supposed to be the greatest swordsman there is. The legend says I taught the samurai Minamoto no Yoshitsune myself.","My mask — red face, very long nose — is worn at festivals all over Japan today."] },
+
+{ "id":"simurgh", "name":"Simurgh", "wiki":"Simurgh", "emoji":"🕊️", "where":"mythical", "zones":[2], "tier":"epic", "storyFrom":"Persia, which is Iran today",
+  "facts":["I am a giant bird and I have been alive long enough to see the world destroyed three times.","I nest in the Tree of Life, and every seed of every plant on Earth falls from its branches.","In the great Persian poem I find a baby abandoned on a mountain and raise him myself.","If you are hurt, burn one of my feathers and I will come."] },
+
+{ "id":"nian", "name":"Nian", "wiki":"Nian", "emoji":"🧧", "where":"mythical", "zones":[2], "tier":"rare", "storyFrom":"China",
+  "facts":["That is not me in the picture. That is the lion dance — the thing people invented to frighten me off.","I come out of the mountains once a year, on the last night of the old year.","I am terrified of three things: the colour red, bright fire, and loud bangs.","That is WHY Chinese New Year is red lanterns, red envelopes and firecrackers. The whole festival is a plan to scare me off.","My name means 'year'. So when people say Happy New Year in Chinese, they are partly saying: we survived the monster again."] },
+
+/* ================= ZONE 3 — THE DEEP WATERS ================= */
+
+{ "id":"kappa", "name":"Kappa", "wiki":"Kappa (folklore)", "emoji":"🥒", "where":"mythical", "zones":[3], "tier":"uncommon", "storyFrom":"Japan",
+  "facts":["I'm a river creature about the size of a child, with a turtle shell and webbed hands.","I have a dish of water on top of my head, and if it spills I lose all my strength.","So here's the trick: bow to me. I'm very polite and I HAVE to bow back — and then my dish tips over.","I love cucumbers more than anything. In Japan a cucumber sushi roll is called a kappamaki because of me."] },
+
+{ "id":"kelpie", "name":"Kelpie", "wiki":"Kelpie", "emoji":"🐟", "where":"mythical", "zones":[3], "tier":"rare", "storyFrom":"Scotland",
+  "facts":["I'm a horse who lives in the rivers and lochs, and I look like a perfectly ordinary horse until you touch me.","My coat is sticky. Climb on my back and you cannot get off again.","My mane is always dripping, even when I've been standing in a field all day.","There are two Kelpies standing in Falkirk in Scotland, 30 metres tall and made of steel. They are the biggest horse heads on Earth."] },
+
+{ "id":"nessie", "name":"The Loch Ness Monster", "wiki":"Loch Ness Monster", "emoji":"🦕", "where":"mythical", "zones":[3], "tier":"epic", "storyFrom":"Loch Ness in Scotland",
+  "facts":["My loch is 230 metres deep and the water is almost black with peat. You genuinely cannot see anything down there.","The most famous photo of me was taken in 1934. In 1994 a man confessed that it was a toy submarine with a model neck glued on.","In 2018 scientists filtered the whole loch and read the DNA of everything living in it. No reptile. No dinosaur. An awful lot of eel.","The first written story about something in my loch is from the year 565. I have been at this a long time."] },
+
+{ "id":"taniwha", "name":"Taniwha", "wiki":"Taniwha", "emoji":"🐉", "where":"mythical", "zones":[3], "tier":"epic", "storyFrom":"the Māori people of Aotearoa New Zealand",
+  "facts":["I live in the deep pools of rivers, in caves, and out in the sea.","Some taniwha are dangerous. Many are kaitiaki — guardians — who look after a particular stretch of water and the people who live by it.","Iwi have asked for roads and pipelines to be moved because of a taniwha, and they have been moved.","These are Māori stories, told by the people they belong to, and they are still being told today."] },
+
+{ "id":"mermaid", "name":"Mermaid", "wiki":"Mermaid", "emoji":"🧜", "where":"mythical", "zones":[3], "tier":"rare", "storyFrom":"all over the world — the oldest one written down is from Assyria",
+  "facts":["Half person, half fish. Almost every seafaring people on Earth came up with me on their own.","The oldest mermaid we know of is Atargatis, a goddess from Assyria over 3,000 years ago.","In 1493 Christopher Columbus wrote that he had seen three mermaids and that they were 'not half as beautiful as they are painted'. He had seen manatees.","In Japan I'm a ningyo, in Scotland a ceasg, in southern Africa a Mami Wata. Same idea, completely different stories."] },
+
+{ "id":"selkie", "name":"Selkie", "wiki":"Selkie", "emoji":"🦭", "where":"mythical", "zones":[3], "tier":"rare", "storyFrom":"Orkney and Shetland, Scotland, and Ireland",
+  "facts":["That IS me in the picture. Just a grey seal on the rocks. You would never know.","In the water I am a seal. On land I slip my sealskin off and I am a person underneath.","If somebody hides my skin, I cannot go home to the sea. That is how nearly every selkie story goes, and they are sad ones.","Seals in the North Atlantic have big dark eyes that look uncannily like a person's. Fishermen noticed.","Some families in Orkney still say, quietly, that they are descended from me."] },
+
+{ "id":"chinesedragon", "name":"Chinese Dragon", "wiki":"Chinese dragon", "emoji":"🐲", "where":"mythical", "zones":[3], "tier":"epic", "storyFrom":"China",
+  "facts":["I am nothing like a European dragon. I don't hoard gold and I don't burn villages — I bring the RAIN.","I'm made of bits of nine animals: camel's head, deer's antlers, rabbit's eyes, snake's neck, carp's scales, eagle's claws, tiger's paws, cow's ears.","I have no wings at all, and I fly anyway.","I live in rivers, lakes and the sea, and in a drought people would go to my temple and ask me, politely, for weather."] },
+
+{ "id":"ahuizotl", "name":"Ahuizotl", "wiki":"Ahuizotl (mythology)", "emoji":"🐒", "where":"mythical", "zones":[3], "tier":"rare", "storyFrom":"the Aztec people of Mexico",
+  "facts":["I'm a small spiky water animal, a bit like a dog and a bit like a monkey, and I live in the lakes.","On the end of my tail I have a HAND. An actual hand, with fingers.","I sit in the reeds and cry like a lost baby so that somebody kind comes to the water's edge to help.","An Aztec emperor was named after me, which tells you people took me seriously."] },
+
+{ "id":"jormungandr", "name":"Jörmungandr", "wiki":"Jörmungandr", "emoji":"🐍", "where":"mythical", "zones":[3,4], "tier":"legendary", "magicOnly":true, "storyFrom":"the Norse people of Scandinavia",
+  "facts":["I am a sea serpent so long that I wrap all the way around the world and bite my own tail.","Thor once went fishing for me with an ox head. He nearly had me, and the boat nearly sank.","Another time the giants tricked Thor into trying to lift a cat. The cat was me, and he could only get one paw off the floor.","When I finally let go of my tail, that's the end of the world. So please don't startle me."] },
+
+{ "id":"leviathan", "name":"Leviathan", "wiki":"Leviathan", "emoji":"🐋", "where":"mythical", "zones":[3,4], "tier":"legendary", "magicOnly":true, "storyFrom":"the Hebrew Bible, over 2,000 years ago",
+  "facts":["I am the sea monster, the biggest thing in the water, and the old books say no weapon on Earth can touch me.","'Smoke pours from my nostrils and sparks fly out of my mouth' — that is a direct description of me from the Book of Job.","People have used my name for 2,000 years to mean anything impossibly huge.","Sailors put me on the blank parts of their maps, where they had no idea what was out there."] },
+
+/* ================= ZONE 4 — THE UNDERWORLD ================= */
+
+{ "id":"basilisk", "name":"Basilisk", "wiki":"Basilisk", "emoji":"🐉", "where":"mythical", "zones":[4], "tier":"rare", "storyFrom":"ancient Rome and medieval Europe",
+  "facts":["I am the king of the serpents and I am only about 30 centimetres long. Size has nothing to do with it.","My look alone is deadly, so people used to walk towards me holding a MIRROR.","The one animal that isn't afraid of me is the weasel. Nobody has ever fully explained why.","The stories say I hatch from an egg laid by a rooster and sat on by a toad, which is quite a lot of steps."] },
+
+{ "id":"cerberus", "name":"Cerberus", "wiki":"Cerberus", "emoji":"🐕", "where":"mythical", "zones":[4], "tier":"epic", "storyFrom":"ancient Greece",
+  "facts":["I have three heads and I guard the gate of the underworld. My job is not keeping people out — it's keeping them IN.","Heracles had twelve impossible tasks and I was the last and hardest one.","Orpheus got past me with a lyre. He played so beautifully that all three of my heads fell asleep.","Anyone else who tried it brought honey cake. It works on me. I am, in the end, a dog."] },
+
+{ "id":"chimera", "name":"Chimera", "wiki":"Chimera (mythology)", "emoji":"🦁", "where":"mythical", "zones":[4], "tier":"epic", "storyFrom":"ancient Greece and Lycia, in Turkey",
+  "facts":["Lion at the front, goat rising out of my back, snake for a tail, and fire out of my mouth.","Bellerophon beat me from the air, riding Pegasus, by dropping a lump of lead into my fiery mouth.","In Turkey there is a mountainside called Yanartaş where flames come straight out of the rock and have burned for thousands of years. That is my mountain.","Scientists borrowed my name. A 'chimera' now means a real living thing made of two sets of cells."] },
+
+{ "id":"minotaur", "name":"Minotaur", "wiki":"Minotaur", "emoji":"🐂", "where":"mythical", "zones":[4], "tier":"epic", "storyFrom":"ancient Crete, in Greece",
+  "facts":["A bull's head on a man's body, kept at the centre of a maze nobody could find their way out of.","Theseus beat the maze by unrolling a ball of thread behind him the whole way in.","The palace of Knossos on Crete is a real building you can walk around today, and it has so many rooms that visitors have got lost in it for 4,000 years.","The Cretans really did leap over bulls for sport. There are paintings of it on the palace walls."] },
+
+{ "id":"manticore", "name":"Manticore", "wiki":"Manticore", "emoji":"🦂", "where":"mythical", "zones":[4], "tier":"epic", "storyFrom":"Persia, which is Iran today",
+  "facts":["Lion's body, a face like a person's, and a tail that fires spikes like arrows.","My name comes from an old Persian word that means 'man-eater', which is about as clear as a name gets.","I have three rows of teeth, top and bottom, like a shark.","The same Greek doctor who wrote down the unicorn wrote me down too. He heard about both of us at the Persian court."] },
+
+{ "id":"firesalamander", "name":"The Fire Salamander", "wiki":"Salamanders in folklore", "emoji":"🔥", "where":"mythical", "zones":[4], "tier":"rare", "storyFrom":"medieval Europe, and the alchemists",
+  "facts":["People believed for over a thousand years that I was BORN in fire and could not be burned.","Here is how that started, and it's true: salamanders hide in rotten logs. Somebody puts the log on the fire. Out I run.","Cloth that wouldn't burn used to be sold as 'salamander wool'. It was asbestos.","The real fire salamander is a black and yellow amphibian living in European woods right now, minding its own business."] },
+
+{ "id":"hydra", "name":"The Hydra", "wiki":"Lernaean Hydra", "emoji":"🐍", "where":"mythical", "zones":[4], "tier":"legendary", "magicOnly":true, "storyFrom":"ancient Greece",
+  "facts":["Cut off one of my heads and two grow back. That is the whole problem with me.","Heracles only won because his nephew ran in with a torch and burned each neck shut before it could sprout.","One of my heads could never be killed at all, so they buried it under an enormous rock. It is presumably still there.","There is a real animal named after me: Hydra, a tiny pond creature that can regrow its own head. It may be able to live forever."] },
+
+{ "id":"fenrir", "name":"Fenrir", "wiki":"Fenrir", "emoji":"🐺", "where":"mythical", "zones":[4], "tier":"legendary", "magicOnly":true, "storyFrom":"the Norse people of Scandinavia",
+  "facts":["I am a wolf who grew so big and so fast that the gods became frightened of me.","They tried to chain me twice with the strongest chains ever forged. I snapped them both like thread.","So they had the dwarves make a ribbon out of six impossible things: the sound of a cat's footfall, a woman's beard, the roots of a mountain, the breath of a fish, the sinews of a bear and the spit of a bird.","The ribbon was soft as silk, and it held. That is why none of those six things exist any more."] },
+
+{ "id":"phoenix", "name":"THE PHOENIX", "wiki":"Phoenix (mythology)", "emoji":"🔥", "where":"mythical", "zones":[4], "tier":"mythic", "mythic":true, "storyFrom":"ancient Egypt and Greece, and after that almost everywhere",
+  "facts":["Every five hundred years I build a nest, set it alight, and burn.","And then I climb back out of my own ashes as a chick, and start again.","So you can catch me over and over for as long as you like. Coming back is the entire point of me.","Egypt called me the Bennu and said I stood on the first piece of land there ever was. China has the fenghuang. Persia has the huma. Everybody wanted a bird that refuses to end.","Nobody has ever proved I'm real, and nobody has ever quite been able to let go of me either."] }
+
+]

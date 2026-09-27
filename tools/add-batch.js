@@ -45,6 +45,7 @@ for (const a of batch) {
     (a.givesMagic ? ", givesMagic:true" : "") +
     (a.endemicTo ? ', endemicTo:"' + a.endemicTo + '"' : "") +
     (a.livedWhen ? ', livedWhen:"' + a.livedWhen + '"' : "") +
+    (a.storyFrom ? ', storyFrom:' + JSON.stringify(a.storyFrom) : "") +
     ',\n    facts:[' + a.facts.map(f => JSON.stringify(f)).join(",") + '] },\n';
 
   if (fetchSrc.indexOf("\n  " + a.id + ":") === -1) {
