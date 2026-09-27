@@ -1338,5 +1338,185 @@
     "file": "phoenix.jpg",
     "title": "Phoenix (mythology)",
     "url": "https://en.wikipedia.org/wiki/Phoenix_(mythology)"
+  },
+  "leafcutterant": {
+    "file": "leafcutterant.jpg",
+    "title": "Leafcutter ant",
+    "url": "https://en.wikipedia.org/wiki/Leafcutter_ant"
+  },
+  "bulletant": {
+    "file": "bulletant.jpg",
+    "title": "Paraponera clavata",
+    "url": "https://en.wikipedia.org/wiki/Paraponera_clavata"
+  },
+  "giantanteater": {
+    "file": "giantanteater.jpg",
+    "title": "Giant anteater",
+    "url": "https://en.wikipedia.org/wiki/Giant_anteater"
+  },
+  "tapir": {
+    "file": "tapir.jpg",
+    "title": "Tapir",
+    "url": "https://en.wikipedia.org/wiki/Tapir"
+  },
+  "capybara": {
+    "file": "capybara.jpg",
+    "title": "Capybara",
+    "url": "https://en.wikipedia.org/wiki/Capybara"
+  },
+  "goliathfrog": {
+    "file": "goliathfrog.jpg",
+    "title": "Goliath frog",
+    "url": "https://en.wikipedia.org/wiki/Goliath_frog"
+  },
+  "anaconda": {
+    "file": "anaconda.jpg",
+    "title": "Green anaconda",
+    "url": "https://en.wikipedia.org/wiki/Green_anaconda"
+  },
+  "okapi": {
+    "file": "okapi.jpg",
+    "title": "Okapi",
+    "url": "https://en.wikipedia.org/wiki/Okapi"
+  },
+  "jaguar": {
+    "file": "jaguar.jpg",
+    "title": "Jaguar",
+    "url": "https://en.wikipedia.org/wiki/Jaguar"
+  },
+  "theshadow": {
+    "file": "theshadow.jpg",
+    "title": "Black panther",
+    "url": "https://en.wikipedia.org/wiki/Black_panther"
+  },
+  "vampirecrab": {
+    "file": "vampirecrab.jpg",
+    "title": "Geosesarma dennerle",
+    "url": "https://en.wikipedia.org/wiki/Geosesarma_dennerle"
+  },
+  "jesuslizard": {
+    "file": "jesuslizard.jpg",
+    "title": "Common basilisk",
+    "url": "https://en.wikipedia.org/wiki/Common_basilisk"
+  },
+  "vinesnake": {
+    "file": "vinesnake.jpg",
+    "title": "Ahaetulla",
+    "url": "https://en.wikipedia.org/wiki/Ahaetulla"
+  },
+  "katydid": {
+    "file": "katydid.jpg",
+    "title": "Tettigoniidae",
+    "url": "https://en.wikipedia.org/wiki/Tettigoniidae"
+  },
+  "bushmaster": {
+    "file": "bushmaster.jpg",
+    "title": "Lachesis muta",
+    "url": "https://en.wikipedia.org/wiki/Lachesis_muta"
+  },
+  "ocelot": {
+    "file": "ocelot.jpg",
+    "title": "Ocelot",
+    "url": "https://en.wikipedia.org/wiki/Ocelot"
+  },
+  "kinkajou": {
+    "file": "kinkajou.jpg",
+    "title": "Kinkajou",
+    "url": "https://en.wikipedia.org/wiki/Kinkajou"
+  },
+  "amazoncentipede": {
+    "file": "amazoncentipede.jpg",
+    "title": "Scolopendra gigantea",
+    "url": "https://en.wikipedia.org/wiki/Scolopendra_gigantea"
+  },
+  "tarsier": {
+    "file": "tarsier.jpg",
+    "title": "Tarsier",
+    "url": "https://en.wikipedia.org/wiki/Tarsier"
+  },
+  "sloth": {
+    "file": "sloth.jpg",
+    "title": "Three-toed sloth",
+    "url": "https://en.wikipedia.org/wiki/Three-toed_sloth"
+  },
+  "howlermonkey": {
+    "file": "howlermonkey.jpg",
+    "title": "Howler monkey",
+    "url": "https://en.wikipedia.org/wiki/Howler_monkey"
+  },
+  "spidermonkey": {
+    "file": "spidermonkey.jpg",
+    "title": "Spider monkey",
+    "url": "https://en.wikipedia.org/wiki/Spider_monkey"
+  },
+  "toucan": {
+    "file": "toucan.jpg",
+    "title": "Toco toucan",
+    "url": "https://en.wikipedia.org/wiki/Toco_toucan"
+  },
+  "scarletmacaw": {
+    "file": "scarletmacaw.jpg",
+    "title": "Scarlet macaw",
+    "url": "https://en.wikipedia.org/wiki/Scarlet_macaw"
+  },
+  "flyingsnake": {
+    "file": "flyingsnake.jpg",
+    "title": "Chrysopelea",
+    "url": "https://en.wikipedia.org/wiki/Chrysopelea"
+  },
+  "colugo": {
+    "file": "colugo.jpg",
+    "title": "Colugo",
+    "url": "https://en.wikipedia.org/wiki/Colugo"
+  },
+  "hoatzin": {
+    "file": "hoatzin.jpg",
+    "title": "Hoatzin",
+    "url": "https://en.wikipedia.org/wiki/Hoatzin"
+  },
+  "sunbear": {
+    "file": "sunbear.jpg",
+    "title": "Sun bear",
+    "url": "https://en.wikipedia.org/wiki/Sun_bear"
+  },
+  "treekangaroo": {
+    "file": "treekangaroo.jpg",
+    "title": "Tree-kangaroo",
+    "url": "https://en.wikipedia.org/wiki/Tree-kangaroo"
+  },
+  "orangutan": {
+    "file": "orangutan.jpg",
+    "title": "Orangutan",
+    "url": "https://en.wikipedia.org/wiki/Orangutan"
+  },
+  "bluemorpho": {
+    "file": "bluemorpho.jpg",
+    "title": "Morpho menelaus",
+    "url": "https://en.wikipedia.org/wiki/Morpho_menelaus"
+  },
+  "flyingfrog": {
+    "file": "flyingfrog.jpg",
+    "title": "Wallace's flying frog",
+    "url": "https://en.wikipedia.org/wiki/Wallace's_flying_frog"
+  },
+  "hornbill": {
+    "file": "hornbill.jpg",
+    "title": "Great hornbill",
+    "url": "https://en.wikipedia.org/wiki/Great_hornbill"
+  },
+  "kingvulture": {
+    "file": "kingvulture.jpg",
+    "title": "King vulture",
+    "url": "https://en.wikipedia.org/wiki/King_vulture"
+  },
+  "birdwing": {
+    "file": "birdwing.jpg",
+    "title": "Queen Alexandra's birdwing",
+    "url": "https://en.wikipedia.org/wiki/Queen_Alexandra's_birdwing"
+  },
+  "harpyeagle": {
+    "file": "harpyeagle.jpg",
+    "title": "Harpy eagle",
+    "url": "https://en.wikipedia.org/wiki/Harpy_eagle"
   }
 }

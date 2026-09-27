@@ -79,6 +79,7 @@
   #islandCard      { background: linear-gradient(#37c6f4, #2f7d52); }
   #prehistoricCard { background: linear-gradient(#e8703a, #2b4a2f); }
   #mythicalCard    { background: linear-gradient(#8f5fd0, #2a1b4d 60%, #8a1f0a); }
+  #rainforestCard  { background: linear-gradient(#bfe89a, #2f8f4f 45%, #16351f); }
   .placeCard.locked { filter: grayscale(.7) brightness(.75); }
   .placeCard.locked .hint { color: #ffd0e0; }
   .howto {
@@ -436,6 +437,11 @@
       MYTHICAL
       <span class="hint" id="mythicalHint">Monsters people made up, all over the world</span>
     </button>
+    <button class="placeCard" id="rainforestCard" onclick="tryStart('rainforest')">
+      <span class="big">🦜</span>
+      RAINFOREST
+      <span class="hint" id="rainforestHint">CLIMB UP — floor, understory, canopy, sky</span>
+    </button>
   </div>
   <div class="howto" id="homeHowto"></div>
   <button class="btn gray" onclick="showWho()">🧒 Pick a different kid</button>
@@ -544,8 +550,8 @@
 
 <!-- tools/stamp-build.js stamps ?v=<build> onto these two so the page and its
      catalog can never be served from different points in time. -->
-<script src="photos.js?v=2026-09-27-1c7f46b5"></script>
-<script src="creatures.js?v=2026-09-27-1c7f46b5"></script>
+<script src="photos.js?v=2026-09-27-65c7fa57"></script>
+<script src="creatures.js?v=2026-09-27-65c7fa57"></script>
 <script>
 /* Belt and braces: if any browser ever refuses the ?v= form (the worry is
    file:// URLs, where the query is not part of the filename), load them plain
@@ -579,7 +585,7 @@ if (typeof PHOTOS === "undefined") { window.PHOTOS = {}; }
    A query string does NOT change the origin, so ?v= is safe — localStorage,
    and therefore Cam's book, is exactly the same before and after.
    ============================================================ */
-const BUILD = "2026-09-27-1c7f46b5";
+const BUILD = "2026-09-27-65c7fa57";
 
 /* Its own function so a test can stand in for it: opened off the disk, or
    built into the single shared file, there is no server to ask. */
@@ -636,7 +642,8 @@ const DEFAULT_GEAR = {
   whistle: 0, freeze: 0, magnet: 0, xray: 0,                      /* powers */
   dig: 1, headlamp: 1, ladder: 0,                                /* underground */
   time: 0, bell: 0, brush: 0, armour: 0,                         /* prehistoric */
-  story: 0, everlight: 0, crystal: 0, charm: 0                   /* mythical */
+  story: 0, everlight: 0, crystal: 0, charm: 0,                  /* mythical */
+  climb: 1, glow: 1, magnify: 0, gloves: 0                       /* rainforest */
 };
 const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
 
@@ -1041,7 +1048,22 @@ function photoOf(id) {
 
 /* ---------- gear ---------- */
 /* Ocean and underground go DOWN. Land and islands go ACROSS. */
-function isVertical(kind) { return kind === "ocean" || kind === "underground"; }
+function isVertical(kind) {
+  return kind === "ocean" || kind === "underground" || kind === "rainforest";
+}
+/* The rainforest is the only world you climb UP. Rather than special-case
+   "up" everywhere, zone 1 simply sits at the BOTTOM of the map and everything
+   asks progressAt() how far along he is instead of reading y directly. */
+function climbs(kind) { return kind === "rainforest"; }
+
+/* 0 = the start of this world, 1 = the far end of it, whichever way that runs */
+function progressAt(y) {
+  const f = (y - world.surface) / (world.ground - world.surface);
+  return world.climb ? 1 - f : f;
+}
+
+/* how tall or deep each vertical world is, in feet, for the read-out */
+const VERT_SCALE = { ocean: 20000, underground: 20000, rainforest: 200 };
 
 /* A zone can need a piece of gear (a diving suit, a shovel). This finds the
    deepest zone his gear currently lets him into. */
@@ -1073,7 +1095,8 @@ function moveSpeed() {
 }
 function jumpPower() { return 12 + (state.gear.boots - 1) * 3.5; }
 function lightRadius() {
-  const level = world && world.kind === "underground" ? state.gear.headlamp : state.gear.light;
+  const LIGHT_GEAR = { underground: "headlamp", rainforest: "glow" };
+  const level = state.gear[(world && LIGHT_GEAR[world.kind]) || "light"];
   return 250 * level;
 }
 /* Two worlds are locked until he buys the way in: the boat, and the time machine. */
@@ -1086,8 +1109,8 @@ function worldKeyItem(kind) { return SHOP.find(i => i.gear === WORLD_KEY[kind] &
 
 /* Seeing what's inside before you open it, and getting a second try at it.
    Prehistoric has its own versions of both, bought in its own shop. */
-const PEEK_GEAR   = { prehistoric: "brush",  mythical: "crystal" };
-const SECOND_GEAR = { prehistoric: "armour", mythical: "charm" };
+const PEEK_GEAR   = { prehistoric: "brush",  mythical: "crystal", rainforest: "magnify" };
+const SECOND_GEAR = { prehistoric: "armour", mythical: "charm",   rainforest: "gloves" };
 function peekGear() { return state.gear[(world && PEEK_GEAR[world.kind]) || "binocs"]; }
 function secondChanceGear() { return state.gear[(world && SECOND_GEAR[world.kind]) || "bugjar"]; }
 
@@ -1115,6 +1138,7 @@ function startWorld(kind) {
     kind: kind,
     w: W, h: H,
     vertical: vert,
+    climb: climbs(kind),
     surface: kind === "underground" ? 150 : 110,
     ground: H - (vert ? 90 : 110),
     zoneCount: zoneCount,
@@ -1125,7 +1149,9 @@ function startWorld(kind) {
     reveal: null, wanderer: null, nextWander: 420, xray: 0,
     pendingOpen: null, pendingUntil: 0,
     blocked: 0,
-    player: { x: 300, y: vert ? (kind === "underground" ? 200 : 220) : H - 172, vx: 0, vy: 0, face: 1, kick: 0, onGround: false },
+    player: { x: 300,
+              y: vert ? (climbs(kind) ? H - 200 : (kind === "underground" ? 200 : 220)) : H - 172,
+              vx: 0, vy: 0, face: 1, kick: 0, onGround: false },
     target: null
   };
 
@@ -1145,7 +1171,8 @@ function startWorld(kind) {
     island:      ["palm", "palm", "bush", "grass", "flower", "fern"],
     underground: ["root", "pebble", "crystal", "root", "mushroom"],
     prehistoric: ["fern", "cycad", "conifer", "fern", "boulder", "cycad"],
-    mythical:    ["bigmushroom", "twistedtree", "fern", "bigmushroom", "crag", "twistedtree"]
+    mythical:    ["bigmushroom", "twistedtree", "fern", "bigmushroom", "crag", "twistedtree"],
+    rainforest:  ["vine", "bromeliadleaf", "fern", "vine", "bigleaf", "bromeliadleaf"]
   };
   const SEA_DECO = ["weed", "coral", "rock", "weed", "coral"];
   /* the land of legends changes what grows in it as the realms change */
@@ -1177,7 +1204,8 @@ function startWorld(kind) {
     island:      ["#ff8fab", "#ffe066", "#9bf6ff", "#caffbf"],
     underground: ["#c9b8a8", "#9fb3c8"],
     prehistoric: ["#6b5a46", "#8a6a4a", "#5a6b4a"],
-    mythical:    ["#ffe680", "#9fe3f5", "#e2b6ff", "#caffbf"]
+    mythical:    ["#ffe680", "#9fe3f5", "#e2b6ff", "#caffbf"],
+    rainforest:  ["#ffd166", "#ff8fab", "#7ee8fa", "#caffbf", "#c77dff"]
   };
   const ambientCount = kind === "underground" ? 12 : 26;
   for (let i = 0; i < ambientCount; i++) {
@@ -1269,8 +1297,7 @@ function zoneAt(y, x) {
   const list = ZONES[world.kind];
   let idx;
   if (world.vertical) {
-    const f = (y - world.surface) / (world.ground - world.surface);
-    idx = Math.floor(f * list.length);
+    idx = Math.floor(progressAt(y) * list.length);
   } else {
     idx = Math.floor((x / world.w) * list.length);
   }
@@ -1278,11 +1305,13 @@ function zoneAt(y, x) {
 }
 function currentZone() { return world ? zoneAt(world.player.y, world.player.x) : ZONES.ocean[0]; }
 
-/* how deep his suit lets him go */
-function depthLimitY() {
+/* How far his gear lets him go: a floor he can't sink past in the ocean,
+   a ceiling he can't climb past in the rainforest. */
+function reachLimitY() {
   if (!world.vertical) return world.ground;
   const band = (world.ground - world.surface) / world.zoneCount;
-  return world.surface + band * maxZoneAllowed(world.kind);
+  const reach = band * maxZoneAllowed(world.kind);
+  return world.climb ? world.ground - reach : world.surface + reach;
 }
 
 /* On land and the islands his gear gates how far he can walk. */
@@ -1293,8 +1322,8 @@ function distanceLimitX() {
 }
 
 function depthFeet(y) {
-  const f = (y - world.surface) / (world.ground - world.surface);
-  return Math.max(0, Math.round(f * 20000 / 10) * 10);
+  const scale = VERT_SCALE[world.kind] || 20000;
+  return Math.max(0, Math.round(progressAt(y) * scale / 10) * 10);
 }
 
 /* ---------- controls ---------- */
@@ -1416,12 +1445,21 @@ function update() {
       p.vy += .06;
       p.x += p.vx; p.y += p.vy;
 
-      const limit = depthLimitY();
-      if (p.y > limit - 62) {
-        p.y = limit - 62;
-        if (p.vy > 0) { p.vy = 0; if (ay > 0) world.blocked = 90; }
+      const limit = reachLimitY();
+      if (world.climb) {
+        /* climbing: the gear runs out ABOVE him */
+        if (p.y < limit + 62) {
+          p.y = limit + 62;
+          if (p.vy < 0) { p.vy = 0; if (ay < 0) world.blocked = 90; }
+        }
+        p.y = Math.min(world.ground - 40, p.y);
+      } else {
+        if (p.y > limit - 62) {
+          p.y = limit - 62;
+          if (p.vy > 0) { p.vy = 0; if (ay > 0) world.blocked = 90; }
+        }
+        p.y = Math.max(world.surface + 40, p.y);
       }
-      p.y = Math.max(world.surface + 40, p.y);
       if (Math.abs(p.vx) + Math.abs(p.vy) > .6) p.kick += .28;
       if (world.kind === "ocean" && world.t % 8 === 0) world.bubbles.push({ x: p.x - p.face * 14, y: p.y - 16, r: rand(2, 6), vy: rand(-1.6, -.7), life: 110 });
 
@@ -1518,11 +1556,13 @@ function showZoneBanner(z) {
   const locked = z.suit > state.gear.suit;
   el.innerHTML = PLACES[world.kind].emoji + " " + z.name +
     (world.vertical ? '<br><span style="font-size:22px">' +
-      depthFeet(world.player.y).toLocaleString() + " feet down</span>" : "");
+      depthFeet(world.player.y).toLocaleString() +
+      (world.climb ? " feet up" : " feet down") + "</span>" : "");
   el.style.color = z.n >= 5 ? "#ff5ec7" : (z.n >= 3 ? "#ffcc00" : "#fff");
   if (world.kind === "island") el.style.color = z.n >= 3 ? "#ffcc00" : "#caffbf";
   if (world.kind === "prehistoric") el.style.color = z.n >= 4 ? "#9fe3f5" : (z.n >= 3 ? "#ffcc00" : "#ffb38a");
   if (world.kind === "mythical") el.style.color = z.n >= 4 ? "#ff8a3c" : (z.n >= 3 ? "#9fe3f5" : "#e2b6ff");
+  if (world.kind === "rainforest") el.style.color = z.n >= 4 ? "#eaffc0" : (z.n >= 3 ? "#caffbf" : "#8fd08f");
   el.classList.add("show");
   playZoneSound();
   clearTimeout(showZoneBanner._t);
@@ -1788,7 +1828,8 @@ function tickReveal() {
 function updateWanderer() {
   const pre = world.kind === "prehistoric";
   const myth = world.kind === "mythical";
-  if (world.kind !== "ocean" && !pre && !myth) return;
+  const jungle = world.kind === "rainforest";
+  if (world.kind !== "ocean" && !pre && !myth && !jungle) return;
 
   if (world.wanderer) {
     const wd = world.wanderer;
@@ -1806,7 +1847,7 @@ function updateWanderer() {
     return;
   }
 
-  if (world.zone < (pre || myth ? 2 : 3)) return;
+  if (world.zone < (pre || myth || jungle ? 2 : 3)) return;
   world.nextWander--;
   if (world.nextWander > 0) return;
   world.nextWander = Math.round(rand(600, 1200) / (state.gear.chum ? 3 : 1));
@@ -1841,10 +1882,11 @@ function updateWanderer() {
     life: 1500,
     size: size
   };
-  flashHint(myth ? "👀 Something out of a STORY just went past! Chase it and press SPACE!"
-          : pre  ? "👀 Something ENORMOUS is coming! Chase it and press SPACE!"
-                 : "👀 Something BIG is out there! Chase it and press SPACE!");
-  myth ? legendCry() : (pre ? dinoRoar() : whaleSong());
+  flashHint(jungle ? "👀 Something just crashed through the branches! Chase it and press SPACE!"
+          : myth   ? "👀 Something out of a STORY just went past! Chase it and press SPACE!"
+          : pre    ? "👀 Something ENORMOUS is coming! Chase it and press SPACE!"
+                   : "👀 Something BIG is out there! Chase it and press SPACE!");
+  (jungle || myth) ? legendCry() : (pre ? dinoRoar() : whaleSong());
 }
 
 function flashHint(msg) {
@@ -1866,6 +1908,7 @@ function render() {
   if (world.kind === "ocean") drawOceanBg(cam);
   else if (world.kind === "underground") drawUndergroundBg(cam);
   else if (world.kind === "prehistoric") drawPrehistoricBg(cam);
+  else if (world.kind === "rainforest") drawRainforestBg(cam);
   else if (world.kind === "mythical") drawMythicalBg(cam);
   else drawLandBg(cam);
 
@@ -1969,14 +2012,21 @@ function drawShadow(s, cam) {
 function drawDeepDark(cam) {
   const f = (world.player.y - world.surface) / (world.ground - world.surface);
   const cave = world.kind === "underground";
+  const jungle = world.kind === "rainforest";
 
-  /* underground is rock, not deep water — it goes dark sooner but not as absolutely */
-  const dark = cave
-    ? Math.max(0, Math.min(.72, (f - .05) * 1.15))
-    : Math.max(0, Math.min(.78, (f - .25) * 1.25));
+  /* Underground is rock, not deep water — it goes dark sooner but not as
+     absolutely. The rainforest is the gentlest of the three, and its dark is
+     at the BOTTOM, which is simply true: about 2% of the sunlight gets down
+     there. Climbing towards the light is the whole shape of the world. */
+  const dark = jungle
+    ? Math.max(0, Math.min(.58, (f - .30) * 1.0))
+    : cave
+      ? Math.max(0, Math.min(.72, (f - .05) * 1.15))
+      : Math.max(0, Math.min(.78, (f - .25) * 1.25));
   if (dark <= 0) return;
 
-  g.fillStyle = cave ? "rgba(6,3,10," + dark + ")" : "rgba(0,6,18," + dark + ")";
+  g.fillStyle = jungle ? "rgba(2,14,8," + dark + ")"
+              : cave ? "rgba(6,3,10," + dark + ")" : "rgba(0,6,18," + dark + ")";
   g.fillRect(0, 0, CW, CH);
 
   if (dark > .12) {
@@ -1987,7 +2037,11 @@ function drawDeepDark(cam) {
     g.save();
     g.globalCompositeOperation = "lighter";
     const r = g.createRadialGradient(px, py, 8, px, py, rad);
-    if (cave) {
+    if (jungle) {
+      r.addColorStop(0, "rgba(190,255,170,.42)");
+      r.addColorStop(.55, "rgba(140,220,130,.16)");
+      r.addColorStop(1, "rgba(140,220,130,0)");
+    } else if (cave) {
       r.addColorStop(0, "rgba(255,214,130,.55)");
       r.addColorStop(.45, "rgba(255,180,90,.20)");
       r.addColorStop(1, "rgba(255,160,60,0)");
@@ -2016,7 +2070,7 @@ function drawDeepDark(cam) {
 /* the line where his suit gives out */
 function drawDepthGate(cam) {
   if (maxZoneAllowed(world.kind) >= world.zoneCount) return;
-  const y = depthLimitY() - cam.y;
+  const y = reachLimitY() - cam.y;
   if (y < -40 || y > CH + 40) return;
   g.save();
   g.strokeStyle = world.blocked > 0 ? "#ff5c8a" : "rgba(255,120,160,.55)";
@@ -2027,7 +2081,8 @@ function drawDepthGate(cam) {
   g.fillStyle = world.blocked > 0 ? "#ff5c8a" : "rgba(255,120,160,.75)";
   g.font = "bold 16px sans-serif"; g.textAlign = "center";
   g.fillText("🔒 You need the " + (nextGateItem(world.kind) || "next gear") +
-             " to get past here — it's in the 🛒 shop!", CW / 2, y + 24);
+             (world.climb ? " to climb higher" : " to get past here") +
+             " — it's in the 🛒 shop!", CW / 2, world.climb ? y - 12 : y + 24);
   g.restore();
 }
 
@@ -2388,9 +2443,148 @@ function drawMythicalBg(cam) {
   g.restore();
 }
 
+/* ============================================================
+   RAINFOREST — the only world you climb UP. Dark leaf litter at
+   the bottom, then trunks, then the canopy roof, then open sky.
+   The light gets BETTER the higher he goes, which is the whole
+   point: only about 2% of it reaches the floor.
+   ============================================================ */
+function drawRainforestBg(cam) {
+  const grad = g.createLinearGradient(0, -cam.y, 0, world.h - cam.y);
+  grad.addColorStop(0, "#6fc0f5");     /* open sky, above everything */
+  grad.addColorStop(.09, "#b6e4ff");
+  grad.addColorStop(.17, "#a9d98a");   /* the tallest trees catching the light */
+  grad.addColorStop(.30, "#3f8f4f");   /* the canopy roof */
+  grad.addColorStop(.58, "#256b3c");
+  grad.addColorStop(.80, "#17482c");   /* understory */
+  grad.addColorStop(1, "#0d2a1a");     /* the floor */
+  g.fillStyle = grad;
+  g.fillRect(0, 0, CW, CH);
+
+  /* shafts of light coming down through gaps in the canopy */
+  g.save();
+  for (let i = 0; i < 8; i++) {
+    const sx = ((i * 431 + Math.sin(i) * 60) - cam.x * .5) % (world.w) - 120;
+    const top = world.surface - cam.y + 120;
+    g.globalAlpha = .10;
+    g.fillStyle = "#fff6c8";
+    g.beginPath();
+    g.moveTo(sx, top); g.lineTo(sx + 44, top);
+    g.lineTo(sx + 150, world.ground - cam.y); g.lineTo(sx - 60, world.ground - cam.y);
+    g.closePath(); g.fill();
+  }
+  g.restore();
+
+  /* The sun, and a couple of clouds, but only up in the open air */
+  const openTop = world.surface - cam.y;
+  if (openTop > -CH) {
+    g.save();
+    g.globalAlpha = Math.max(0, Math.min(1, (openTop + CH * .5) / (CH * .5)));
+    g.fillStyle = "#fff6c8";
+    g.beginPath(); g.arc(CW - 130, openTop + 110, 48, 0, 6.3); g.fill();
+    g.globalAlpha *= .35;
+    g.beginPath(); g.arc(CW - 130, openTop + 110, 74, 0, 6.3); g.fill();
+    g.fillStyle = "#ffffff";
+    [[180, 90, 46], [420, 150, 34], [700, 80, 40]].forEach(c => {
+      const cx2 = c[0] - cam.x * .12;
+      g.beginPath(); g.arc(cx2, openTop + c[1], c[2], 0, 6.3); g.fill();
+      g.beginPath(); g.arc(cx2 + c[2] * .8, openTop + c[1] + 8, c[2] * .7, 0, 6.3); g.fill();
+      g.beginPath(); g.arc(cx2 - c[2] * .8, openTop + c[1] + 10, c[2] * .6, 0, 6.3); g.fill();
+    });
+    g.restore();
+  }
+
+  /* The trunks he is climbing. Most stop at the canopy roof; only a few
+     emergents carry on up into the open, which is what makes them emergents. */
+  const roofY = world.surface + (world.ground - world.surface) * .22;
+  for (let i = -1; i < 14; i++) {
+    const tx = i * 340 - cam.x * .82;
+    if (tx < -260 || tx > CW + 260) continue;
+    const wdt = 52 + (i % 3) * 22;
+    const emergent = i % 3 === 0;
+    const top = emergent ? world.surface + 60 : roofY - 40;
+    g.fillStyle = "#4a3524";
+    g.fillRect(tx, top - cam.y, wdt, world.ground - top);
+    g.fillStyle = "rgba(255,255,255,.06)";
+    g.fillRect(tx + wdt * .18, top - cam.y, wdt * .22, world.ground - top);
+    /* a crown of leaves on the ones that break through */
+    if (emergent) {
+      g.fillStyle = "#4aa85c";
+      [[0, -10, 62], [-52, 26, 44], [56, 22, 46]].forEach(c => {
+        g.beginPath(); g.arc(tx + wdt / 2 + c[0], top - cam.y + c[1], c[2], 0, 6.3); g.fill();
+      });
+    }
+    /* buttress roots flaring out at the very bottom */
+    const gy = world.ground - cam.y;
+    if (gy < CH + 200) {
+      g.fillStyle = "#3d2b1d";
+      [-1, 1].forEach(dir => {
+        g.beginPath();
+        g.moveTo(tx + (dir < 0 ? 0 : wdt), gy - 190);
+        g.quadraticCurveTo(tx + (dir < 0 ? -30 : wdt + 30), gy - 60,
+                           tx + (dir < 0 ? -70 : wdt + 70), gy);
+        g.lineTo(tx + (dir < 0 ? 0 : wdt), gy);
+        g.closePath(); g.fill();
+      });
+    }
+    /* mossy patches and a bromeliad clinging on, so the trunk isn't a plain bar */
+    g.fillStyle = "rgba(90,150,80,.5)";
+    for (let k = 0; k < 14; k++) {
+      const my = top + k * 340 + (i % 4) * 70 - cam.y;
+      if (my < -40 || my > CH + 40) continue;
+      g.beginPath(); g.ellipse(tx + wdt * .5, my, wdt * .42, 22, 0, 0, 6.3); g.fill();
+    }
+  }
+
+  /* the canopy roof itself: a thick band of leaves near the top */
+  const roof = world.surface + (world.ground - world.surface) * .22 - cam.y;
+  if (roof > -220 && roof < CH + 220) {
+    g.fillStyle = "#2f7d43";
+    for (let i = -1; i < 22; i++) {
+      const bx = i * 210 - cam.x * .9;
+      g.beginPath(); g.arc(bx, roof, 96, 0, 6.3); g.fill();
+    }
+    g.fillStyle = "#3f9e4d";
+    for (let i = -1; i < 26; i++) {
+      const bx = i * 170 + 60 - cam.x * .9;
+      g.beginPath(); g.arc(bx, roof - 40, 62, 0, 6.3); g.fill();
+    }
+  }
+
+  /* pollen and floating seeds drifting in the light */
+  g.save();
+  world.sparks.forEach(sp => {
+    const x = sp.x - cam.x * .9, y = sp.y - cam.y * .9;
+    if (x < -20 || x > CW + 20 || y < -20 || y > CH + 20) return;
+    g.globalAlpha = .25 + Math.sin(world.t / 40 + sp.ph) * .2;
+    g.fillStyle = sp.c;
+    g.beginPath(); g.arc(x + Math.sin(world.t / 70 + sp.ph) * 14, y, sp.r, 0, 6.3); g.fill();
+  });
+  g.restore();
+}
+
 function drawGround(cam) {
   const gy = world.ground - cam.y;
   if (gy > CH + 60) return;
+
+  if (world.kind === "rainforest") {
+    /* deep leaf litter, which is where a rainforest keeps almost none of its
+       goodness — the soil under it is famously thin */
+    g.fillStyle = "#1b3a22";
+    g.fillRect(0, gy, CW, CH - gy);
+    g.fillStyle = "#2d5330";
+    g.fillRect(0, gy, CW, 16);
+    for (let i = 0; i < 46; i++) {
+      const x = (i * 157 - cam.x) % (CW + 300) - 100;
+      g.save();
+      g.translate(x, gy + 10 + (i % 5) * 16);
+      g.rotate((i % 7) * .45);
+      g.fillStyle = ["#6b4a2a", "#7d5a33", "#4e6b34", "#8a6a3a"][i % 4];
+      g.beginPath(); g.ellipse(0, 0, 19, 8, 0, 0, 6.3); g.fill();
+      g.restore();
+    }
+    return;
+  }
 
   if (world.kind === "underground") {
     /* the very bottom: hot cracked rock */
@@ -2426,47 +2620,7 @@ function drawGround(cam) {
     return;
   }
 
-  if (world.kind === "mythical") {
-    /* half standing stones with runes cut into them, half fairy rings */
-    const ring = Math.floor(s.wob * 10) % 2 === 0;
-    const wet = inWater(s.x);
-    const hot = s.x > world.w * .75;
-    const glow = hot ? "#ff8a3c" : (wet ? "#7ee8fa" : "#e2b6ff");
-    if (ring) {
-      g.fillStyle = wet ? "#2e4150" : (hot ? "#3a140f" : "#3c5a3a");
-      g.beginPath(); g.ellipse(0, 10, 44, 17, 0, 0, 6.3); g.fill();
-      for (let i = 0; i < 7; i++) {
-        const a = (i / 7) * 6.28, mx = Math.cos(a) * 36, my = 10 + Math.sin(a) * 13;
-        g.fillStyle = "#efe6d8";
-        g.fillRect(mx - 2, my - 9, 4, 9);
-        g.fillStyle = glow;
-        g.beginPath(); g.ellipse(mx, my - 9, 8, 5, 0, Math.PI, 0); g.fill();
-      }
-      g.save();
-      g.globalAlpha = .2 + Math.sin(world.t / 16 + s.wob) * .12;
-      g.fillStyle = glow;
-      g.beginPath(); g.ellipse(0, 6, 44, 20, 0, 0, 6.3); g.fill();
-      g.restore();
-    } else {
-      g.fillStyle = wet ? "#46586a" : (hot ? "#4a1c14" : "#6b6478");
-      g.beginPath();
-      g.moveTo(-22, 26); g.lineTo(-17, -34); g.lineTo(0, -44); g.lineTo(17, -34); g.lineTo(22, 26);
-      g.closePath(); g.fill();
-      g.fillStyle = "rgba(255,255,255,.16)";
-      g.beginPath(); g.moveTo(-13, -30); g.lineTo(0, -40); g.lineTo(4, -26); g.closePath(); g.fill();
-      /* runes, lit up */
-      g.save();
-      g.globalAlpha = .6 + Math.sin(world.t / 14 + s.wob) * .35;
-      g.strokeStyle = glow; g.lineWidth = 3; g.lineCap = "round";
-      [-16, 0, 16].forEach((ry, i) => {
-        g.beginPath();
-        g.moveTo(-8, ry - 6); g.lineTo(8, ry - 6);
-        g.moveTo(i % 2 ? -8 : 8, ry - 6); g.lineTo(0, ry + 6);
-        g.stroke();
-      });
-      g.restore();
-    }
-  } else if (world.kind === "prehistoric") {
+  if (world.kind === "prehistoric") {
     const f = Math.min(1, world.player.x / world.w);
     /* bare volcanic rock early on, turning to real soil once plants take over */
     g.fillStyle = f < .25 ? "#6b5546" : (f < .5 ? "#5f6b46" : "#5a7a4a");
@@ -2594,6 +2748,36 @@ function drawDeco(d, cam, par) {
       g.beginPath(); g.moveTo(0, 0);
       g.quadraticCurveTo(i * 20 + sway * .3, -34, i * 34 + sway * .6, -54); g.stroke();
     }
+  } else if (d.kind === "vine") {
+    /* a liana hanging down past him */
+    g.strokeStyle = "#4e6b34"; g.lineWidth = 6; g.lineCap = "round";
+    g.beginPath();
+    g.moveTo(0, -140);
+    g.bezierCurveTo(sway * .6, -90, -sway * .6, -50, sway * .3, 10);
+    g.stroke();
+    g.fillStyle = "#3f9e4d";
+    for (let i = 0; i < 4; i++) {
+      const ly = -120 + i * 34;
+      g.beginPath(); g.ellipse(sway * .3 + (i % 2 ? 11 : -11), ly, 12, 5, i % 2 ? .5 : -.5, 0, 6.3); g.fill();
+    }
+  } else if (d.kind === "bigleaf") {
+    g.fillStyle = "#2f7d43";
+    g.save(); g.rotate(sway * .01);
+    g.beginPath(); g.ellipse(0, -34, 20, 46, .3, 0, 6.3); g.fill();
+    g.beginPath(); g.ellipse(28, -22, 17, 38, .9, 0, 6.3); g.fill();
+    g.strokeStyle = "rgba(0,0,0,.18)"; g.lineWidth = 2;
+    g.beginPath(); g.moveTo(0, 6); g.lineTo(-6, -72); g.stroke();
+    g.restore();
+  } else if (d.kind === "bromeliadleaf") {
+    /* the spiky rosette that grows on the branches */
+    const c = stableColor(d, ["#3f9e4d", "#5fb85f", "#2f8f4f"]);
+    for (let i = 0; i < 9; i++) {
+      const a = -Math.PI / 2 + (i - 4) * .36;
+      g.save(); g.rotate(a + sway * .004);
+      g.fillStyle = i % 3 === 0 ? "#d94f5c" : c;
+      g.beginPath(); g.ellipse(0, -26, 7, 28, 0, 0, 6.3); g.fill();
+      g.restore();
+    }
   } else if (d.kind === "bigmushroom") {
     /* a toadstool taller than a person, lit from underneath */
     const cap = stableColor(d, ["#d94f7a", "#9b5fd0", "#e08a3c", "#4fc3c9"]);
@@ -2717,6 +2901,13 @@ function drawCritter(f, cam) {
       g.beginPath(); g.moveTo(i * 3, 0);
       g.lineTo(i * 3 + Math.sin(f.wob * 4 + i) * 4, 6); g.stroke();
     }
+  } else if (world.kind === "rainforest") {
+    /* butterflies, with wings that actually flap */
+    const flap = Math.abs(Math.sin(f.wob * 4)) * 9 + 3;
+    g.beginPath(); g.ellipse(-6, 0, 8, flap, .35, 0, 6.3); g.fill();
+    g.beginPath(); g.ellipse(6, 0, 8, flap, -.35, 0, 6.3); g.fill();
+    g.fillStyle = "rgba(0,0,0,.4)";
+    g.fillRect(-1.5, -7, 3, 14);
   } else if (world.kind === "mythical") {
     /* a will-o'-the-wisp: a little light with a halo and a tail */
     g.globalAlpha = .55 + Math.sin(f.wob * 2) * .25;
@@ -2804,7 +2995,77 @@ function drawSpot(s, cam, isNear) {
     g.restore();
   }
 
-  if (world.kind === "prehistoric") {
+  if (world.kind === "rainforest") {
+    /* Half bromeliads — the tank plants that hold a little pond of rainwater up
+       a tree, with frogs living in them — and half holes in the trunk. */
+    const tank = Math.floor(s.wob * 10) % 2 === 0;
+    if (tank) {
+      for (let i = 0; i < 11; i++) {
+        const a = -Math.PI / 2 + (i - 5) * .30;
+        g.save(); g.rotate(a);
+        g.fillStyle = i % 4 === 0 ? "#d94f5c" : "#3f9e4d";
+        g.beginPath(); g.ellipse(0, -30, 8, 32, 0, 0, 6.3); g.fill();
+        g.restore();
+      }
+      /* the pool of rainwater in the middle of it */
+      g.fillStyle = "#1d3b2a";
+      g.beginPath(); g.ellipse(0, -4, 19, 10, 0, 0, 6.3); g.fill();
+      g.fillStyle = "rgba(150,220,255,.5)";
+      g.beginPath();
+      g.ellipse(-4, -6 + Math.sin(world.t / 30 + s.wob) * .8, 10, 4, -.2, 0, 6.3);
+      g.fill();
+    } else {
+      /* a knot-hole, ringed with moss */
+      g.fillStyle = "#4a3524";
+      g.beginPath(); g.ellipse(0, 0, 32, 26, 0, 0, 6.3); g.fill();
+      g.fillStyle = "#120d08";
+      g.beginPath(); g.ellipse(0, 0, 19, 16, 0, 0, 6.3); g.fill();
+      g.fillStyle = "rgba(90,150,80,.75)";
+      [[-28, -8], [24, -12], [-14, 20], [18, 18]].forEach(pt => {
+        g.beginPath(); g.ellipse(pt[0], pt[1], 9, 5, .3, 0, 6.3); g.fill();
+      });
+    }
+  } else if (world.kind === "mythical") {
+    /* half standing stones with runes cut into them, half fairy rings */
+    const ring = Math.floor(s.wob * 10) % 2 === 0;
+    const wet = inWater(s.x);
+    const hot = s.x > world.w * .75;
+    const glow = hot ? "#ff8a3c" : (wet ? "#7ee8fa" : "#e2b6ff");
+    if (ring) {
+      g.fillStyle = wet ? "#2e4150" : (hot ? "#3a140f" : "#3c5a3a");
+      g.beginPath(); g.ellipse(0, 10, 44, 17, 0, 0, 6.3); g.fill();
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * 6.28, mx = Math.cos(a) * 36, my = 10 + Math.sin(a) * 13;
+        g.fillStyle = "#efe6d8";
+        g.fillRect(mx - 2, my - 9, 4, 9);
+        g.fillStyle = glow;
+        g.beginPath(); g.ellipse(mx, my - 9, 8, 5, 0, Math.PI, 0); g.fill();
+      }
+      g.save();
+      g.globalAlpha = .2 + Math.sin(world.t / 16 + s.wob) * .12;
+      g.fillStyle = glow;
+      g.beginPath(); g.ellipse(0, 6, 44, 20, 0, 0, 6.3); g.fill();
+      g.restore();
+    } else {
+      g.fillStyle = wet ? "#46586a" : (hot ? "#4a1c14" : "#6b6478");
+      g.beginPath();
+      g.moveTo(-22, 26); g.lineTo(-17, -34); g.lineTo(0, -44); g.lineTo(17, -34); g.lineTo(22, 26);
+      g.closePath(); g.fill();
+      g.fillStyle = "rgba(255,255,255,.16)";
+      g.beginPath(); g.moveTo(-13, -30); g.lineTo(0, -40); g.lineTo(4, -26); g.closePath(); g.fill();
+      /* runes, lit up */
+      g.save();
+      g.globalAlpha = .6 + Math.sin(world.t / 14 + s.wob) * .35;
+      g.strokeStyle = glow; g.lineWidth = 3; g.lineCap = "round";
+      [-16, 0, 16].forEach((ry, i) => {
+        g.beginPath();
+        g.moveTo(-8, ry - 6); g.lineTo(8, ry - 6);
+        g.moveTo(i % 2 ? -8 : 8, ry - 6); g.lineTo(0, ry + 6);
+        g.stroke();
+      });
+      g.restore();
+    }
+  } else if (world.kind === "prehistoric") {
     /* Half of them are a fossil sticking out of the rock and half are a
        clutch of eggs, so the same screen doesn't read as one thing repeated. */
     const eggs = Math.floor(s.wob * 10) % 2 === 0;
@@ -2956,7 +3217,7 @@ function drawWanderer(cam) {
   g.scale((wd.vx > 0 ? 1 : -1) * wd.size, wd.size);
   g.globalAlpha = close ? .85 : .55;
   g.fillStyle = close ? "#0b1a2a" : "#050d16";
-  if (world.kind === "mythical") {
+  if (world.kind === "mythical" || world.kind === "rainforest") {
     /* a winged thing: body, long neck, and two big beating wings */
     const beat = Math.sin(world.t / 9) * 26;
     g.beginPath(); g.ellipse(0, 0, 40, 15, 0, 0, 6.3); g.fill();
@@ -2998,7 +3259,7 @@ function drawWanderer(cam) {
   /* the glowing eye */
   g.globalAlpha = 1;
   g.fillStyle = close ? "#ffe680" : "#7ee8fa";
-  const eye = world.kind === "mythical" ? { x: 80, y: -32 }
+  const eye = (world.kind === "mythical" || world.kind === "rainforest") ? { x: 80, y: -32 }
             : (world.kind === "prehistoric" && !world.vertical ? { x: 84, y: -66 } : { x: 40, y: -5 });
   g.beginPath(); g.arc(eye.x, eye.y, 4.5 + Math.sin(world.t / 10) * 1.2, 0, 6.3); g.fill();
   g.restore();
@@ -3390,9 +3651,10 @@ function drawZoneHud() {
   if (world.vertical) {
     g.fillStyle = "#bfe6ff";
     g.font = "bold 15px sans-serif";
+    const WORD = { ocean: " ft down", underground: " ft underground", rainforest: " ft up the trees" };
     const line = world.kind === "ocean"
       ? depthFeet(world.player.y).toLocaleString() + " ft down   •   deepest ever " + state.deepest.toLocaleString() + " ft"
-      : depthFeet(world.player.y).toLocaleString() + " ft underground";
+      : depthFeet(world.player.y).toLocaleString() + (WORD[world.kind] || " ft");
     g.fillText(line, CW / 2, hudY + 43);
   }
   g.restore();
@@ -3424,18 +3686,21 @@ function drawZoneHud() {
                   "rgba(120,120,200,.9)"],
     underground: ["rgba(123,90,58,.9)", "rgba(59,48,56,.9)", "rgba(45,42,68,.92)", "rgba(60,14,22,.95)"],
     prehistoric: ["rgba(201,82,47,.9)", "rgba(95,158,99,.88)", "rgba(79,159,224,.88)", "rgba(20,70,110,.92)"],
+    rainforest:  ["rgba(34,60,38,.92)", "rgba(46,94,52,.9)", "rgba(74,150,74,.88)", "rgba(170,222,140,.9)"],
     mythical:    ["rgba(107,74,143,.9)", "rgba(159,182,198,.88)", "rgba(63,109,143,.9)", "rgba(150,30,10,.94)"]
   };
   const colors = METER[world.kind] || METER.ocean;
   const stops = list.length;
   for (let i = 0; i < stops; i++) {
+    /* climbing worlds read bottom-to-top, so zone 1 is the bottom segment */
+    const slot = world.climb ? stops - 1 - i : i;
     g.fillStyle = colors[i] || "rgba(255,255,255,.3)";
-    roundRect(x, y + (h / stops) * i, w, h / stops - 2, 5); g.fill();
-    /* a lock on the parts his suit can't reach */
+    roundRect(x, y + (h / stops) * slot, w, h / stops - 2, 5); g.fill();
+    /* a lock on the parts his gear can't reach */
     if (i + 1 > maxZoneAllowed(world.kind)) {
       g.fillStyle = "rgba(255,255,255,.8)";
       g.font = "11px sans-serif"; g.textAlign = "center";
-      g.fillText("🔒", x + w / 2, y + (h / stops) * i + h / stops / 2 + 4);
+      g.fillText("🔒", x + w / 2, y + (h / stops) * slot + h / stops / 2 + 4);
     }
   }
 
@@ -3447,7 +3712,7 @@ function drawZoneHud() {
   g.beginPath(); g.arc(x + w / 2, py, 8, 0, 6.3); g.fill();
   g.fillStyle = "#10203a";
   g.font = "bold 10px sans-serif"; g.textAlign = "center";
-  g.fillText(world.vertical ? "▼" : "▶", x + w / 2, py + 3.5);
+  g.fillText(world.vertical ? (world.climb ? "▲" : "▼") : "▶", x + w / 2, py + 3.5);
   g.restore();
 }
 
@@ -3563,7 +3828,8 @@ function fillCard(c, opts) {
       ocean: "for going deep", underground: "for digging deep",
       land: "for going way out", island: "for sailing this far",
       prehistoric: "for going this far back in time",
-      mythical: "for going this deep into the stories"
+      mythical: "for going this deep into the stories",
+      rainforest: "for climbing this high"
     };
     pts.textContent = "+" + opts.points.toLocaleString() + " points" +
       (opts.zone && opts.zone.bonus > 1
@@ -3794,7 +4060,7 @@ function worldExists(kind) {
 }
 /* every list of worlds in the game goes through here, in display order */
 function worldsInOrder() {
-  return ["land", "ocean", "island", "underground", "prehistoric", "mythical"]
+  return ["land", "ocean", "island", "underground", "prehistoric", "mythical", "rainforest"]
     .filter(worldExists);
 }
 
@@ -3918,7 +4184,8 @@ function labelBackButtons() {
     ocean: "⬅️ Back to my dive", land: "⬅️ Back to exploring",
     island: "⬅️ Back to the island", underground: "⬅️ Back down the hole",
     prehistoric: "⬅️ Back to the dinosaurs",
-    mythical: "⬅️ Back to the stories"
+    mythical: "⬅️ Back to the stories",
+    rainforest: "⬅️ Back up the tree"
   };
   const label = world ? BACK[world.kind] : "⬅️ Back home";
   document.querySelectorAll(".big-back").forEach(b => { b.textContent = label; });
@@ -4016,12 +4283,13 @@ function updateHint() {
   h.classList.toggle("magicOn", !!armedTrap && !world.reveal);
 
   const THING = { ocean: "trap", land: "rock", island: "nest", underground: "burrow",
-                  prehistoric: "fossil", mythical: "rune stone" };
+                  prehistoric: "fossil", mythical: "rune stone", rainforest: "bromeliad" };
   const OPEN = {
     ocean: "open the trap!", land: "flip the rock!",
     island: "look in the nest!", underground: "dig out the burrow!",
     prehistoric: "chip the fossil out!",
-    mythical: "wake the stone up!"
+    mythical: "wake the stone up!",
+    rainforest: "look inside the bromeliad!"
   };
   const inPool = near && near.type === "pool";
   const thing = inPool ? "tide pool" : THING[world.kind];
@@ -4031,7 +4299,8 @@ function updateHint() {
     island: "⛵ Head RIGHT to the next island — each one has animals found nowhere else!",
     underground: "⛏️ Dig DOWN — everything down there is blind and pale and strange.",
     prehistoric: "🦬 Walk RIGHT through TIME — Triassic, Jurassic, Cretaceous, then into the sea.",
-    mythical: "🔮 Walk RIGHT — forest, mountains, the black loch, and down into the Underworld."
+    mythical: "🔮 Walk RIGHT — forest, mountains, the black loch, and down into the Underworld.",
+    rainforest: "🌳 Climb UP! The floor is dark and nearly everything lives in the treetops."
   };
 
   /* the CATCH button glows when he's standing at something */
@@ -4101,6 +4370,14 @@ function showBook() {
         "so the pictures are either real fossils or paintings made from the bones.";
       body.appendChild(note);
     }
+    if (where === "rainforest") {
+      const note = document.createElement("div");
+      note.className = "islandNote";
+      note.textContent = "A rainforest is built in layers, and this is the one place you climb " +
+        "UP instead of down. Only about 2% of the sunlight ever reaches the floor, which is why " +
+        "almost everything alive is up in the canopy where the light is.";
+      body.appendChild(note);
+    }
     if (where === "mythical") {
       const note = document.createElement("div");
       note.className = "islandNote";
@@ -4137,7 +4414,8 @@ const WORLD_PITCH = {
   island:      "Four islands full of animals that live in ONE place on Earth.",
   underground: "Dig down through dirt, caves and crystal into the deep dark.",
   prehistoric: "Walk right and you walk through TIME \u2014 and the Megalodon is at the end of it.",
-  mythical:    "Unicorns, the chupacabra, the yeti, a phoenix. Monsters people made up all over the world."
+  mythical:    "Unicorns, the chupacabra, the yeti, a phoenix. Monsters people made up all over the world.",
+  rainforest:  "The only world you climb UP. Dark on the floor, and everything alive up in the treetops."
 };
 
 function showWhatsNew() {

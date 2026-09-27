@@ -1,0 +1,119 @@
+[
+
+/* ================= ZONE 1 — THE FOREST FLOOR ================= */
+
+{ "id":"leafcutterant", "name":"Leafcutter Ant", "wiki":"Leafcutter ant", "emoji":"🐜", "where":"rainforest", "zones":[1], "tier":"uncommon", "tiny":true,
+  "facts":["I carry a piece of leaf fifty times my own weight over my head, like an umbrella.","I don't even eat the leaves. I chew them into mush and GROW A MUSHROOM GARDEN on them underground.","My colony farms that fungus and eats it. We were farmers 50 million years before people were.","There can be eight million of us in one nest, and we'll strip a whole tree in a night."] },
+
+{ "id":"bulletant", "name":"Bullet Ant", "wiki":"Paraponera clavata", "emoji":"🐜", "where":"rainforest", "zones":[1], "tier":"rare", "tiny":true,
+  "facts":["I have the most painful sting of any insect on Earth. People say it feels like being shot — that's how I got my name.","A scientist rated every insect sting in the world and gave me the top score.","The pain lasts a whole day. Most stings last a few minutes.","I'm an inch long and I click and squeak when I'm cross, which is a fair warning."] },
+
+{ "id":"giantanteater", "name":"Giant Anteater", "wiki":"Giant anteater", "emoji":"🐜", "where":"rainforest", "zones":[1], "tier":"rare",
+  "facts":["My tongue is two feet long and flicks in and out 150 times a MINUTE.","I have no teeth at all. Not one.","I eat 30,000 ants and termites a day, but only 30 seconds at each nest, so the nest survives and I can come back.","My front claws are so big I have to walk on my knuckles to keep from stabbing myself."] },
+
+{ "id":"tapir", "name":"Tapir", "wiki":"Tapir", "emoji":"🐷", "where":"rainforest", "zones":[1], "tier":"rare",
+  "facts":["My nose is a little trunk, and I can swing it around to grab leaves or snorkel with it underwater.","My closest relatives are horses and rhinos, which nobody ever guesses.","My babies are born covered in stripes and spots like a watermelon, and they fade as they grow.","I swallow seeds whole and plant half the forest by walking around. Gardeners call me a gardener."] },
+
+{ "id":"capybara", "name":"Capybara", "wiki":"Capybara", "emoji":"🦫", "where":"rainforest", "zones":[1], "tier":"rare",
+  "facts":["I'm the biggest rodent in the world — as big as a large dog, and I'm basically a giant guinea pig.","My eyes, ears and nose are all on the top of my head, so I can sit underwater with just that bit showing.","I can hold my breath for five minutes and sleep in the water.","Every animal in the rainforest seems to like sitting on me. Birds, monkeys, turtles. I don't mind."] },
+
+{ "id":"goliathfrog", "name":"Goliath Frog", "wiki":"Goliath frog", "emoji":"🐸", "where":"rainforest", "zones":[1], "tier":"rare",
+  "facts":["That is a museum model in the picture. Almost nobody has ever managed a good photo of me in the wild.","I'm the biggest frog on Earth — a foot long and as heavy as a newborn baby.","I can jump ten feet from a standing start.","I build my own nursery: I shove rocks the size of my own body around to make a pond for my eggs.","I have no voice sac, so I can't croak like other frogs. I whistle instead.","I only live in two rivers in the whole world, in Cameroon and Equatorial Guinea."] },
+
+{ "id":"anaconda", "name":"Green Anaconda", "wiki":"Green anaconda", "emoji":"🐍", "where":"rainforest", "zones":[1], "tier":"legendary", "magicOnly":true,
+  "facts":["I'm the heaviest snake in the world — as heavy as a grown man, and longer than a car.","My eyes and nostrils are on TOP of my head so I can lie in the river completely hidden and still watch you.","I don't have venom. I just hold on.","I can go weeks without eating after a big meal, and I mostly lie in the water because on land I'm too heavy to move well."] },
+
+{ "id":"okapi", "name":"Okapi", "wiki":"Okapi", "emoji":"🦓", "where":"rainforest", "zones":[1], "tier":"epic",
+  "facts":["I have a zebra's stripes, a deer's body, and a giraffe's face — because I AM a giraffe's closest relative.","My tongue is 18 inches long, blue-black, and I can wash my own eyeballs and ears with it.","I live in the Congo rainforest and scientists didn't even know I existed until 1901.","My stripes break up my shape in the dappled light. People call me the forest ghost."] },
+
+{ "id":"jaguar", "name":"Jaguar", "wiki":"Jaguar", "emoji":"🐆", "where":"rainforest", "zones":[1,2], "tier":"epic", "magicOnly":true,
+  "facts":["I have the strongest bite of any big cat, and I use it to bite straight THROUGH the skull.","I'm the only big cat that genuinely loves swimming. I'll hunt caiman in the river.","My spots are rosettes — little rings with a dot inside. A leopard's rings are empty.","My name comes from an Amazonian word, yaguara, meaning the one who kills in a single leap."] },
+
+{ "id":"theshadow", "name":"The Shadow", "wiki":"Black panther", "emoji":"🐆", "where":"rainforest", "zones":[1,2,3], "tier":"mythic", "mythic":true,
+  "facts":["I am a jaguar, and I was born black. About one jaguar in a hundred is.","My spots are still there. In bright sun you can see them, like a secret pattern under the black.","People call me a black panther, but there is no such animal. There are only jaguars and leopards like me.","You have probably looked straight at me. In this forest, at this light, I am the same colour as everything else.","Almost nobody ever sees me on purpose."] },
+
+/* ================= ZONE 2 — THE UNDERSTORY ================= */
+
+{ "id":"vampirecrab", "name":"Vampire Crab", "wiki":"Geosesarma dennerle", "emoji":"🦀", "where":"rainforest", "zones":[2], "tier":"uncommon", "givesMagic":true,
+  "facts":["I'm bright purple with glowing yellow eyes, and I'm about the size of a coin.","I live in the trees and the leaf litter, not the sea. I barely go in water at all.","I was only found by scientists in 2015, on one island in Indonesia, and nowhere else.","Catch me and you've earned a magic trap — crabs are good like that."] },
+
+{ "id":"jesuslizard", "name":"Basilisk Lizard", "wiki":"Common basilisk", "emoji":"🦎", "where":"rainforest", "zones":[2], "tier":"rare",
+  "facts":["I can RUN ON WATER. Properly, on top of it, for about twenty metres.","People call me the Jesus Christ lizard because of it.","I do it by slapping my back feet down so fast I make a pocket of air and push off it before I sink.","If I slow down I just drop in and swim, which is less impressive but works fine."] },
+
+{ "id":"vinesnake", "name":"Vine Snake", "wiki":"Ahaetulla", "emoji":"🐍", "where":"rainforest", "zones":[2], "tier":"uncommon",
+  "facts":["I am as thin as a pencil and as green as a vine, and I hold myself out in mid-air perfectly still.","My pupils are shaped like KEYHOLES, pointing forwards, so I can judge distance like you can.","I sway gently in the breeze, exactly in time with the leaves around me.","Almost every snake has round or slit pupils. Mine are horizontal slots, and almost nothing else on Earth has that."] },
+
+{ "id":"katydid", "name":"Leaf Katydid", "wiki":"Katydid", "emoji":"🦗", "where":"rainforest", "zones":[2], "tier":"uncommon", "tiny":true,
+  "facts":["I look exactly like a leaf — right down to the veins, the brown edges and the holes where something took a bite.","Some of my cousins look like a leaf with MOULD on it. That's how far we take it.","I have ears on my front KNEES.","The whole roar of the rainforest at night is mostly us, calling to each other."] },
+
+{ "id":"bushmaster", "name":"Bushmaster", "wiki":"Lachesis muta", "emoji":"🐍", "where":"rainforest", "zones":[2], "tier":"rare",
+  "facts":["I'm the longest venomous snake in the Americas — up to twelve feet.","My Latin name means SILENT FATE, because I have no rattle and I give no warning.","I can wait in the exact same spot for weeks for something to walk past.","I'm the only pit viper in the Americas that lays eggs, and I stay and guard them."] },
+
+{ "id":"ocelot", "name":"Ocelot", "wiki":"Ocelot", "emoji":"🐈", "where":"rainforest", "zones":[2], "tier":"rare",
+  "facts":["I'm a wild cat about twice the size of a house cat, and no two of us have the same markings.","I hunt at night and I see six times better in the dark than you do.","My rough tongue can strip a feather or a bone completely clean.","Salvador Dalí had a pet ocelot and took it to restaurants. It did not go well."] },
+
+{ "id":"kinkajou", "name":"Kinkajou", "wiki":"Kinkajou", "emoji":"🐻", "where":"rainforest", "zones":[2,3], "tier":"rare",
+  "facts":["I have a tail I can hang from, which is very rare for a meat-eater's family.","I can turn my back feet completely BACKWARDS to run down a trunk head-first.","My tongue is five inches long and I use it to lick honey and flowers.","People call me a honey bear. I'm actually related to raccoons."] },
+
+{ "id":"amazoncentipede", "name":"Amazon Giant Centipede", "wiki":"Scolopendra gigantea", "emoji":"🪱", "where":"rainforest", "zones":[2], "tier":"rare",
+  "facts":["I'm a foot long, and I am the biggest centipede there has ever been.","I hang from a cave roof by my back legs and catch BATS out of the air with the rest of me.","I have 21 or 23 pairs of legs — always an odd number of pairs, like every centipede.","The last pair of my legs are hooks, so my back end grabs things too."] },
+
+{ "id":"tarsier", "name":"Tarsier", "wiki":"Tarsier", "emoji":"🐵", "where":"rainforest", "zones":[2,3], "tier":"epic", "tiny":true,
+  "facts":["Each of my eyeballs is as big as my whole brain. They're the biggest eyes of any mammal for its size.","My eyes can't move in their sockets at all — so instead I turn my head almost the whole way round, like an owl.","I fit in the palm of your hand and I can jump forty times my own body length.","I'm the only primate in the world that eats nothing but meat. Insects, lizards, even birds."] },
+
+/* ================= ZONE 3 — THE CANOPY ================= */
+
+{ "id":"sloth", "name":"Three-Toed Sloth", "wiki":"Three-toed sloth", "emoji":"🦥", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["I move so slowly that ALGAE grows in my fur, which turns me green and hides me.","A whole ecosystem lives in my coat — algae, moths, beetles. Some of those moths live nowhere else on Earth.","It takes me a month to digest one leaf.","I climb all the way down to the ground to poo, about once a week, and it is the most dangerous thing I do.","I'm a surprisingly good swimmer — three times faster in water than on a branch."] },
+
+{ "id":"howlermonkey", "name":"Howler Monkey", "wiki":"Howler monkey", "emoji":"🐒", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["I am the loudest land animal in the Americas. You can hear me three miles away.","I have a hollow bone in my throat that works like an echo chamber.","We howl at dawn so that other troops know where we are and nobody has to fight about it.","I'm one of the few monkeys that can see red properly, which helps me spot the ripe leaves."] },
+
+{ "id":"spidermonkey", "name":"Spider Monkey", "wiki":"Spider monkey", "emoji":"🐒", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["My tail is a fifth hand. It has a bare gripping patch on the end with ridges like your fingerprints.","I can hang by that tail alone and pick fruit with both hands and both feet.","I barely have thumbs — they'd just get in the way of swinging.","I can throw myself thirty feet between trees without stopping to think about it."] },
+
+{ "id":"toucan", "name":"Toucan", "wiki":"Toco toucan", "emoji":"🦜", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["My beak is a third of my whole length, and it weighs almost nothing — it's a honeycomb of air inside.","I use it as a RADIATOR. I pump hot blood into it to cool myself down, like an elephant's ears.","I sleep by folding my beak and my tail over my back until I'm a little ball of feathers.","My tongue is long, thin and frayed at the end like a feather."] },
+
+{ "id":"scarletmacaw", "name":"Scarlet Macaw", "wiki":"Scarlet macaw", "emoji":"🦜", "where":"rainforest", "zones":[3], "tier":"epic",
+  "facts":["I can live to be EIGHTY. Some of us outlive the people who raised us.","I pick one partner and stay with them my whole life.","My beak can crack a nut a person would need a hammer for.","Hundreds of us gather at clay riverbanks to eat the mud, which settles our stomachs after eating unripe fruit."] },
+
+{ "id":"flyingsnake", "name":"Flying Snake", "wiki":"Chrysopelea", "emoji":"🐍", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["I launch off a branch and GLIDE — up to a hundred metres, between trees.","I flatten my whole body into a ribbon, doubling my width, and ripple through the air like I'm swimming.","I steer in mid-air. I can turn while gliding.","Scientists filmed me with high-speed cameras for years to work out how I do it, and they're still arguing."] },
+
+{ "id":"colugo", "name":"Colugo", "wiki":"Colugo", "emoji":"🐿️", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["I'm the best glider of any mammal — 200 metres between trees without losing much height.","My gliding skin runs from my neck to my FINGERTIPS to my tail-tip. Even between my toes.","People call me a flying lemur. I'm not a lemur and I don't fly, so that's two mistakes.","My front teeth are shaped like tiny combs, with up to twenty prongs on one tooth, and I comb my fur with them."] },
+
+{ "id":"hoatzin", "name":"Hoatzin", "wiki":"Hoatzin", "emoji":"🐦", "where":"rainforest", "zones":[3], "tier":"rare",
+  "facts":["My chicks are born with CLAWS on their wings, and they climb with them like a little dinosaur.","If something scares a chick, it drops into the river, swims, and climbs back up the branch using those claws.","I digest leaves in my crop by fermenting them, like a cow. No other bird does that.","That's why I smell so bad. People call me the stinkbird, and I have earned it."] },
+
+{ "id":"sunbear", "name":"Sun Bear", "wiki":"Sun bear", "emoji":"🐻", "where":"rainforest", "zones":[3], "tier":"epic",
+  "facts":["I'm the smallest bear in the world, and I spend my life up trees.","My tongue is TEN INCHES long, for pulling honey and grubs out of holes.","I have a golden patch on my chest, and no two are the same — it's like a fingerprint.","My claws are sickle-shaped and my skin is so loose that if something grabs me I can turn round inside it."] },
+
+{ "id":"treekangaroo", "name":"Tree Kangaroo", "wiki":"Tree-kangaroo", "emoji":"🦘", "where":"rainforest", "zones":[3], "tier":"epic",
+  "facts":["I am a kangaroo, and I live thirty metres up a tree.","My ancestors came down from the trees to hop about on the ground, and then my lot went back up again.","I can jump down sixty feet onto the ground and just walk away unhurt.","Unlike other kangaroos I can move my back legs one at a time, which is how I climb."] },
+
+{ "id":"orangutan", "name":"Orangutan", "wiki":"Orangutan", "emoji":"🦧", "where":"rainforest", "zones":[3], "tier":"epic", "magicOnly":true,
+  "facts":["My name means PERSON OF THE FOREST, and we share about 97% of our DNA with you.","I build a brand new bed out of branches every single night. Over 30,000 beds in a life.","I use tools: leaf umbrellas when it rains, sticks to fish termites out, folded leaves as a cup.","My arms are seven feet across — wider than I am tall.","I'm slower and more thoughtful than the other great apes. I don't do anything without a reason."] },
+
+/* ================= ZONE 4 — THE EMERGENT LAYER ================= */
+
+{ "id":"bluemorpho", "name":"Blue Morpho", "wiki":"Morpho menelaus", "emoji":"🦋", "where":"rainforest", "zones":[4], "tier":"rare", "tiny":true,
+  "facts":["My wings are not actually blue. There is no blue pigment in me at all.","They're covered in microscopic ridges that bend light, and the blue you see is the light itself.","The underside of me is dull brown with fake eyes, so when I flap I flash on and off like a light.","My wings are as wide as your hand, and pilots have reported seeing us flashing from above the canopy."] },
+
+{ "id":"flyingfrog", "name":"Wallace's Flying Frog", "wiki":"Wallace's flying frog", "emoji":"🐸", "where":"rainforest", "zones":[4], "tier":"rare",
+  "facts":["I have enormous webbed feet, and I spread all four of them and PARACHUTE between trees.","I can glide fifty feet from one branch to another.","Big sticky pads on my toes mean I land softly and stick where I land.","Alfred Russel Wallace found me in Borneo in the 1850s and could hardly believe what he was watching."] },
+
+{ "id":"hornbill", "name":"Great Hornbill", "wiki":"Great hornbill", "emoji":"🦤", "where":"rainforest", "zones":[4], "tier":"epic",
+  "facts":["The hollow helmet on top of my beak is called a casque, and it works like a loudspeaker.","When it's time for eggs, the female seals herself INSIDE a hollow tree with mud, leaving one slit.","I feed her through that slit for four months while she raises the chicks in there, completely safe.","You can hear my wingbeats from half a mile away. They whoosh like a steam train."] },
+
+{ "id":"kingvulture", "name":"King Vulture", "wiki":"King vulture", "emoji":"🦅", "where":"rainforest", "zones":[4], "tier":"epic",
+  "facts":["My face is orange, purple, red, yellow and blue all at once — and my body is plain white and black.","I can't smell a thing. I circle high up and wait for the smaller vultures to find something, then I come down and they all move aside.","My beak is the strongest of any vulture, so I open what nobody else can.","The Maya carved me into their temples and drew me in their books as a messenger between people and the gods."] },
+
+{ "id":"birdwing", "name":"Queen Alexandra's Birdwing", "wiki":"Queen Alexandra's birdwing", "emoji":"🦋", "where":"rainforest", "zones":[4], "tier":"legendary",
+  "facts":["I am the biggest butterfly in the world. My wings are a FOOT across.","The first one ever collected, in 1906, was brought down with a shotgun, because nothing else would reach me.","I live in one small patch of rainforest in Papua New Guinea and nowhere else at all.","A volcano erupted in 1951 and destroyed a huge part of where I live. I have never really recovered."] },
+
+{ "id":"harpyeagle", "name":"Harpy Eagle", "wiki":"Harpy eagle", "emoji":"🦅", "where":"rainforest", "zones":[4], "tier":"legendary", "magicOnly":true,
+  "facts":["My talons are as long as a grizzly bear's claws — five inches — and my grip could break a person's arm.","I pick monkeys and sloths straight off the branch and carry them away.","My wings are seven feet across, but short and broad so I can turn hard between the trees.","I raise ONE chick every two or three years, and I feed it for a whole year after it can fly.","I'm named after the harpies of Greek myth, which were half eagle and half something much worse."] }
+
+]

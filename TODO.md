@@ -264,6 +264,38 @@ home-screen app had been quietly showing an old build.
 
 ---
 
+# Round 5 — Rainforest, from Cam, 2026-09-27
+
+Cam asked for a rainforest level. The interesting part is that a rainforest is built in
+LAYERS, so this is the first world in the game you climb **up**.
+
+- [x] New world type `rainforest`, vertical but **inverted**: zone 1 is the bottom of the
+      map. `climbs(kind)` marks it; everything asks `progressAt(y)` how far along he is
+      instead of reading `y`, so one set of maths serves both directions
+- [x] Four layers: **The Forest Floor x2 → The Understory x4 → The Canopy x6 → THE
+      EMERGENT LAYER x10**
+- [x] The light inverts too — dark at the bottom, blazing at the top, because only ~2% of
+      sunlight reaches a rainforest floor. Glow Beetle Lantern lights the floor
+- [x] Climbing Rope gates the canopy, Canopy Harness the emergent layer. Leaf Magnifier
+      and Sticky Gloves are the peek / second-chance pair
+- [x] 36 animals filling a real hole: the Deep Forest had the rainforest *insects* but no
+      sloth, monkey, toucan, macaw, jaguar, anaconda or harpy eagle at all
+- [x] Mythic: **The Shadow**, a jaguar born black — and the card explains that a "black
+      panther" is not a species
+- [x] Bromeliads and knot-holes to open instead of rocks. Butterflies, light shafts,
+      buttress roots, emergent crowns breaking through into open sky
+- [x] Every photo vision-checked; 5 replaced (a four-species composite, one too dark, one
+      shot in a vivarium with a car in the background, one drab, and a harpy eagle standing
+      on bloody prey). The goliath frog's only clear picture is a museum model, so its card
+      now says so
+- [x] **Bug found: spot-drawing blocks for BOTH the mythical and rainforest worlds had
+      landed in `drawGround()` instead of `drawSpot()`**, because the anchor I patched
+      against appeared there first. The mythical rune stones and fairy rings have never
+      drawn — that world has been showing plain grey land rocks since it shipped. Both
+      blocks moved into `drawSpot`, and its branch order verified
+
+---
+
 ## Open questions for Cam
 
 - Does he want the islands reached by **boat** (buy it once) or should they be open

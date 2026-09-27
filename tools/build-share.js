@@ -24,31 +24,54 @@ execFileSync("node", [path.join(__dirname, "stamp-build.js")], { stdio: "inherit
 /* ---------- 1. shrink every photo, then embed it as a data: URI ---------- */
 eval(fs.readFileSync(path.join(ROOT, "photos.js"), "utf8").replace("var PHOTOS", "globalThis.PHOTOS"));
 
-const WIDTH = 460;          /* the card shows about 500px wide */
-const QUALITY = 62;
+/* One file has to hold every photo in the game, and the catalog keeps growing.
+   Rather than hand-tuning these two numbers every time a world is added, try
+   the nicest setting first and step down until the whole thing fits. */
+const PRESETS = [
+  { width: 460, quality: 62 },   /* the card shows about 500px wide */
+  { width: 420, quality: 52 },
+  { width: 380, quality: 44 },
+  { width: 340, quality: 38 }
+];
+const LIMIT_MB = 15;                       /* the artifact ceiling is 16 */
+const CODE_ALLOWANCE = 0.6 * 1024 * 1024;  /* room for the game itself */
 
-const embedded = {};
-let totalBytes = 0;
+function embedAll(width, quality) {
+  const out = {};
+  let bytes = 0;
+  Object.keys(PHOTOS).forEach((id, i) => {
+    const src = path.join(IMAGES, PHOTOS[id].file);
+    const tmp = path.join(TMP, id + ".jpg");
+    if (!fs.existsSync(src)) { console.log("missing " + src); return; }
+    /* sips ships with macOS — resize and re-compress as JPEG */
+    execFileSync("sips", ["-Z", String(width),
+                          "-s", "format", "jpeg",
+                          "-s", "formatOptions", String(quality),
+                          src, "--out", tmp], { stdio: "ignore" });
+    const b64 = fs.readFileSync(tmp).toString("base64");
+    bytes += b64.length;
+    out[id] = { data: "data:image/jpeg;base64," + b64, title: PHOTOS[id].title, url: PHOTOS[id].url };
+    if (i % 20 === 0) process.stdout.write(".");
+  });
+  return { embedded: out, bytes: bytes };
+}
 
-Object.keys(PHOTOS).forEach((id, i) => {
-  const src = path.join(IMAGES, PHOTOS[id].file);
-  const out = path.join(TMP, id + ".jpg");
-  if (!fs.existsSync(src)) { console.log("missing " + src); return; }
-
-  /* sips ships with macOS — resize and re-compress as JPEG */
-  execFileSync("sips", ["-Z", String(WIDTH),
-                        "-s", "format", "jpeg",
-                        "-s", "formatOptions", String(QUALITY),
-                        src, "--out", out], { stdio: "ignore" });
-
-  const b64 = fs.readFileSync(out).toString("base64");
-  totalBytes += b64.length;
-  embedded[id] = { data: "data:image/jpeg;base64," + b64, title: PHOTOS[id].title, url: PHOTOS[id].url };
-  if (i % 20 === 0) process.stdout.write(".");
-});
-
-console.log("\nphotos embedded: " + Object.keys(embedded).length +
-            " (" + Math.round(totalBytes / 1024 / 1024 * 10) / 10 + " MB of base64)");
+let embedded, totalBytes, used;
+for (let i = 0; i < PRESETS.length; i++) {
+  used = PRESETS[i];
+  const r = embedAll(used.width, used.quality);
+  embedded = r.embedded; totalBytes = r.bytes;
+  const mb = totalBytes / 1024 / 1024;
+  console.log("\n" + Object.keys(embedded).length + " photos at " + used.width +
+              "px q" + used.quality + " — " + Math.round(mb * 10) / 10 + " MB of base64");
+  if (totalBytes + CODE_ALLOWANCE < LIMIT_MB * 1024 * 1024) break;
+  if (i === PRESETS.length - 1) {
+    console.error("build-share: even the smallest setting won't fit under " + LIMIT_MB + " MB.\n" +
+                  "  Add another step to PRESETS, or the shared copy has to drop some photos.");
+    process.exit(1);
+  }
+  console.log("  too big — trying a smaller setting");
+}
 
 /* Every edit below rewrites a specific piece of index.html. If index.html is
    refactored and one of them stops matching, .replace() quietly does nothing and

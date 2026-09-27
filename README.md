@@ -1,6 +1,6 @@
 # Cam's Crazy Creatures
 
-A creature-collecting exploration game designed by Cam (age 6). 236 real animals and
+A creature-collecting exploration game designed by Cam (age 6). 272 real animals and
 36 legends, each with a real picture and hand-written facts — plus one dragon. Open `index.html` in a
 browser — no installs, no server. The shared copy everyone plays is
 **https://calbru.github.io/cams-crazy-creatures/**, deployed from `main` by GitHub Pages.
@@ -44,13 +44,13 @@ asking everybody their age added a step and told the game nothing.
 
 ## How you play
 
-Pick **LAND**, **OCEAN**, **UNDERGROUND**, **THE ISLANDS**, **PREHISTORIC** or
-**MYTHICAL**. Move with the arrow keys (or click where you want to go).
+Pick **LAND**, **OCEAN**, **UNDERGROUND**, **THE ISLANDS**, **PREHISTORIC**,
+**MYTHICAL** or **RAINFOREST**. Move with the arrow keys (or click where you want to go).
 Get close to a rock or a trap, press **SPACE**, and see what you found. Every creature
 has a real photo and real facts. Everything you find goes in your book.
 
-The further you go, the rarer the creatures. Ocean and underground go **down**; land, the
-islands and prehistoric go **across**.
+The further you go, the rarer the creatures. Ocean and underground go **down**, the
+rainforest goes **UP**, and everything else goes **across**.
 
 | Ocean | Underground | Land | Islands | Prehistoric | Mythical |
 |---|---|---|---|---|---|
@@ -61,6 +61,10 @@ islands and prehistoric go **across**.
 | THE HADAL ZONE x8 *(Deep Suit)* | | | | | |
 | THE VOLCANO VENTS x12 *(Volcano Suit)* | | | | | |
 
+The rainforest is the odd one out and is listed on its own, because it is the only world
+you climb: **The Forest Floor x2 → The Understory x4 → The Canopy x6 *(Climbing Rope)* →
+THE EMERGENT LAYER x10 *(Canopy Harness)*.**
+
 **The Dragon is the exception.** Cam asked for a dragon in the Deep Forest, so there is
 one — a mythic, and the only creature in the book with no photo. Its card says so:
 *"Every other animal in this book is real. This one is Cam's."*
@@ -70,6 +74,26 @@ He is as long as a school bus, so he needs the **magic trap**, and he carries
 what, once per kid, because meeting your own dragon shouldn't come down to the dice. After
 that he shares the forest with the king cobra — about one magic trap in sixteen. A plain
 rock flip never turns him up.
+
+**The rainforest is the only world you climb UP**, because that is genuinely how a
+rainforest is built. Zone 1 is the bottom of the map and the light gets *better* the
+higher he goes: only about 2% of the sunlight ever reaches the forest floor, which is
+exactly why almost everything alive is up in the canopy. The floor is dark enough to want
+the **Glow Beetle Lantern** (a real click beetle in a jar — people in the rainforest
+really did use them as lamps), the **Climbing Rope** opens the canopy and the **Canopy
+Harness** takes him out through the treetops into open sky.
+
+It fills a hole the game had: the Deep Forest was already full of rainforest *insects*, but
+there was no sloth, monkey, toucan, macaw, jaguar, anaconda or harpy eagle anywhere. Now
+there are 36 of them, including an okapi, a tree kangaroo, a snake that glides and a frog
+that parachutes. Instead of rocks he opens **bromeliads** — the tank plants that hold a
+little pond of rainwater up a tree, with frogs living in them. The mythic is **The Shadow**,
+a jaguar born black: about one in a hundred is, the spots are still there under the black,
+and its card explains that "black panther" isn't a species at all.
+
+In the code, `climbs(kind)` marks it and everything asks `progressAt(y)` how far along he
+is rather than reading `y` directly, so the same maths serves a world that goes down and a
+world that goes up.
 
 **Mythical is the one world where nothing is real, and every card says so.** Cam asked for
 unicorns and a chupacabra; what he got is 36 legends from 27 different cultures, and the
