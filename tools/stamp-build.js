@@ -19,6 +19,8 @@ const crypto = require("crypto");
 const ROOT = path.join(__dirname, "..");
 const indexPath = path.join(ROOT, "index.html");
 const STAMP = /const BUILD = "[^"]*";/;
+/* the two files the page pulls in beside itself */
+const SRC = /<script src="(photos|creatures)\.js[^"]*"><\/script>/g;
 
 let html = fs.readFileSync(indexPath, "utf8");
 if (!STAMP.test(html)) {
@@ -26,19 +28,26 @@ if (!STAMP.test(html)) {
   process.exit(1);
 }
 
-/* hash the game itself, with the old stamp taken out so it can't chase its own tail */
+/* hash the game itself, with the old stamp and the old ?v= taken out so it
+   can't chase its own tail */
 const hash = crypto.createHash("sha256");
-hash.update(html.replace(STAMP, ""));
+hash.update(html.replace(STAMP, "").replace(SRC, '<script src="$1.js"></script>'));
 ["creatures.js", "photos.js"].forEach(f => hash.update(fs.readFileSync(path.join(ROOT, f))));
 
 const day = new Date().toISOString().slice(0, 10);
 const build = day + "-" + hash.digest("hex").slice(0, 8);
 
-const current = html.match(STAMP)[0];
-if (current === 'const BUILD = "' + build + '";') {
+/* Stamp the version onto index.html AND onto the two files it loads. Without
+   that last part the page can arrive fresh while its catalog comes from cache,
+   and the game ends up knowing about a world it has no creatures for. */
+const stamped = html
+  .replace(STAMP, 'const BUILD = "' + build + '";')
+  .replace(SRC, '<script src="$1.js?v=' + build + '"></script>');
+
+if (stamped === html) {
   console.log("already stamped " + build);
 } else {
-  fs.writeFileSync(indexPath, html.replace(STAMP, 'const BUILD = "' + build + '";'));
+  fs.writeFileSync(indexPath, stamped);
   console.log("stamped " + build);
 }
 

@@ -50,33 +50,49 @@ Object.keys(PHOTOS).forEach((id, i) => {
 console.log("\nphotos embedded: " + Object.keys(embedded).length +
             " (" + Math.round(totalBytes / 1024 / 1024 * 10) / 10 + " MB of base64)");
 
+/* Every edit below rewrites a specific piece of index.html. If index.html is
+   refactored and one of them stops matching, .replace() quietly does nothing and
+   the shared copy ships subtly broken — which is exactly what happened to the
+   photo swap. So the ones that matter go through here and fail loudly. */
+function mustReplace(text, find, replaceWith, what) {
+  const out = text.replace(find, replaceWith);
+  if (out === text) {
+    console.error("build-share: could not find " + what + " in index.html.\n" +
+                  "  Something was refactored. Fix this replacement before shipping.");
+    process.exit(1);
+  }
+  return out;
+}
+
 /* ---------- 2. stitch the game into one file ---------- */
 let html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
 const creatures = fs.readFileSync(path.join(ROOT, "creatures.js"), "utf8");
 /* counted, not typed, so the blurb can't go stale the next time a batch lands */
 const creatureCount = require("vm").runInNewContext(creatures + ";CREATURES.length");
 
-const photoScript = "var PHOTOS = " + JSON.stringify(embedded) + ";\n" +
-  /* photoOf() normally builds a path; here the photo is already inline */
-  "function __sharedPhotoOf(id) { return PHOTOS[id] ? PHOTOS[id].data : null; }\n";
+const photoScript = "var PHOTOS = " + JSON.stringify(embedded) + ";\n";
 
-html = html.replace('<script src="photos.js"></script>', "<script>" + photoScript + "</script>");
-html = html.replace('<script src="creatures.js"></script>', "<script>" + creatures + "</script>");
+html = mustReplace(html, /<script src="photos\.js[^"]*"><\/script>/,
+                   "<script>" + photoScript + "</script>", "the photos.js tag");
+html = mustReplace(html, /<script src="creatures\.js[^"]*"><\/script>/,
+                   "<script>" + creatures + "</script>", "the creatures.js tag");
 
-/* use the inline photo data instead of a file path */
-html = html.replace('function photoOf(id) { return PHOTOS[id] ? "images/" + PHOTOS[id].file : null; }',
-                    'function photoOf(id) { return __sharedPhotoOf(id); }');
+/* The photo is already inline here, so don't go looking for a file beside us.
+   Animals Cam added himself keep their Wikipedia URL, so that line stays. */
+html = mustReplace(html, '  if (PHOTOS[id]) return "images/" + PHOTOS[id].file;',
+                   "  if (PHOTOS[id]) return PHOTOS[id].data;", "the photo path lookup");
 
 /* ---------- 3. shared-version tweaks ---------- */
 
 /* There is no version.json sitting next to a single shared file, and a visitor
    has nothing to update to anyway. "shared" switches that check off. */
-html = html.replace(/const BUILD = "[^"]*";/, 'const BUILD = "shared";');
+html = mustReplace(html, /const BUILD = "[^"]*";/, 'const BUILD = "shared";', "the BUILD stamp");
 
 /* Some browsers block storage inside a shared frame. Never let that break the game. */
-html = html.replace(
+html = mustReplace(html,
   "function load() {\n  const merged =",
-  "function load() {\n  try { void localStorage.length; } catch (e) { return; }   /* storage blocked — play without saving */\n  const merged =");
+  "function load() {\n  try { void localStorage.length; } catch (e) { return; }   /* storage blocked — play without saving */\n  const merged =",
+  "the load() guard");
 
 /* Give a visitor enough points to buy the Deep Suit right away, so they can
    actually go see the strange things instead of grinding for them. */

@@ -154,6 +154,7 @@ speeds up, and the glow turns gold only when it's something great.
 | `photos.js` | Generated map of creature id → photo file (don't hand-edit) |
 | `images/` | One photo per creature, downloaded from Wikipedia |
 | `TODO.md` | The running to-do list |
+| `tools/stamp-build.js` | Stamps the build id into the page, its script tags and `version.json` |
 | `tools/build-share.js` | Builds the single-file shareable copy with photos embedded |
 | `tools/fetch-photos.js` | Downloads the photos |
 | `tools/make-photos-js.js` | Rebuilds `photos.js` from `images/` |
@@ -291,11 +292,19 @@ and from then on the check bootstraps every future update by itself. If an icon 
 pull-to-refresh or force-quitting the web app forces that navigation.
 
 **`index.html`, `creatures.js` and `photos.js` are three files with three cache entries**,
-and on that device they really can arrive out of step. A page that knows about a world its
-catalog doesn't have used to render the card and then throw the moment he tapped it.
-`worldExists()` and `worldsInOrder()` now gate every list of worlds — the home screen, the
-book, the shop, the ➕ Add form — so a half-updated copy quietly shows one world fewer and
-keeps working, instead of breaking.
+so the stamper puts the build id on the two `<script src>` tags as well —
+`creatures.js?v=2026-09-27-…`. A given page can then only ever load the catalog it shipped
+with, and page-vs-catalog skew is gone rather than merely unlikely. (A `?v=` on a `file://`
+script src works, but in case some browser ever disagrees there's a plain-URL fallback right
+after the tags. Both paths are tested.)
+
+Belt and braces on top of that: `worldExists()` and `worldsInOrder()` gate every list of
+worlds — the home screen, the book, the shop, the ➕ Add form — so even a half-updated copy
+quietly shows one world fewer and keeps working, instead of rendering a card that throws the
+moment he taps it.
+
+**So adding creatures is now just: run the batch, run `build-share.js` (which stamps), push.**
+Every device picks it up by itself and tells him what arrived.
 
 ## ⚠️ Never break Cam's book
 

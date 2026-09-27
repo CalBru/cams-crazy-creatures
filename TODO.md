@@ -248,6 +248,20 @@ home-screen app had been quietly showing an old build.
       the bar instead of assuming 58px), and the Back button was positioned against the
       viewport rather than its own screen
 
+## Cache, closed off properly
+
+- [x] The build id is stamped onto the `<script src>` tags too, so a page can only ever
+      load the catalog it shipped with. Page-vs-catalog skew is now impossible, not just
+      unlikely. Plain-URL fallback in case a browser dislikes `?v=` on a `file://` src
+- [x] `worldExists()` / `worldsInOrder()` gate every list of worlds, so a half-updated
+      copy degrades instead of throwing
+- [x] **Found while testing: the shared single-file copy has had broken photos since
+      `d0def0d`.** `build-share.js` swaps `photoOf()` to read the inlined base64, but
+      `photoOf` became multi-line when ➕ Add landed, so the string replace silently
+      matched nothing — 13 MB of embedded photos that nothing read, every card falling
+      back to its emoji. Fixed, and every replacement in `build-share.js` now goes through
+      `mustReplace()`, which exits loudly instead of shipping a quietly broken file
+
 ---
 
 ## Open questions for Cam
