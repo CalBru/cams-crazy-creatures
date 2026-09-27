@@ -283,6 +283,20 @@ button, which is the manual override for exactly the iPad problem above.
 Creatures added with ➕ Add are skipped — those are his, not news. A brand-new book is
 marked all-seen so a first-time player isn't told all 273 creatures are new.
 
+**The first update can't arrive this way, and that's unavoidable.** The version check lives
+*inside* `index.html`, so an app still serving an old `index.html` is running code that has
+never heard of it. Ordinary HTTP caching has to deliver the page once — GitHub Pages sends
+`max-age=600`, so any genuine navigation more than ten minutes after a deploy picks it up —
+and from then on the check bootstraps every future update by itself. If an icon is stuck,
+pull-to-refresh or force-quitting the web app forces that navigation.
+
+**`index.html`, `creatures.js` and `photos.js` are three files with three cache entries**,
+and on that device they really can arrive out of step. A page that knows about a world its
+catalog doesn't have used to render the card and then throw the moment he tapped it.
+`worldExists()` and `worldsInOrder()` now gate every list of worlds — the home screen, the
+book, the shop, the ➕ Add form — so a half-updated copy quietly shows one world fewer and
+keeps working, instead of breaking.
+
 ## ⚠️ Never break Cam's book
 
 His saved book is the thing he cares about most, and it has been lost once already.

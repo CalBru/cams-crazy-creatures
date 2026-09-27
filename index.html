@@ -567,7 +567,7 @@ if (typeof PHOTOS === "undefined") { window.PHOTOS = {}; }
    A query string does NOT change the origin, so ?v= is safe — localStorage,
    and therefore Cam's book, is exactly the same before and after.
    ============================================================ */
-const BUILD = "2026-09-27-8a640e57";
+const BUILD = "2026-09-27-aecd5d30";
 
 /* Its own function so a test can stand in for it: opened off the disk, or
    built into the single shared file, there is no server to ask. */
@@ -3719,7 +3719,7 @@ function showShop() {
     "You have " + state.score.toLocaleString() + " points  ⭐";
 
   /* the place he's exploring right now comes first */
-  const order = ["ocean", "land", "island", "underground", "prehistoric", "mythical", "any"];
+  const order = worldsInOrder().concat("any");
   const here = world ? world.kind : null;
   if (here) order.splice(order.indexOf(here), 1), order.unshift(here);
 
@@ -3772,7 +3772,26 @@ function shopCard(item) {
 /* You need the boat before the islands are anywhere you can go, and the
    time machine before the dinosaurs are. */
 const WORLD_HINT = { island: "islandHint", prehistoric: "prehistoricHint" };
+/* index.html, creatures.js and photos.js are three separate files with three
+   separate cache entries, and on an iPad they can genuinely arrive out of step.
+   A page that knows about a world its catalog has never heard of must not offer
+   it — it would throw the moment he tapped it. */
+function worldExists(kind) {
+  return !!(typeof ZONES !== "undefined" && ZONES[kind] &&
+            typeof PLACES !== "undefined" && PLACES[kind]);
+}
+/* every list of worlds in the game goes through here, in display order */
+function worldsInOrder() {
+  return ["land", "ocean", "island", "underground", "prehistoric", "mythical"]
+    .filter(worldExists);
+}
+
 function tryStart(kind) {
+  if (!worldExists(kind)) {
+    flashHint("That place is still loading — try again in a moment!");
+    checkForUpdate();
+    return;
+  }
   if (!canReach(kind)) {
     const item = worldKeyItem(kind);
     updateHomeText();
@@ -3913,6 +3932,12 @@ function updateHomeText() {
     "🏆 Deepest dive ever: <b>" + state.deepest.toLocaleString() + " feet</b><br>" +
     "🧒 <b>" + me().label + "</b> is exploring — " + me().perkTitle;
 
+  /* hide any world this copy of the catalog doesn't actually have (see worldExists) */
+  document.querySelectorAll(".placeCard").forEach(card => {
+    const kind = (card.id || "").replace(/Card$/, "");
+    card.style.display = worldExists(kind) ? "" : "none";
+  });
+
   /* the two bought worlds stay locked until he buys the way in */
   const OPEN = {
     island: "Animals found nowhere else on Earth",
@@ -3922,7 +3947,7 @@ function updateHomeText() {
   Object.keys(WORLD_KEY).forEach(kind => {
     const card = document.getElementById(kind + "Card");
     const hint = document.getElementById(kind + "Hint");
-    if (!card || !hint) return;
+    if (!card || !hint || !worldExists(kind)) return;
     const item = worldKeyItem(kind);
     card.classList.toggle("locked", !canReach(kind));
     hint.innerHTML = canReach(kind)
@@ -4045,7 +4070,7 @@ function showBook() {
   shrine.appendChild(buildGrid(mythics));
   body.appendChild(shrine);
 
-  ["land", "ocean", "island", "underground", "prehistoric", "mythical"].forEach(where => {
+  worldsInOrder().forEach(where => {
     const h3 = document.createElement("h3");
     h3.textContent = PLACES[where].emoji + " " + PLACES[where].name;
     body.appendChild(h3);
@@ -4659,7 +4684,7 @@ function buildAddForm() {
   s1.innerHTML = "<h4>Where does the " + addPick.title + " live?</h4>";
   const r1 = document.createElement("div");
   r1.className = "pickRow";
-  ["land", "ocean", "island", "underground", "prehistoric", "mythical"].forEach(w => {
+  worldsInOrder().forEach(w => {
     const b = document.createElement("button");
     b.className = "pick" + (addWhere === w ? " on" : "");
     b.textContent = PLACES[w].emoji + " " + PLACES[w].name;
