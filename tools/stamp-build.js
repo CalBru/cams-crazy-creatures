@@ -19,8 +19,15 @@ const crypto = require("crypto");
 const ROOT = path.join(__dirname, "..");
 const indexPath = path.join(ROOT, "index.html");
 const STAMP = /const BUILD = "[^"]*";/;
-/* the two files the page pulls in beside itself */
-const SRC = /<script src="(photos|creatures)\.js[^"]*"><\/script>/g;
+/* Every file the page pulls in beside itself. Add one here and the hash, the
+   stamp and the cache-busting query all follow — wild.js was added to the page
+   without being added here, so its tag sat frozen at a week-old build id while
+   version.json moved on. That is exactly the page/catalog skew the stamping
+   exists to prevent. */
+const SIDECARS = ["photos.js", "creatures.js", "wild.js"];
+const SRC = new RegExp('<script src="(' +
+  SIDECARS.map(f => f.replace(/\.js$/, "")).join("|") +
+  ')\\.js[^"]*"></script>', "g");
 
 let html = fs.readFileSync(indexPath, "utf8");
 if (!STAMP.test(html)) {
@@ -32,7 +39,10 @@ if (!STAMP.test(html)) {
    can't chase its own tail */
 const hash = crypto.createHash("sha256");
 hash.update(html.replace(STAMP, "").replace(SRC, '<script src="$1.js"></script>'));
-["creatures.js", "photos.js"].forEach(f => hash.update(fs.readFileSync(path.join(ROOT, f))));
+SIDECARS.forEach(f => {
+  const fp = path.join(ROOT, f);
+  if (fs.existsSync(fp)) hash.update(fs.readFileSync(fp));
+});
 
 const day = new Date().toISOString().slice(0, 10);
 const build = day + "-" + hash.digest("hex").slice(0, 8);

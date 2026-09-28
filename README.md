@@ -345,12 +345,18 @@ never heard of it. Ordinary HTTP caching has to deliver the page once — GitHub
 and from then on the check bootstraps every future update by itself. If an icon is stuck,
 pull-to-refresh or force-quitting the web app forces that navigation.
 
-**`index.html`, `creatures.js` and `photos.js` are three files with three cache entries**,
-so the stamper puts the build id on the two `<script src>` tags as well —
+**`index.html` and the files it pulls in beside it each have their own cache entry**,
+so the stamper puts the build id on every `<script src>` tag as well —
 `creatures.js?v=2026-09-27-…`. A given page can then only ever load the catalog it shipped
 with, and page-vs-catalog skew is gone rather than merely unlikely. (A `?v=` on a `file://`
 script src works, but in case some browser ever disagrees there's a plain-URL fallback right
 after the tags. Both paths are tested.)
+
+The list of those files lives in **one place** — `SIDECARS` in `tools/stamp-build.js` — and
+the hash, the stamp and the cache-busting query all follow from it. That is not tidiness for
+its own sake: `wild.js` was added to the page without being added to the stamper, so its tag
+sat frozen at a week-old build id while `version.json` moved on, which is precisely the skew
+the stamping exists to prevent. Add a file to the page, add it to `SIDECARS`.
 
 Belt and braces on top of that: `worldExists()` and `worldsInOrder()` gate every list of
 worlds — the home screen, the book, the shop, the ➕ Add form — so even a half-updated copy
