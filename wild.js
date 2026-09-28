@@ -1,6 +1,7 @@
 /* Famous real animals that are NOT in the hand-written catalog.
    The Wild Trap catches these, and they start out with no facts at all.
-   Built by tools/harvest-wild.js — don't edit by hand. */
+   Built by tools/harvest-wild.js — don't edit by hand.
+   Photos vision-checked in bulk; rejects and bare binomials removed. */
 var WILD = [
  {
   "name": "Lion",
@@ -100,15 +101,6 @@ var WILD = [
   "file": "Brown bear.jpg",
   "article": "https://en.wikipedia.org/wiki/Brown_bear",
   "fame": 138
- },
- {
-  "name": "Common raven",
-  "kind": "species of bird",
-  "group": "bird",
-  "emoji": "🐦",
-  "file": "Corvus corax tingitanus MHNT 232 HdB Djebel Messaad Algerie.jpg",
-  "article": "https://en.wikipedia.org/wiki/Common_raven",
-  "fame": 137
  },
  {
   "name": "Eurasian magpie",
@@ -352,15 +344,6 @@ var WILD = [
   "file": "Rauchschwalbe Hirundo rustica.jpg",
   "article": "https://en.wikipedia.org/wiki/Barn_swallow",
   "fame": 111
- },
- {
-  "name": "Golden eagle",
-  "kind": "species of bird of prey",
-  "group": "bird",
-  "emoji": "🐦",
-  "file": "Maakotka (Aquila chrysaetos) by Jarkko Järvinen.jpg",
-  "article": "https://en.wikipedia.org/wiki/Golden_eagle",
-  "fame": 110
  },
  {
   "name": "Red deer",
@@ -1047,15 +1030,6 @@ var WILD = [
   "fame": 91
  },
  {
-  "name": "Asian black bear",
-  "kind": "species of mammal",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "Ursus thibetanus 3 (Wroclaw zoo).JPG",
-  "article": "https://en.wikipedia.org/wiki/Asian_black_bear",
-  "fame": 90
- },
- {
   "name": "Pallas's cat",
   "kind": "species of mammal",
   "group": "mammal",
@@ -1188,15 +1162,6 @@ var WILD = [
   "emoji": "🐦",
   "file": "Mareca penelope female s2.jpg",
   "article": "https://en.wikipedia.org/wiki/Eurasian_wigeon",
-  "fame": 88
- },
- {
-  "name": "Cimex lectularius",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Bed bug, Cimex lectularius.jpg",
-  "article": "https://en.wikipedia.org/wiki/Cimex_lectularius",
   "fame": 88
  },
  {
@@ -1458,15 +1423,6 @@ var WILD = [
   "emoji": "🐦",
   "file": "Emberiza citrinella Oulu Finland 2020-09-14.jpg",
   "article": "https://en.wikipedia.org/wiki/Yellowhammer",
-  "fame": 84
- },
- {
-  "name": "Black-winged stilt",
-  "kind": "species of bird",
-  "group": "bird",
-  "emoji": "🐦",
-  "file": "Himantopus himantopus MHNT.jpg",
-  "article": "https://en.wikipedia.org/wiki/Black-winged_stilt",
   "fame": 84
  },
  {
@@ -1800,15 +1756,6 @@ var WILD = [
   "emoji": "🐦",
   "file": "Coccothraustes coccothraustes 1 (Martin Mecnarowski).jpg",
   "article": "https://en.wikipedia.org/wiki/Hawfinch",
-  "fame": 80
- },
- {
-  "name": "European greenfinch",
-  "kind": "species of bird",
-  "group": "bird",
-  "emoji": "🐦",
-  "file": "Chloris chloris chloris MHNT 223 Gouvieux.jpg",
-  "article": "https://en.wikipedia.org/wiki/European_greenfinch",
   "fame": 80
  },
  {
@@ -2181,15 +2128,6 @@ var WILD = [
   "fame": 75
  },
  {
-  "name": "African golden cat",
-  "kind": "wild cat endemic to the rainforests of West and Central Africa.",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "FelisAurataKeulemans.jpg",
-  "article": "https://en.wikipedia.org/wiki/African_golden_cat",
-  "fame": 75
- },
- {
   "name": "Javan rhinoceros",
   "kind": "species of mammal",
   "group": "mammal",
@@ -2259,24 +2197,6 @@ var WILD = [
   "emoji": "🐟",
   "file": "Trüsche Walchensee.jpg",
   "article": "https://en.wikipedia.org/wiki/Burbot",
-  "fame": 74
- },
- {
-  "name": "Pieris brassicae",
-  "kind": "species of butterfly",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "(MHNT) Pieris brassicae - Ste.Foy d'Aigrefeuille Haute Garonne France - male.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pieris_brassicae",
-  "fame": 74
- },
- {
-  "name": "Electrophorus electricus",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Electrophorus electricus 3.jpg",
-  "article": "https://en.wikipedia.org/wiki/Electrophorus_electricus",
   "fame": 74
  },
  {
@@ -2622,15 +2542,6 @@ var WILD = [
   "fame": 71
  },
  {
-  "name": "Fin whale",
-  "kind": "baleen whale, and second-largest mammal species",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "Rorcual común (Balaenoptera physalus).jpg",
-  "article": "https://en.wikipedia.org/wiki/Fin_whale",
-  "fame": 71
- },
- {
   "name": "Silverfish",
   "kind": "species of insect",
   "group": "insect",
@@ -2955,15 +2866,6 @@ var WILD = [
   "fame": 65
  },
  {
-  "name": "Baiji",
-  "kind": "species of river dolphin",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "Baiji Dolphin killed by Charles Hoy 1914.jpg",
-  "article": "https://en.wikipedia.org/wiki/Baiji",
-  "fame": 65
- },
- {
   "name": "Sambar deer",
   "kind": "species of mammal",
   "group": "mammal",
@@ -3036,24 +2938,6 @@ var WILD = [
   "fame": 64
  },
  {
-  "name": "Haddock",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Melanogrammus aeglefinus.jpg",
-  "article": "https://en.wikipedia.org/wiki/Haddock",
-  "fame": 64
- },
- {
-  "name": "Coccinella septempunctata",
-  "kind": "species of beetle",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "BIEDRONA.JPG",
-  "article": "https://en.wikipedia.org/wiki/Coccinella_septempunctata",
-  "fame": 64
- },
- {
   "name": "Common dolphin",
   "kind": "species of mammal",
   "group": "mammal",
@@ -3117,15 +3001,6 @@ var WILD = [
   "fame": 63
  },
  {
-  "name": "Sei whale",
-  "kind": "species of mammal",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "Balaenoptera borealis 3.jpg",
-  "article": "https://en.wikipedia.org/wiki/Sei_whale",
-  "fame": 62
- },
- {
   "name": "Kodkod",
   "kind": "species of mammal",
   "group": "mammal",
@@ -3153,30 +3028,12 @@ var WILD = [
   "fame": 62
  },
  {
-  "name": "Macropus rufus",
-  "kind": "species of mammal",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "RedKangaroo1.jpg",
-  "article": "https://en.wikipedia.org/wiki/Macropus_rufus",
-  "fame": 62
- },
- {
   "name": "American alligator",
   "kind": "species of alligator",
   "group": "reptile",
   "emoji": "🦎",
   "file": "American Alligator.JPG",
   "article": "https://en.wikipedia.org/wiki/American_alligator",
-  "fame": 62
- },
- {
-  "name": "Aglais io",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Inachis io - Museo Tazzetti 109-2023.jpg",
-  "article": "https://en.wikipedia.org/wiki/Aglais_io",
   "fame": 62
  },
  {
@@ -3258,15 +3115,6 @@ var WILD = [
   "emoji": "🦊",
   "file": "Macaca fuscata fuscata1.jpg",
   "article": "https://en.wikipedia.org/wiki/Japanese_macaque",
-  "fame": 61
- },
- {
-  "name": "Squalius cephalus",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Oniria - Squalius cephalus 03.jpg",
-  "article": "https://en.wikipedia.org/wiki/Squalius_cephalus",
   "fame": 61
  },
  {
@@ -3450,15 +3298,6 @@ var WILD = [
   "fame": 59
  },
  {
-  "name": "Araneus diadematus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Araneus diadematus, male (37101899151).jpg",
-  "article": "https://en.wikipedia.org/wiki/Araneus_diadematus",
-  "fame": 59
- },
- {
   "name": "Bull shark",
   "kind": "species of fish",
   "group": "fish",
@@ -3501,15 +3340,6 @@ var WILD = [
   "emoji": "🦎",
   "file": "CoronellaAustriaca1.jpg",
   "article": "https://en.wikipedia.org/wiki/Smooth_snake",
-  "fame": 59
- },
- {
-  "name": "Cockchafer",
-  "kind": "species of beetle",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Melolontha melolontha global MHNT.jpg",
-  "article": "https://en.wikipedia.org/wiki/Cockchafer",
   "fame": 59
  },
  {
@@ -3648,15 +3478,6 @@ var WILD = [
   "fame": 57
  },
  {
-  "name": "Ringed seal",
-  "kind": "species of mammal",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "Phoca hispida.jpg",
-  "article": "https://en.wikipedia.org/wiki/Ringed_seal",
-  "fame": 57
- },
- {
   "name": "Blue wildebeest",
   "kind": "species of mammal",
   "group": "mammal",
@@ -3711,15 +3532,6 @@ var WILD = [
   "fame": 57
  },
  {
-  "name": "Lucanus cervus",
-  "kind": "species of beetle",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Escanyapolls.JPG",
-  "article": "https://en.wikipedia.org/wiki/Lucanus_cervus",
-  "fame": 57
- },
- {
   "name": "Turbot",
   "kind": "species of fish",
   "group": "fish",
@@ -3738,30 +3550,12 @@ var WILD = [
   "fame": 56
  },
  {
-  "name": "Aedes albopictus",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "CDC-Gathany-Aedes-albopictus-2.jpg",
-  "article": "https://en.wikipedia.org/wiki/Aedes_albopictus",
-  "fame": 56
- },
- {
   "name": "Sterlet",
   "kind": "species of fish",
   "group": "fish",
   "emoji": "🐟",
   "file": "Acipenser ruthenus Prague Vltava 1.jpg",
   "article": "https://en.wikipedia.org/wiki/Sterlet",
-  "fame": 56
- },
- {
-  "name": "Ascaris lumbricoides",
-  "kind": "species of worm",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Ascaris lumbricoides.jpeg",
-  "article": "https://en.wikipedia.org/wiki/Ascaris_lumbricoides",
   "fame": 56
  },
  {
@@ -3837,15 +3631,6 @@ var WILD = [
   "fame": 55
  },
  {
-  "name": "Crab louse",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Crab Lice CDC.png",
-  "article": "https://en.wikipedia.org/wiki/Crab_louse",
-  "fame": 55
- },
- {
   "name": "Vanessa cardui",
   "kind": "species of insect",
   "group": "insect",
@@ -3891,39 +3676,12 @@ var WILD = [
   "fame": 54
  },
  {
-  "name": "Pieris rapae",
-  "kind": "species of butterfly",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Pieris rapae male.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pieris_rapae",
-  "fame": 54
- },
- {
   "name": "Cane toad",
   "kind": "Species of amphibian",
   "group": "amphibian",
   "emoji": "🐸",
   "file": "Canetoadmale.jpg",
   "article": "https://en.wikipedia.org/wiki/Cane_toad",
-  "fame": 53
- },
- {
-  "name": "Milkfish",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Susu at Giant Hypermarket Kota Damansara 20230203 105744.jpg",
-  "article": "https://en.wikipedia.org/wiki/Milkfish",
-  "fame": 53
- },
- {
-  "name": "Phoxinus phoxinus",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Vairon WIKI800px (cropped).JPG",
-  "article": "https://en.wikipedia.org/wiki/Phoxinus_phoxinus",
   "fame": 53
  },
  {
@@ -3981,30 +3739,12 @@ var WILD = [
   "fame": 53
  },
  {
-  "name": "Lumbricus terrestris",
-  "kind": "species of annelid worm",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Lumbricus terrestris (26559560801).jpg",
-  "article": "https://en.wikipedia.org/wiki/Lumbricus_terrestris",
-  "fame": 53
- },
- {
   "name": "European flounder",
   "kind": "species of fish",
   "group": "fish",
   "emoji": "🐟",
   "file": "Platichthys flesus 1.jpg",
   "article": "https://en.wikipedia.org/wiki/European_flounder",
-  "fame": 52
- },
- {
-  "name": "Common dace",
-  "kind": "species of ray-finned fish",
-  "group": "shark/ray",
-  "emoji": "🦈",
-  "file": "Leuciscus leuciscus.jpg",
-  "article": "https://en.wikipedia.org/wiki/Common_dace",
   "fame": 52
  },
  {
@@ -4224,15 +3964,6 @@ var WILD = [
   "fame": 50
  },
  {
-  "name": "Hooded seal",
-  "kind": "species of mammal",
-  "group": "mammal",
-  "emoji": "🦊",
-  "file": "Klappmuetze MK.jpg",
-  "article": "https://en.wikipedia.org/wiki/Hooded_seal",
-  "fame": 50
- },
- {
   "name": "Groundhog",
   "kind": "North American species of squirrel",
   "group": "mammal",
@@ -4275,24 +4006,6 @@ var WILD = [
   "emoji": "🦊",
   "file": "Large Indian Civet, Viverra zibetha in Kaeng Krachan national park.jpg",
   "article": "https://en.wikipedia.org/wiki/Large_Indian_civet",
-  "fame": 50
- },
- {
-  "name": "Ixodes ricinus",
-  "kind": "species of hard-bodied tick",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Ixodes ricinus on dry grass.jpg",
-  "article": "https://en.wikipedia.org/wiki/Ixodes_ricinus",
-  "fame": 50
- },
- {
-  "name": "Homarus gammarus",
-  "kind": "species of crustacean",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Homarus gammarus - Astice.jpg",
-  "article": "https://en.wikipedia.org/wiki/Homarus_gammarus",
   "fame": 50
  },
  {
@@ -4377,15 +4090,6 @@ var WILD = [
   "fame": 49
  },
  {
-  "name": "Nymphalis antiopa",
-  "kind": "species of butterfly",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Nymphalis antiopa - Museo Tazzetti 165-2023.jpg",
-  "article": "https://en.wikipedia.org/wiki/Nymphalis_antiopa",
-  "fame": 49
- },
- {
   "name": "Oceanic whitetip shark",
   "kind": "species of fish",
   "group": "fish",
@@ -4449,30 +4153,12 @@ var WILD = [
   "fame": 49
  },
  {
-  "name": "Phylloxera",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Dactylosphaera vitifolii MKL Bd. 13 1890 (128905688).jpg",
-  "article": "https://en.wikipedia.org/wiki/Phylloxera",
-  "fame": 49
- },
- {
   "name": "White-beaked dolphin",
   "kind": "species of mammal",
   "group": "mammal",
   "emoji": "🦊",
   "file": "White beaked dolphin.jpg",
   "article": "https://en.wikipedia.org/wiki/White-beaked_dolphin",
-  "fame": 49
- },
- {
-  "name": "Cetonia aurata",
-  "kind": "species of beetle",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Cetonia aurata1273.JPG",
-  "article": "https://en.wikipedia.org/wiki/Cetonia_aurata",
   "fame": 49
  },
  {
@@ -4593,15 +4279,6 @@ var WILD = [
   "fame": 48
  },
  {
-  "name": "Orinoco crocodile",
-  "kind": "species of reptile",
-  "group": "reptile",
-  "emoji": "🦎",
-  "file": "OrinocoCrocodile.jpg",
-  "article": "https://en.wikipedia.org/wiki/Orinoco_crocodile",
-  "fame": 47
- },
- {
   "name": "Arctic char",
   "kind": "species of fish",
   "group": "fish",
@@ -4620,15 +4297,6 @@ var WILD = [
   "fame": 47
  },
  {
-  "name": "Porbeagle",
-  "kind": "species of shark (Lamna nasus)",
-  "group": "shark/ray",
-  "emoji": "🦈",
-  "file": "Lamna nasus noaa.jpg",
-  "article": "https://en.wikipedia.org/wiki/Porbeagle",
-  "fame": 47
- },
- {
   "name": "Freshwater crocodile",
   "kind": "species of reptile",
   "group": "reptile",
@@ -4644,15 +4312,6 @@ var WILD = [
   "emoji": "🐟",
   "file": "Gambusia affinis male.jpg",
   "article": "https://en.wikipedia.org/wiki/Mosquitofish",
-  "fame": 47
- },
- {
-  "name": "Pink salmon",
-  "kind": "species of Pacific salmon",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Humpback Salmon Adult Male.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pink_salmon",
   "fame": 47
  },
  {
@@ -4680,15 +4339,6 @@ var WILD = [
   "emoji": "🦎",
   "file": "Morelia-viridis.jpg",
   "article": "https://en.wikipedia.org/wiki/Green_tree_python",
-  "fame": 47
- },
- {
-  "name": "Apis dorsata",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "ApisDorsataHive.jpg",
-  "article": "https://en.wikipedia.org/wiki/Apis_dorsata",
   "fame": 47
  },
  {
@@ -4734,15 +4384,6 @@ var WILD = [
   "emoji": "🕷️",
   "file": "(MHNT) Argiope bruennichi female dorsal.jpg",
   "article": "https://en.wikipedia.org/wiki/Argiope_bruennichi",
-  "fame": 46
- },
- {
-  "name": "Blue mussel",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Miesmuscheln Mytilus 2.jpg",
-  "article": "https://en.wikipedia.org/wiki/Blue_mussel",
   "fame": 46
  },
  {
@@ -4863,15 +4504,6 @@ var WILD = [
   "fame": 45
  },
  {
-  "name": "Shortfin mako shark",
-  "kind": "species of shark",
-  "group": "shark/ray",
-  "emoji": "🦈",
-  "file": "Shortfin mako.jpg",
-  "article": "https://en.wikipedia.org/wiki/Shortfin_mako_shark",
-  "fame": 45
- },
- {
   "name": "Chum salmon",
   "kind": "species of Pacific salmon",
   "group": "fish",
@@ -4926,15 +4558,6 @@ var WILD = [
   "fame": 45
  },
  {
-  "name": "Merluccius merluccius",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Merluccius merluccius.002 - Aquarium Finisterrae.JPG",
-  "article": "https://en.wikipedia.org/wiki/Merluccius_merluccius",
-  "fame": 45
- },
- {
   "name": "Northern crested newt",
   "kind": "species of amphibian",
   "group": "amphibian",
@@ -4971,33 +4594,6 @@ var WILD = [
   "fame": 43
  },
  {
-  "name": "Glaucus atlanticus",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Glaucus atlanticus 1 cropped.jpg",
-  "article": "https://en.wikipedia.org/wiki/Glaucus_atlanticus",
-  "fame": 43
- },
- {
-  "name": "Synchiropus splendidus",
-  "kind": "fish species of western Pacific Ocean",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Synchiropus splendidus 02.JPG",
-  "article": "https://en.wikipedia.org/wiki/Synchiropus_splendidus",
-  "fame": 43
- },
- {
-  "name": "Rohu",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Rohu at Giant Hypermarket Kota Damansara 20230203 105829.jpg",
-  "article": "https://en.wikipedia.org/wiki/Rohu",
-  "fame": 43
- },
- {
   "name": "Greek tortoise",
   "kind": "species of reptile",
   "group": "reptile",
@@ -5025,15 +4621,6 @@ var WILD = [
   "fame": 43
  },
  {
-  "name": "Vespula vulgaris",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Flying Vespula vulgaris.jpg",
-  "article": "https://en.wikipedia.org/wiki/Vespula_vulgaris",
-  "fame": 43
- },
- {
   "name": "Desert locust",
   "kind": "species of insect",
   "group": "insect",
@@ -5043,30 +4630,12 @@ var WILD = [
   "fame": 43
  },
  {
-  "name": "Thymallus thymallus",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Harjus.JPG",
-  "article": "https://en.wikipedia.org/wiki/Thymallus_thymallus",
-  "fame": 43
- },
- {
   "name": "Brook trout",
   "kind": "species of fish",
   "group": "fish",
   "emoji": "🐟",
   "file": "Salvelinus fontinalis.jpg",
   "article": "https://en.wikipedia.org/wiki/Brook_trout",
-  "fame": 43
- },
- {
-  "name": "Smooth hammerhead",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Sphyrna zygaena noaa.jpg",
-  "article": "https://en.wikipedia.org/wiki/Smooth_hammerhead",
   "fame": 43
  },
  {
@@ -5085,15 +4654,6 @@ var WILD = [
   "emoji": "🪲",
   "file": "Polygonia c-album MHNT CUT 2013 3 19 Grisolles Male.jpg",
   "article": "https://en.wikipedia.org/wiki/Polygonia_c-album",
-  "fame": 43
- },
- {
-  "name": "Echis carinatus",
-  "kind": "species of reptile",
-  "group": "reptile",
-  "emoji": "🦎",
-  "file": "Saw Scaled Viper Echis carinatus.jpg",
-  "article": "https://en.wikipedia.org/wiki/Echis_carinatus",
   "fame": 43
  },
  {
@@ -5187,15 +4747,6 @@ var WILD = [
   "fame": 42
  },
  {
-  "name": "Pyrrhocoris apterus",
-  "kind": "species of insect",
-  "group": "insect",
-  "emoji": "🪲",
-  "file": "Firebugs (52509971860).jpg",
-  "article": "https://en.wikipedia.org/wiki/Pyrrhocoris_apterus",
-  "fame": 42
- },
- {
   "name": "Sand tiger shark",
   "kind": "species of shark",
   "group": "shark/ray",
@@ -5211,15 +4762,6 @@ var WILD = [
   "emoji": "🐟",
   "file": "Raja clavata (juv).jpg",
   "article": "https://en.wikipedia.org/wiki/Thornback_ray",
-  "fame": 42
- },
- {
-  "name": "Starry sturgeon",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Acipenser stellatus.jpg",
-  "article": "https://en.wikipedia.org/wiki/Starry_sturgeon",
   "fame": 42
  },
  {
@@ -5292,15 +4834,6 @@ var WILD = [
   "emoji": "🐟",
   "file": "Mullus surmuletus, Bouches-du-Rhône, Provence-Alpes-Côte d'Azur, FR imported from iNaturalist photo 277193780 (cropped).jpg",
   "article": "https://en.wikipedia.org/wiki/Striped_red_mullet",
-  "fame": 42
- },
- {
-  "name": "Mullus barbatus",
-  "kind": "species of fish",
-  "group": "fish",
-  "emoji": "🐟",
-  "file": "Mullus barbatus - Julien Renoult - 585826858.jpeg",
-  "article": "https://en.wikipedia.org/wiki/Mullus_barbatus",
   "fame": 42
  },
  {
@@ -5403,15 +4936,6 @@ var WILD = [
   "fame": 41
  },
  {
-  "name": "School shark",
-  "kind": "species of shark (Galeorhinus galeus)",
-  "group": "shark/ray",
-  "emoji": "🦈",
-  "file": "Galeorhinus galeus1.jpg",
-  "article": "https://en.wikipedia.org/wiki/School_shark",
-  "fame": 41
- },
- {
   "name": "Hucho taimen",
   "kind": "species of fish",
   "group": "fish",
@@ -5439,15 +4963,6 @@ var WILD = [
   "fame": 41
  },
  {
-  "name": "Trichinella spiralis",
-  "kind": "species of worm",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Trichinella larv1 DPDx.JPG",
-  "article": "https://en.wikipedia.org/wiki/Trichinella_spiralis",
-  "fame": 41
- },
- {
   "name": "Common periwinkle",
   "kind": "species of mollusc",
   "group": "sea animal",
@@ -5463,15 +4978,6 @@ var WILD = [
   "emoji": "🐸",
   "file": "African Clawed Frog.jpg",
   "article": "https://en.wikipedia.org/wiki/African_clawed_frog",
-  "fame": 39
- },
- {
-  "name": "Latrodectus tredecimguttatus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Latrodectus tredecimguttatus female.jpg",
-  "article": "https://en.wikipedia.org/wiki/Latrodectus_tredecimguttatus",
   "fame": 39
  },
  {
@@ -5511,15 +5017,6 @@ var WILD = [
   "fame": 38
  },
  {
-  "name": "Pholcus phalangioides",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Pholcus phalangioides MHNT Ventral side.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pholcus_phalangioides",
-  "fame": 38
- },
- {
   "name": "Hellbender",
   "kind": "species of amphibian",
   "group": "amphibian",
@@ -5535,15 +5032,6 @@ var WILD = [
   "emoji": "🐸",
   "file": "Salamandra atra on Triglav.jpg",
   "article": "https://en.wikipedia.org/wiki/Alpine_salamander",
-  "fame": 37
- },
- {
-  "name": "Pelobates fuscus",
-  "kind": "species of amphibian",
-  "group": "amphibian",
-  "emoji": "🐸",
-  "file": "Pelobates fuscus 2 (Marek Szczepanek).jpg",
-  "article": "https://en.wikipedia.org/wiki/Pelobates_fuscus",
   "fame": 37
  },
  {
@@ -5592,30 +5080,12 @@ var WILD = [
   "fame": 36
  },
  {
-  "name": "Cepaea nemoralis",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Cepaea nemoralis Paarung-20230314-RM-110511.jpg",
-  "article": "https://en.wikipedia.org/wiki/Cepaea_nemoralis",
-  "fame": 36
- },
- {
   "name": "White-lipped snail",
   "kind": "species of mollusc",
   "group": "sea animal",
   "emoji": "🐚",
   "file": "White-lipped snail (Cepaea hortensis) on rhododendron.jpg",
   "article": "https://en.wikipedia.org/wiki/White-lipped_snail",
-  "fame": 36
- },
- {
-  "name": "Zebra mussel",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Dreissena polymorpha3.jpg",
-  "article": "https://en.wikipedia.org/wiki/Zebra_mussel",
   "fame": 36
  },
  {
@@ -5700,33 +5170,6 @@ var WILD = [
   "fame": 34
  },
  {
-  "name": "Mediterranean mussel",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Mytilus galloprovincialis shell.jpg",
-  "article": "https://en.wikipedia.org/wiki/Mediterranean_mussel",
-  "fame": 34
- },
- {
-  "name": "Cornu aspersum",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Snail-wiki-120-Zachi-Evenor.jpg",
-  "article": "https://en.wikipedia.org/wiki/Cornu_aspersum",
-  "fame": 34
- },
- {
-  "name": "Hoplobatrachus tigerinus",
-  "kind": "species of amphibian",
-  "group": "amphibian",
-  "emoji": "🐸",
-  "file": "HoplobatrachusTigerinus.jpg",
-  "article": "https://en.wikipedia.org/wiki/Hoplobatrachus_tigerinus",
-  "fame": 33
- },
- {
   "name": "Bagheera kiplingi",
   "kind": "species of arachnid",
   "group": "spider",
@@ -5742,24 +5185,6 @@ var WILD = [
   "emoji": "🕷️",
   "file": "RedbackPottingMix.JPG",
   "article": "https://en.wikipedia.org/wiki/Redback_spider",
-  "fame": 33
- },
- {
-  "name": "Tegenaria domestica",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Tegenaria domestica-f.jpg",
-  "article": "https://en.wikipedia.org/wiki/Tegenaria_domestica",
-  "fame": 33
- },
- {
-  "name": "Achatina fulica",
-  "kind": "species of land snail",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Snail in Ubud, Bali, 2010 (1).jpg",
-  "article": "https://en.wikipedia.org/wiki/Achatina_fulica",
   "fame": 33
  },
  {
@@ -5826,51 +5251,6 @@ var WILD = [
   "fame": 32
  },
  {
-  "name": "Elysia chlorotica",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Elysia chlorotica by Gould 1.jpg",
-  "article": "https://en.wikipedia.org/wiki/Elysia_chlorotica",
-  "fame": 32
- },
- {
-  "name": "Pacific oyster",
-  "kind": "species of bivalve mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Crassostrea gigas p1040847.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pacific_oyster",
-  "fame": 32
- },
- {
-  "name": "Common cockle",
-  "kind": "species of edible saltwater clam",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Coque blanche (Cerastoderma edule).jpg",
-  "article": "https://en.wikipedia.org/wiki/Common_cockle",
-  "fame": 32
- },
- {
-  "name": "Ostrea edulis",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Ostrea edulis.jpg",
-  "article": "https://en.wikipedia.org/wiki/Ostrea_edulis",
-  "fame": 32
- },
- {
-  "name": "Dyscophus antongilii",
-  "kind": "species of amphibian",
-  "group": "amphibian",
-  "emoji": "🐸",
-  "file": "Dyscophus antongilii02.jpg",
-  "article": "https://en.wikipedia.org/wiki/Dyscophus_antongilii",
-  "fame": 31
- },
- {
   "name": "Yellow-banded poison dart frog",
   "kind": "species of amphibian",
   "group": "amphibian",
@@ -5907,57 +5287,12 @@ var WILD = [
   "fame": 31
  },
  {
-  "name": "Misumena vatia",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Crab spider (Misumena Vatia) with prey silver-spotted skipper (Hesperia comma).jpg",
-  "article": "https://en.wikipedia.org/wiki/Misumena_vatia",
-  "fame": 31
- },
- {
-  "name": "Araneus angulatus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Araneus angulatus(ThKraft).jpg",
-  "article": "https://en.wikipedia.org/wiki/Araneus_angulatus",
-  "fame": 31
- },
- {
-  "name": "Freshwater pearl mussel",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Margaritifera margaritifera (10.3897-zse.90.8231) Figure 3 (cropped).jpg",
-  "article": "https://en.wikipedia.org/wiki/Freshwater_pearl_mussel",
-  "fame": 31
- },
- {
-  "name": "Arctica islandica",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Arctica islandica valves.jpg",
-  "article": "https://en.wikipedia.org/wiki/Arctica_islandica",
-  "fame": 31
- },
- {
   "name": "Humboldt squid",
   "kind": "species of mollusc",
   "group": "sea animal",
   "emoji": "🐚",
   "file": "Dosidicus gigas.jpg",
   "article": "https://en.wikipedia.org/wiki/Humboldt_squid",
-  "fame": 31
- },
- {
-  "name": "Costasiella kuroshimae",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Babosa de mar (Costasiella kuroshimae), Anilao, Filipinas, 2023-08-23, DD 113.jpg",
-  "article": "https://en.wikipedia.org/wiki/Costasiella_kuroshimae",
   "fame": 31
  },
  {
@@ -5979,15 +5314,6 @@ var WILD = [
   "fame": 30
  },
  {
-  "name": "Lymnaea stagnalis",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Lymnaea stagnalis 01.JPG",
-  "article": "https://en.wikipedia.org/wiki/Lymnaea_stagnalis",
-  "fame": 30
- },
- {
   "name": "Brown recluse spider",
   "kind": "spider with venomous bite native to US",
   "group": "spider",
@@ -6006,39 +5332,12 @@ var WILD = [
   "fame": 29
  },
  {
-  "name": "Agelena labyrinthica",
-  "kind": "species of spider",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Labyrinth spider (Agelena labyrinthica) female in web funnel.jpg",
-  "article": "https://en.wikipedia.org/wiki/Agelena_labyrinthica",
-  "fame": 29
- },
- {
   "name": "Araniella cucurbitina",
   "kind": "species of arachnid",
   "group": "spider",
   "emoji": "🕷️",
   "file": "(MHNT) Araniella cucurbitina male ventral.jpg",
   "article": "https://en.wikipedia.org/wiki/Araniella_cucurbitina",
-  "fame": 29
- },
- {
-  "name": "Pisaura mirabilis",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "(MHNT) Pisaura mirabilis male on carpinus betulus.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pisaura_mirabilis",
-  "fame": 29
- },
- {
-  "name": "Demodex folliculorum",
-  "kind": "species of face mite",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Haarbalgmilbe.jpg",
-  "article": "https://en.wikipedia.org/wiki/Demodex_folliculorum",
   "fame": 29
  },
  {
@@ -6051,24 +5350,6 @@ var WILD = [
   "fame": 29
  },
  {
-  "name": "Patella vulgata",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Common limpets1.jpg",
-  "article": "https://en.wikipedia.org/wiki/Patella_vulgata",
-  "fame": 29
- },
- {
-  "name": "Bolinus brandaris",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Bolinus brandaris 01.jpg",
-  "article": "https://en.wikipedia.org/wiki/Bolinus_brandaris",
-  "fame": 29
- },
- {
   "name": "Geoduck",
   "kind": "species of mollusk",
   "group": "sea animal",
@@ -6078,30 +5359,12 @@ var WILD = [
   "fame": 29
  },
  {
-  "name": "Araneus marmoreus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Marbled Orbweaver - Araneus marmoreus, Julie Metz Wetlands, Woodbridge, Virginia - 05.jpg",
-  "article": "https://en.wikipedia.org/wiki/Araneus_marmoreus",
-  "fame": 28
- },
- {
   "name": "Raft spider",
   "kind": "species of arachnid",
   "group": "spider",
   "emoji": "🕷️",
   "file": "Dolomedes fimbriatus.jpg",
   "article": "https://en.wikipedia.org/wiki/Raft_spider",
-  "fame": 28
- },
- {
-  "name": "Charonia tritonis",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Charonia.png",
-  "article": "https://en.wikipedia.org/wiki/Charonia_tritonis",
   "fame": 28
  },
  {
@@ -6132,15 +5395,6 @@ var WILD = [
   "fame": 27
  },
  {
-  "name": "Pomacea canaliculata",
-  "kind": "species of mollusc",
-  "group": "sea animal",
-  "emoji": "🐚",
-  "file": "Pomacea canaliculata1.jpg",
-  "article": "https://en.wikipedia.org/wiki/Pomacea_canaliculata",
-  "fame": 27
- },
- {
   "name": "Araneus alsine",
   "kind": "species of arachnid",
   "group": "spider",
@@ -6157,24 +5411,6 @@ var WILD = [
   "file": "Loxosceles rufescens3.jpg",
   "article": "https://en.wikipedia.org/wiki/Mediterranean_recluse_spider",
   "fame": 26
- },
- {
-  "name": "Thomisus onustus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Thomisus onustus, Réserve naturelle régionale de Sainte Lucie 02.jpg",
-  "article": "https://en.wikipedia.org/wiki/Thomisus_onustus",
-  "fame": 25
- },
- {
-  "name": "Araneus quadratus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Araneus quadratus MHNT.jpg",
-  "article": "https://en.wikipedia.org/wiki/Araneus_quadratus",
-  "fame": 25
  },
  {
   "name": "Marpissa muscosa",
@@ -6213,30 +5449,12 @@ var WILD = [
   "fame": 24
  },
  {
-  "name": "Cerbalus aravaensis",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Cerbalus aravaensis.JPG",
-  "article": "https://en.wikipedia.org/wiki/Cerbalus_aravaensis",
-  "fame": 24
- },
- {
   "name": "Segestria florentina",
   "kind": "species of arachnid",
   "group": "spider",
   "emoji": "🕷️",
   "file": "Spider cutted.jpg",
   "article": "https://en.wikipedia.org/wiki/Segestria_florentina",
-  "fame": 24
- },
- {
-  "name": "Cheiracanthium punctorium",
-  "kind": "species of spider",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Dornfinger fg5.jpg",
-  "article": "https://en.wikipedia.org/wiki/Cheiracanthium_punctorium",
   "fame": 24
  },
  {
@@ -6249,15 +5467,6 @@ var WILD = [
   "fame": 23
  },
  {
-  "name": "Darwin's bark spider",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Caerostris darwini web.png",
-  "article": "https://en.wikipedia.org/wiki/Darwin%27s_bark_spider",
-  "fame": 23
- },
- {
   "name": "Steatoda grossa",
   "kind": "species of arachnid",
   "group": "spider",
@@ -6267,39 +5476,12 @@ var WILD = [
   "fame": 23
  },
  {
-  "name": "Ixodes persulcatus",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Ixodes persulcatusFL.jpg",
-  "article": "https://en.wikipedia.org/wiki/Ixodes_persulcatus",
-  "fame": 23
- },
- {
   "name": "Eresus kollari",
   "kind": "species of Arachnida",
   "group": "spider",
   "emoji": "🕷️",
   "file": "Eresus fg04.jpg",
   "article": "https://en.wikipedia.org/wiki/Eresus_kollari",
-  "fame": 23
- },
- {
-  "name": "Scytodes thoracica",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Scytodes thoracica (aka).jpg",
-  "article": "https://en.wikipedia.org/wiki/Scytodes_thoracica",
-  "fame": 23
- },
- {
-  "name": "Great raft spider",
-  "kind": "species of arachnid",
-  "group": "spider",
-  "emoji": "🕷️",
-  "file": "Spider with a prey.jpg",
-  "article": "https://en.wikipedia.org/wiki/Great_raft_spider",
   "fame": 23
  }
 ];

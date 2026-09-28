@@ -83,6 +83,26 @@ function query(lo, hi) {
 /* photos we don't want a six-year-old to open */
 const BAD_PHOTO = /skull|skelet|fossil|dissect|anatomy|parasit|roadkill|dead|carcass|specimen|museum|drawing|illustration|plate|map|range|distribution|diagram|chart|stamp|coin|logo|sign/i;
 
+/* A Wikipedia article titled with a bare binomial means there IS no common
+   English name, and "Bolinus brandaris" on a card teaches a six-year-old
+   nothing. Catching those is fiddlier than it looks: "Glossy ibis" and
+   "Common octopus" have the same shape. Two signals together do it — a Latin
+   ending on the epithet, and an epithet no other entry reuses — with an
+   escape hatch for names that start with an ordinary English modifier. */
+const LATIN_TAIL = /^[A-Z][a-z]+ [a-z]+(us|um|is|ii|ae|ensis|icus|ica|inus|oides|formis|aris|atus|ata|ella|ifer|ipes)$/;
+const ENGLISH_FIRST = new Set(("glossy european virginia chambered pygmy common mimic giant red great " +
+  "little northern southern eastern western atlantic pacific sea wood water house field garden black " +
+  "white brown grey gray golden spotted striped banded green blue yellow american african asian indian " +
+  "japanese chinese australian arctic desert mountain river tree ground king queen dwarf lesser greater " +
+  "spiny hairy long short big small false true").split(" "));
+
+function looksScientific(name, lastWordCounts) {
+  if (!LATIN_TAIL.test(name)) return false;
+  const words = name.toLowerCase().split(" ");
+  if (ENGLISH_FIRST.has(words[0])) return false;
+  return (lastWordCounts[words[words.length - 1]] || 0) <= 1;
+}
+
 /* names that are really groups, or that read badly */
 const BAD_NAME = /^Q\d+$|\(|virus|bacteri|^List |disambiguation/i;
 
@@ -184,6 +204,20 @@ for (const [lo, hi] of BANDS) {
     try { rows = sparql(query(lo, hi)); } catch (e) {}
   }
   absorb(rows, "fame " + lo + "-" + hi);
+}
+
+/* strip bare scientific names, now that the whole pool is known */
+{
+  const lastWordCounts = {};
+  pool.forEach(w => {
+    const l = w.name.toLowerCase().split(" ").pop();
+    lastWordCounts[l] = (lastWordCounts[l] || 0) + 1;
+  });
+  const before = pool.length;
+  for (let i = pool.length - 1; i >= 0; i--) {
+    if (looksScientific(pool[i].name, lastWordCounts)) pool.splice(i, 1);
+  }
+  if (before !== pool.length) console.log("dropped " + (before - pool.length) + " bare scientific names");
 }
 
 pool.sort((a, b) => b.fame - a.fame);

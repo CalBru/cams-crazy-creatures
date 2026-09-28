@@ -161,10 +161,10 @@ him powers. Anything we build should feed one of those three.
       poop, a hagfish that turns a bucket of water to slime, coconut crabs on the islands,
       and an axolotl in the Crystal Caverns. Every new photo was vision-checked; 8 of 45
       were rejected and replaced. Repeatable with `tools/add-batch.js` — see README.
-- [ ] **The Wild Trap** — catches a real animal that isn't in the game, with no facts
-      written, and Cam writes the facts himself. Full spec in `WILD-TRAP.md`, including
-      why the live-Wikipedia version was tested and rejected (12 seconds a pull, and it
-      served up specimen-drawer molluscs).
+- [x] **The Wild Trap** — built 2026-09-28. 609 famous real animals harvested offline,
+      caught with a 🌍 Wild Trap, no facts written, and Cam writes them himself. The
+      Rainbow Trap now falls through to the same pool instead of refunding itself when he
+      has found everything, which was the thing that actually prompted it.
 
 ---
 
@@ -293,6 +293,26 @@ LAYERS, so this is the first world in the game you climb **up**.
       against appeared there first. The mythical rune stones and fairy rings have never
       drawn — that world has been showing plain grey land rocks since it shipped. Both
       blocks moved into `drawSpot`, and its branch order verified
+
+---
+
+# Round 6 — The Wild Trap, 2026-09-28
+
+Cam had found every creature, so the Rainbow Trap had started handing itself back.
+
+- [x] `tools/harvest-wild.js` finally run, and fixed four ways while running it (see the
+      commit): birds nested inside Reptilia, half the taxon QIDs wrong, fish and insects
+      timing out, and a `species of` catch-all filing bindweed and wheat as animals
+- [x] **609 animals** after a bulk vision pass rejected 46 and a rule stripped 45 bare
+      scientific names — "Bolinus brandaris" on a card teaches a six-year-old nothing
+- [x] 🌍 Wild Trap in the shop, its own WILD tier, 300 points × the zone bonus
+- [x] **📝 Write what you know** — he dictates a fact, it sticks to that card forever
+- [x] 🚫 **Not that one** — one tap and that animal never comes back. The spec said don't
+      ship without it, and it is the real backstop for un-vetted photos
+- [x] Counted separately: own ledger, own 🌍 Wild Finds book section, never touches
+      `state.found` or the bucket, so "272 of 272" stays finishable
+- [x] **The Rainbow Trap reaches outside the book** once everything is found
+- [x] Stripped from the shared single-file copy, which makes no external requests
 
 ---
 

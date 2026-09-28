@@ -1,5 +1,14 @@
 # The Wild Trap — spec
 
+> **BUILT 2026-09-28.** Everything below is the original spec and still
+> describes what shipped, with three differences worth knowing: the pool is 609
+> animals rather than ~700 (a vision pass and a scientific-name filter took the
+> rest out); the harvester had to be rewritten to sweep by fame rather than by
+> taxonomy, because the taxon queries were wrong in three separate ways; and the
+> Rainbow Trap falls through to the same pool once the book is complete, which is
+> what actually prompted the build.
+
+
 *Written 2026-08-20, after testing whether the game can pull real animals from
 Wikipedia while Cam is playing.*
 

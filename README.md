@@ -279,6 +279,36 @@ them before they ship) rather than generated live while Cam is playing. Three re
 `WILD-TRAP.md` has the full reasoning, including the measured latency and quality of the
 live-Wikipedia version that was tested and rejected.
 
+## The Wild Trap
+
+Cam loves the Rainbow Trap — "always catches something you have never seen" — and he
+found everything, so it started refunding itself. **It now reaches outside the book
+instead.** `wild.js` holds 609 famous real animals that are deliberately *not* in the
+hand-written catalog, and a 🌍 **Wild Trap** (3,000 points) draws from them on purpose.
+
+The card says what's true: *"Nobody has written about this one yet. You found it first!"*
+— and offers **📝 Write what you know**. He says it, a grown-up types it, and it is on
+that card forever after, credited to whoever wrote it. The rest of the game teaches him
+facts; this part asks him for them, which is the entire reason to build it.
+
+Wild finds are **counted separately** — their own 🌍 Wild Finds section in the book, their
+own ledger in the save — so "272 of 272" stays finishable and isn't diluted.
+
+**Why the pool is harvested at build time and not fetched live** is measured in
+`WILD-TRAP.md`: a live Wikidata query took 9–12.5 seconds *and* served up obscure molluscs
+photographed in museum specimen drawers. `tools/harvest-wild.js` does it once, offline, and
+play-time picking is instant. Only the single photo is fetched when the card opens.
+
+**Safety.** The photos are not individually hand-picked, so four things guard them, in
+order of how much they actually help: the fame filter does most of the work; a filename
+blacklist drops skulls, dissections and roadkill; a **bulk vision pass** over the whole
+pool rejected 46 (an empty shell, an engraving, a "raven" that was two eggs, several
+parasites); and the real backstop is a 🚫 **Not that one** button on every wild card — one
+tap from a grown-up and that animal never appears again, on any device once the save syncs.
+
+The Wild Trap is **stripped out of the shared single-file copy**, because that page makes
+no external requests at all — which is exactly why its photos are embedded.
+
 ## Telling him something new has arrived
 
 He plays this from a home-screen icon on an iPad, and that is not the same thing as the

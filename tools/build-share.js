@@ -107,6 +107,14 @@ html = mustReplace(html, '  if (PHOTOS[id]) return "images/" + PHOTOS[id].file;'
 
 /* ---------- 3. shared-version tweaks ---------- */
 
+/* The Wild Trap fetches a photo from Wikimedia when the card opens, and a
+   shared single file makes no external requests at all — that is the whole
+   reason the photos are embedded. So it is stripped out of this build rather
+   than shipped as a trap that silently shows a broken image. */
+html = mustReplace(html, /<script src="wild\.js[^"]*"><\/script>/, "<script>var WILD = [];</script>",
+                   "the wild.js tag");
+html = html.replace(/\n  document\.write\('<script src="wild\.js"><\\\/script>'\);/, "");
+
 /* There is no version.json sitting next to a single shared file, and a visitor
    has nothing to update to anyway. "shared" switches that check off. */
 html = mustReplace(html, /const BUILD = "[^"]*";/, 'const BUILD = "shared";', "the BUILD stamp");

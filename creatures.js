@@ -994,7 +994,10 @@ const TIERS = {
   rare:      { stars: 3, points: 60,   label: "RARE",      color: "#4cc9f0" },
   epic:      { stars: 4, points: 150,  label: "EPIC",      color: "#c77dff" },
   legendary: { stars: 5, points: 400,  label: "LEGENDARY", color: "#ffcc00" },
-  mythic:    { stars: 5, points: 2000, label: "★ MYTHIC ★", color: "#ff5ec7" }
+  mythic:    { stars: 5, points: 2000, label: "★ MYTHIC ★", color: "#ff5ec7" },
+  /* Wild finds are real animals from outside the hand-written book. They are
+     counted separately so "272 of 272" stays finishable. */
+  wild:      { stars: 5, points: 300,  label: "🌍 WILD",     color: "#2dd4bf" }
 };
 
 /* The deeper (or farther) you go, the better the odds of something rare.
@@ -1074,7 +1077,9 @@ const TRAPS = [
   { id:"double",  name:"Double Trap",  emoji:"✌️", key:"4", color:"#ffcc00", cost:1000,
     blurb:"Catches TWO creatures at the same time." },
   { id:"mystery", name:"Mystery Trap", emoji:"❓", key:"5", color:"#ff5ec7", cost:2200,
-    blurb:"Reaches anywhere in the whole world. Could catch ANYTHING." }
+    blurb:"Reaches anywhere in the whole world. Could catch ANYTHING." },
+  { id:"wild",    name:"Wild Trap",    emoji:"🌍", key:"6", color:"#2dd4bf", cost:3000,
+    blurb:"Catches a real animal from OUTSIDE the book — one nobody has written about yet." }
 ];
 
 /* how many creatures fit in the bucket */
@@ -1189,7 +1194,9 @@ const SHOP = [
   { id:"trap_rainbow", where:"any", name:"Rainbow Trap", emoji:"🌈", cost:1400, repeat:true, trap:"rainbow",
     blurb:"Always catches something you have never seen before." },
   { id:"trap_mystery", where:"any", name:"Mystery Trap", emoji:"❓", cost:2200, repeat:true, trap:"mystery",
-    blurb:"Reaches anywhere in the whole world. Could catch ANYTHING." }
+    blurb:"Reaches anywhere in the whole world. Could catch ANYTHING." },
+  { id:"trap_wild",    where:"any", name:"Wild Trap",    emoji:"🌍", cost:3000, repeat:true, trap:"wild",
+    blurb:"Catches a real animal from OUTSIDE the book. Nobody has written its facts — you get to." }
 ];
 
 /* What each place is called in the shop, and its sign */

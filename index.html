@@ -177,6 +177,14 @@
   #bookCount { text-align: center; font-size: 18px; color: #9fd3ff; margin-bottom: 6px; }
   #bookTools { text-align: center; margin-bottom: 10px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
   #saveNote { text-align: center; font-size: 14px; color: #80ed99; min-height: 20px; margin-bottom: 8px; }
+  #cardWild { margin: 10px 0 4px; }
+  .wildAsk { color: #0b7a5a; font-size: 17px; line-height: 1.4; margin-bottom: 8px; }
+  .wildNote {
+    background: #eafaf4; border-left: 5px solid #2dd4bf; border-radius: 8px;
+    padding: 10px 12px; margin-bottom: 8px; text-align: left;
+    font-size: 17px; color: #10203a; line-height: 1.45;
+  }
+  .wildBy { font-size: 13px; color: #4a7ab5; }
   /* only ever visible when a newer version of the game is sitting on the server */
   #updateBar {
     display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
@@ -537,10 +545,11 @@
     <div id="cardStars"></div>
     <div id="cardPoints"></div>
     <div id="cardWhere"></div>
-    <div class="factBox">
+    <div id="cardFactsBox" class="factBox">
       <h4>Cool things about me:</h4>
       <ul id="cardFacts"></ul>
     </div>
+    <div id="cardWild" style="display:none"></div>
     <div id="cardCredit"></div>
     <button class="btn" onclick="closeCard()">Keep exploring! ➡️</button>
   </div>
@@ -550,8 +559,9 @@
 
 <!-- tools/stamp-build.js stamps ?v=<build> onto these two so the page and its
      catalog can never be served from different points in time. -->
-<script src="photos.js?v=2026-09-27-65c7fa57"></script>
-<script src="creatures.js?v=2026-09-27-65c7fa57"></script>
+<script src="photos.js?v=2026-09-28-d194f8c7"></script>
+<script src="creatures.js?v=2026-09-28-d194f8c7"></script>
+<script src="wild.js?v=2026-09-27-65c7fa57"></script>
 <script>
 /* Belt and braces: if any browser ever refuses the ?v= form (the worry is
    file:// URLs, where the query is not part of the filename), load them plain
@@ -560,6 +570,7 @@
 if (typeof CREATURES === "undefined") {
   document.write('<script src="photos.js"><\/script>');
   document.write('<script src="creatures.js"><\/script>');
+  document.write('<script src="wild.js"><\/script>');
 }
 </script>
 <script>
@@ -585,7 +596,7 @@ if (typeof PHOTOS === "undefined") { window.PHOTOS = {}; }
    A query string does NOT change the origin, so ?v= is safe — localStorage,
    and therefore Cam's book, is exactly the same before and after.
    ============================================================ */
-const BUILD = "2026-09-27-65c7fa57";
+const BUILD = "2026-09-28-d194f8c7";
 
 /* Its own function so a test can stand in for it: opened off the disk, or
    built into the single shared file, there is no server to ask. */
@@ -646,6 +657,54 @@ const DEFAULT_GEAR = {
   climb: 1, glow: 1, magnify: 0, gloves: 0                       /* rainforest */
 };
 const DEFAULT_TRAPS = { shrink: 0, rainbow: 0, double: 0, mystery: 0 };
+
+/* ============================================================
+   THE WILD TRAP
+
+   wild.js is a few hundred famous real animals harvested at build time
+   (tools/harvest-wild.js). They are NOT in the hand-written book, nobody has
+   written facts for them, and that is the point: Cam writes those himself.
+
+   Counted separately from the catalog, so "272 of 272" stays finishable.
+   ============================================================ */
+function wildPool() { return (typeof WILD === "undefined") ? [] : WILD; }
+function wildId(w) { return "wild_" + slugify(w.name); }
+
+/* the photo is fetched from Wikimedia when the card shows, not shipped */
+function wildPhotoUrl(w) {
+  return "https://commons.wikimedia.org/wiki/Special:FilePath/" +
+         encodeURIComponent(w.file) + "?width=500";
+}
+
+/* shaped like a creature so the reveal and the card can handle it unchanged */
+function wildCreature(w) {
+  return {
+    id: wildId(w), name: w.name, emoji: w.emoji || "🐾",
+    kind: w.kind, where: null, zones: [], tier: "wild",
+    wild: true, article: w.article, wildPhotoUrl: wildPhotoUrl(w), facts: []
+  };
+}
+
+function pickWild(preferUnseen) {
+  const vetoed = state.vetoed || [];
+  let pool = wildPool().filter(w => vetoed.indexOf(wildId(w)) === -1);
+  if (!pool.length) return null;
+  if (preferUnseen) {
+    const fresh = pool.filter(w => !(state.wild || {})[wildId(w)]);
+    if (fresh.length) pool = fresh;
+  }
+  return wildCreature(pick(pool));
+}
+
+/* one tap from a grown-up and that animal never comes back */
+function vetoWild(id) {
+  state.vetoed = state.vetoed || [];
+  if (state.vetoed.indexOf(id) === -1) state.vetoed.push(id);
+  if (state.wild) delete state.wild[id];
+  save();
+  closeCard();
+  flashHint("🚫 That one is gone for good. The Wild Trap won't find it again.");
+}
 
 /* ============================================================
    WHAT'S NEW
@@ -787,7 +846,7 @@ function bookCount(who) { return ((state.books || {})[who] || blankBook()).found
 
 let state = installBookViews({ score: 0, magic: 1, traps: Object.assign({}, DEFAULT_TRAPS),
               mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {},
-              seen: null, seenWorlds: null });
+              seen: null, seenWorlds: null, wild: {}, vetoed: [] });
 
 function mergeInto(target, data) {
   if (!data || typeof data !== "object") return target;
@@ -816,6 +875,22 @@ function mergeInto(target, data) {
     if (!have) target.mine.push(m);
     else if ((m.facts || []).length > (have.facts || []).length) have.facts = m.facts;
   });
+
+  /* Wild finds, and the facts he wrote for them. Shared like the animals he
+     adds himself — a fact Cam writes should be there for everyone. */
+  target.wild = target.wild || {};
+  if (data.wild && typeof data.wild === "object") {
+    Object.keys(data.wild).forEach(id => {
+      const inc = data.wild[id] || {}, has = target.wild[id] || { found: 0, note: "" };
+      target.wild[id] = {
+        found: Math.max(has.found || 0, Number(inc.found) || 0),
+        note: (inc.note || "").length > (has.note || "").length ? inc.note : (has.note || "")
+      };
+    });
+  }
+  /* animals an adult has vetoed: a union, so a veto can never come back */
+  target.vetoed = [...new Set((target.vetoed || [])
+    .concat(Array.isArray(data.vetoed) ? data.vetoed : []))];
 
   /* which creatures and worlds he has already been shown: a union, never a reset */
   ["seen", "seenWorlds"].forEach(f => {
@@ -861,7 +936,7 @@ function mergeBook(book, data) {
 function load() {
   const merged = { score: 0, magic: 1, traps: Object.assign({}, DEFAULT_TRAPS),
                    mine: [], gear: Object.assign({}, DEFAULT_GEAR), who: null, books: {},
-                   seen: null, seenWorlds: null };
+                   seen: null, seenWorlds: null, wild: {}, vetoed: [] };
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k || k.toLowerCase().indexOf("camscrazycreatures") !== 0) continue;
@@ -1709,8 +1784,12 @@ function catchWith(trap, where, zone, promised) {
       from = "the other side of the world";
     }
     if (!pool.length) {
-      /* he has genuinely found all 153 — say so and keep the trap */
-      flashHint("🌈 You have already found EVERY creature in the game! Keeping your trap.");
+      /* He really has found everything in the book. Rather than hand the trap
+         back and leave him with nothing to do, let the rainbow reach outside
+         the book altogether — which is exactly what the wild pool is for. */
+      const wild = pickWild(true);
+      if (wild) return { c: wild, trap: trap, from: "outside the book altogether" };
+      flashHint("🌈 You have found EVERY creature AND every wild animal! Keeping your trap.");
       playFanfare();
       return null;
     }
@@ -1722,6 +1801,15 @@ function catchWith(trap, where, zone, promised) {
     const b = pickCreature(where, zone, false);
     if (!a) return null;
     return { c: a, trap: trap, second: b || null };
+  }
+
+  if (trap === "wild") {
+    const c = pickWild(true);
+    if (!c) {
+      flashHint("🌍 The Wild Trap has nothing left to reach. Keeping your trap.");
+      return null;
+    }
+    return { c: c, trap: trap };
   }
 
   if (trap === "mystery") {
@@ -3727,6 +3815,7 @@ function loop() {
    ============================================================ */
 function discover(c, zone, caught) {
   caught = caught || { c: c };
+  if (c.wild) return discoverWild(c, zone, caught);
   const tier = TIERS[c.tier];
   const isNew = !state.found.includes(c.id);
   let points = tier.points * zone.bonus;
@@ -3769,6 +3858,37 @@ function discover(c, zone, caught) {
   document.getElementById("overlay").classList.add("show");
 }
 
+/* A wild find is scored and remembered on its own ledger: it never enters
+   state.found, so "272 of 272" stays finishable, and it never goes in the
+   bucket, which only knows about catalog creatures. */
+function discoverWild(c, zone, caught) {
+  state.wild = state.wild || {};
+  const had = state.wild[c.id];
+  const isNew = !had;
+  let points = TIERS.wild.points * (zone ? zone.bonus : 1);
+  if (isNew) points *= 2;
+  state.score += points;
+  state.wild[c.id] = { found: ((had && had.found) || 0) + 1, note: (had && had.note) || "" };
+
+  screenFlash(); playFanfare(); confettiBurst(200);
+  pendingSecond = null;
+  save();
+  refresh();
+  fillCard(c, { isNew: isNew, points: points, zone: zone, caught: caught });
+  document.getElementById("overlay").classList.add("show");
+}
+
+/* He says it, a grown-up types it, and it is on that card forever after. */
+function writeWildNote(c) {
+  const had = (state.wild || {})[c.id] || {};
+  const said = prompt("What do you know about the " + c.name + "?", had.note || "");
+  if (said === null) return;
+  state.wild = state.wild || {};
+  state.wild[c.id] = { found: had.found || 1, note: said.trim().slice(0, 400) };
+  save();
+  fillCard(c, {});
+}
+
 /* Does the kid who is exploring right now love this kind of animal? */
 function favourite(c) {
   const ch = me();
@@ -3797,7 +3917,7 @@ function fillCard(c, opts) {
   const grown = (opts.caught || {}).trap === "shrink";
   img.style.height = grown ? "300px" : "220px";
   img.style.borderColor = grown ? "#80ed99" : "#6fb3e0";
-  const src = photoOf(c.id);
+  const src = c.wildPhotoUrl || photoOf(c.id);
   if (src) {
     img.style.display = "block";
     em.style.display = "none";
@@ -3843,7 +3963,8 @@ function fillCard(c, opts) {
 
   const where = document.getElementById("cardWhere");
   const zoneNames = c.zones.map(n => ZONES[c.where][n - 1].name).join(" • ");
-  let line = "Lives in: " + zoneNames;
+  let line = c.wild ? (c.kind ? c.kind.charAt(0).toUpperCase() + c.kind.slice(1) : "A real animal")
+                    : "Lives in: " + zoneNames;
   if (c.endemicTo) {
     line += '<br><span style="color:#0b7a5a"><b>I live on ' + c.endemicTo +
             ' and NOWHERE else on Earth.</b></span>';
@@ -3897,7 +4018,7 @@ function fillCard(c, opts) {
   if (opts.bucketFull) line += "<br>🪣 Your bucket is full! Empty it to keep collecting.";
 
   /* meeting one again is something to brag about, not a repeat */
-  const times = state.counts[c.id] || 0;
+  const times = c.wild ? (((state.wild || {})[c.id] || {}).found || 0) : (state.counts[c.id] || 0);
   if (times > 1) {
     line += '<br><span style="color:#b06a00"><b>You have found this one ' + times + " times!</b>" +
             (c.mythic ? " 🤯" : "") + "</span>";
@@ -3906,11 +4027,42 @@ function fillCard(c, opts) {
 
   const ul = document.getElementById("cardFacts");
   ul.innerHTML = "";
+  /* a wild animal has no facts yet, so don't show an empty box promising some */
+  const factsBox = document.getElementById("cardFactsBox");
+  if (factsBox) factsBox.style.display = c.facts.length ? "" : "none";
   c.facts.forEach(f => {
     const li = document.createElement("li");
     li.textContent = f;
     ul.appendChild(li);
   });
+
+  /* A wild animal arrives with no facts, because nobody has written any. The
+     whole point is that Cam writes them — the rest of the game teaches him
+     facts, this part asks him for them. */
+  const wildBox = document.getElementById("cardWild");
+  if (c.wild) {
+    const note = ((state.wild || {})[c.id] || {}).note || "";
+    wildBox.style.display = "block";
+    wildBox.innerHTML = note
+      ? '<div class="wildNote">“' + note.replace(/</g, "&lt;") + '”<br>' +
+        '<span class="wildBy">— written by ' + me().label + "</span></div>"
+      : '<div class="wildAsk"><b>Nobody has written about this one yet.<br>You found it first!</b></div>';
+    const write = document.createElement("button");
+    write.className = "btn small gold";
+    write.textContent = note ? "📝 Change what it says" : "📝 Write what you know";
+    write.onclick = () => writeWildNote(c);
+    wildBox.appendChild(write);
+    const veto = document.createElement("button");
+    veto.className = "btn small gray";
+    veto.style.marginLeft = "8px";
+    veto.textContent = "🚫 Not that one";
+    veto.title = "For a grown-up: hide this animal for good";
+    veto.onclick = () => vetoWild(c.id);
+    wildBox.appendChild(veto);
+  } else {
+    wildBox.style.display = "none";
+    wildBox.innerHTML = "";
+  }
 
   const credit = document.getElementById("cardCredit");
   if (c.imaginary) {
@@ -3919,6 +4071,9 @@ function fillCard(c, opts) {
     credit.innerHTML = '📷 A real photo of the real Jack, in his own tank.';
   } else if (PHOTOS[c.id]) {
     credit.innerHTML = 'Photo from <a href="' + PHOTOS[c.id].url + '" target="_blank">Wikipedia</a>';
+  } else if (c.wild) {
+    credit.innerHTML = '🌍 A real animal, from outside the book.' +
+      (c.article ? ' &nbsp;Photo from <a href="' + c.article + '" target="_blank">Wikipedia</a>' : "");
   } else if (c.mine) {
     credit.innerHTML = '🧑‍🔬 You put this animal in the game yourself.' +
       (c.article ? ' &nbsp;Photo from <a href="' + c.article + '" target="_blank">Wikipedia</a>' : "");
@@ -4399,6 +4554,49 @@ function showBook() {
       body.appendChild(buildGrid(inZone));
     });
   });
+
+  /* Wild finds live at the bottom, in their own section, with whatever he
+     wrote about each one. They are NOT part of the creature count. */
+  const wildFound = Object.keys(state.wild || {});
+  if (wildFound.length) {
+    const h3 = document.createElement("h3");
+    h3.textContent = "🌍 Wild Finds";
+    body.appendChild(h3);
+    const note = document.createElement("div");
+    note.className = "islandNote";
+    note.textContent = "Real animals from outside the book, caught with the Wild Trap. " +
+      "Nobody had written about these, so the facts here are the ones you wrote yourself.";
+    body.appendChild(note);
+    const grid = document.createElement("div");
+    grid.className = "bookGrid";
+    wildFound.forEach(id => {
+      const w = wildPool().find(x => wildId(x) === id);
+      if (!w) return;
+      const rec = state.wild[id] || {};
+      const cell = document.createElement("button");
+      cell.className = "bookCell";
+      cell.style.borderColor = TIERS.wild.color;
+      const im = document.createElement("img");
+      im.src = wildPhotoUrl(w); im.alt = w.name; im.loading = "lazy";
+      im.onerror = () => { im.replaceWith(makePlaceholder(w.emoji || "🐾")); };
+      cell.appendChild(im);
+      const nm = document.createElement("span");
+      nm.className = "nm";
+      nm.textContent = w.name + (rec.note ? " 📝" : "");
+      cell.appendChild(nm);
+      if ((rec.found || 0) > 1) {
+        const b = document.createElement("span");
+        b.className = "count"; b.textContent = "x" + rec.found;
+        cell.appendChild(b);
+      }
+      cell.onclick = () => {
+        fillCard(wildCreature(w), {});
+        document.getElementById("overlay").classList.add("show");
+      };
+      grid.appendChild(cell);
+    });
+    body.appendChild(grid);
+  }
 
   document.getElementById("bookCount").textContent =
     me().label + " has discovered " + state.found.length + " of " + CREATURES.length + " creatures!";
